@@ -1,0 +1,25 @@
+name: 'anchore-scan'
+description: 'Docker image scan with anchore and produce output for downstream'
+inputs:
+  image-reference:  # id of input
+    description: 'The image to scan'
+    required: true
+  dockerfile-path:
+    description: 'Path to the dockerfile'
+    required: false
+  debug:
+    description: 'Set this to any value to enable verbose debug output'
+    required: false
+  fail-build:
+    description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
+    required: false
+outputs:
+  billofmaterials:
+    description: 'The json output report specifying the content of the image'
+  vulnerabilities:
+    description: 'The found vulnerabilities for the image'
+  policycheck:
+    descrption: 'The json report for evaluating the image against the given policy, if present'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

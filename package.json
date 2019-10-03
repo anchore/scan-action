@@ -1,0 +1,40 @@
+{
+  "name": "anchore-scan-action",
+  "version": "0.0.1",
+  "description": "Anchore image scan github action",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "lint": "eslint index.js",
+    "test": "eslint index.js && jest",
+    "build": "ncc build ./index.js",
+    "precommit": "npm run build && git add dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anchore/anchore-scan-action.git"
+  },
+  "keywords": [
+    "image",
+    "scanning"
+  ],
+  "author": "Anchore Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anchore/anchore-scan-action/issues"
+  },
+  "homepage": "https://github.com/anchore/anchore-scan-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.1.3",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^6.5.1",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0"
+  }
+}

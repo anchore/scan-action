@@ -1,0 +1,141 @@
+{
+    "blacklisted_images": [],
+    "description": "Single policy, single whitelist bundle for performing critical security checks.",
+    "id": "critical_security_policy",
+    "mappings": [
+        {
+            "id": "c4f9bf74-dc38-4ddf-b5cf-00e9c0074611",
+            "image": {
+                "type": "tag",
+                "value": "*"
+            },
+            "name": "default",
+            "policy_id": "48e6f7d6-1765-11e8-b5f9-8b6f228548b6",
+            "registry": "*",
+            "repository": "*",
+            "whitelist_ids": [
+                "37fd763e-1765-11e8-add4-3b16c029ac5c"
+            ]
+        }
+    ],
+    "name": "critical_security_policy",
+    "policies": [
+        {
+            "comment": "Critical vulnerability,  secrets, and best practice violations",
+            "id": "48e6f7d6-1765-11e8-b5f9-8b6f228548b6",
+            "name": "default",
+            "rules": [
+                {
+                    "action": "STOP",
+                    "gate": "vulnerabilities",
+                    "id": "92b1c635-5ba4-422d-951b-0e4172a18d1a",
+                    "params": [
+                        {
+                            "name": "package_type",
+                            "value": "all"
+                        },
+                        {
+                            "name": "severity_comparison",
+                            "value": ">="
+                        },
+                        {
+                            "name": "severity",
+                            "value": "high"
+                        },
+                        {
+                            "name": "fix_available",
+                            "value": "true"
+                        }
+                    ],
+                    "trigger": "package"
+                },
+                {
+                    "action": "WARN",
+                    "gate": "dockerfile",
+                    "id": "20a32af4-5c16-487f-8c67-212ff2bc2d11",
+                    "params": [
+                        {
+                            "name": "users",
+                            "value": "root"
+                        },
+                        {
+                            "name": "type",
+                            "value": "blacklist"
+                        }
+                    ],
+                    "trigger": "effective_user"
+                },
+                {
+                    "action": "WARN",
+                    "gate": "secret_scans",
+                    "id": "509d5438-f0e3-41df-bb1a-33013f23e31c",
+                    "params": [],
+                    "trigger": "content_regex_checks"
+                },
+                {
+                    "action": "WARN",
+                    "gate": "dockerfile",
+                    "id": "ce7b8000-829b-4c27-8122-69cd59018400",
+                    "params": [
+                        {
+                            "name": "ports",
+                            "value": "22,80,443"
+                        },
+                        {
+                            "name": "type",
+                            "value": "blacklist"
+                        }
+                    ],
+                    "trigger": "exposed_ports"
+                },
+                {
+                    "action": "WARN",
+                    "gate": "dockerfile",
+                    "id": "312d9e41-1c05-4e2f-ad89-b7d34b0855bb",
+                    "params": [
+                        {
+                            "name": "instruction",
+                            "value": "HEALTHCHECK"
+                        },
+                        {
+                            "name": "check",
+                            "value": "not_exists"
+                        }
+                    ],
+                    "trigger": "instruction"
+                },
+                {
+                    "action": "WARN",
+                    "gate": "vulnerabilities",
+                    "id": "6b5c14e7-a6f7-48cc-99d2-959273a2c6fa",
+                    "params": [
+                        {
+                            "name": "max_days_since_sync",
+                            "value": "2"
+                        }
+                    ],
+                    "trigger": "stale_feed_data"
+                },
+                {
+                    "action": "WARN",
+                    "gate": "vulnerabilities",
+                    "id": "3e79ea94-18c4-4d26-9e29-3b9172a62c2e",
+                    "params": [],
+                    "trigger": "vulnerability_data_unavailable"
+                }
+            ],
+            "version": "1_0"
+        }
+    ],
+    "version": "1_0",
+    "whitelisted_images": [],
+    "whitelists": [
+        {
+            "comment": "Default global whitelist",
+            "id": "37fd763e-1765-11e8-add4-3b16c029ac5c",
+            "items": [],
+            "name": "Global Whitelist",
+            "version": "1_0"
+        }
+    ]
+}
