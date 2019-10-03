@@ -1,0 +1,57 @@
+#!/bin/bash
+
+TAG=$1
+DIGEST="sha256:0a97ccb2868e3c54167317fe7a2fc58e5123290d6c5b653a725091cbf18ca1ea"
+INLINE_SCAN_IMAGE="docker.io/dnurmi/testrepo:inline-scan-slim-v0.5.0"
+WORKSPACE=${PWD}
+
+cat <<EOF > ${WORKSPACE}/analyze.sh
+#!/bin/bash
+
+export POSTGRES_PASSWORD="\${POSTGRES_PASSWORD:-mysecretpassword}"
+export ANCHORE_DB_PASSWORD="\${POSTGRES_PASSWORD}"
+export ANCHORE_DB_USER="\${POSTGRES_USER}"
+export ANCHORE_DB_NAME="\${POSTGRES_DB}"
+export ANCHORE_DB_HOST="\${ANCHORE_ENDPOINT_HOSTNAME}"
+export ANCHORE_HOST_ID="\${ANCHORE_ENDPOINT_HOSTNAME}"
+export ANCHORE_CLI_URL="http://\${ANCHORE_ENDPOINT_HOSTNAME}:8228/v1"
+export PATH=\${PATH}:/usr/pgsql-${PG_MAJOR}/bin/
+export TIMEOUT=\${TIMEOUT:=300}
+
+anchore-manager \$@
+EOF
+chmod +x ${WORKSPACE}/analyze.sh
+
+date
+docker pull ${TAG}
+date
+docker pull ${INLINE_SCAN_IMAGE}
+date
+docker run -p 8228:8228 -v ${WORKSPACE}/:/analyzertmp -d --name anchore-engine ${INLINE_SCAN_IMAGE}
+date
+docker save ${TAG} -o ${WORKSPACE}/image.tar
+date
+docker exec -u root anchore-engine /analyzertmp/analyze.sh analyzers exec /analyzertmp/image.tar /analyzertmp/anchore.tar --tag ${TAG} --digest ${DIGEST}
+date
+docker exec -u root anchore-engine anchore-cli system wait
+date
+curl -u admin:foobar -F "archive_file=@${WORKSPACE}/anchore.tar" "http://localhost:8228/v1/import/images"
+date
+docker exec anchore-engine anchore-cli --json image get ${TAG} > ${WORKSPACE}/image_details.json
+date
+docker exec anchore-engine anchore-cli --json image content ${TAG} os > ${WORKSPACE}/image_content_os.json
+date
+docker exec anchore-engine anchore-cli --json image content ${TAG} python > ${WORKSPACE}/image_content_python.json
+date
+docker exec anchore-engine anchore-cli --json image content ${TAG} gem > ${WORKSPACE}/image_content_gem.json
+date
+docker exec anchore-engine anchore-cli --json image content ${TAG} npm > ${WORKSPACE}/image_content_npm.json
+date
+docker exec anchore-engine anchore-cli --json image content ${TAG} java > ${WORKSPACE}/image_content_java.json
+date
+docker exec anchore-engine anchore-cli --json image vuln ${TAG} all > ${WORKSPACE}/image_vulnerabilities.json
+date
+docker exec anchore-engine anchore-cli --json evaluate check ${TAG} --detail > ${WORKSPACE}/image_policy.json
+date
+#docker stop anchore-engine
+#docker rm anchore-engine

@@ -1,0 +1,17 @@
+name: "Run JavaScript Action"
+on:
+  push:
+    branches:    
+      - 'master'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - name: Build the Docker image
+      run: docker build . --file ./.github/workflows/Dockerfile --tag localbuild/testimage:latest
+    - uses: anchore/anchore-scan-action@master
+      with:
+        image_reference: "localbuild/testimage:latest"
