@@ -11,6 +11,8 @@ async function run() {
         let scan_scriptname = core.getInput('scan_scriptname');
         let inline_scan_image = core.getInput('inline_scan_image');
         let debug = core.getInput('debug');
+	let policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`
+	let policy_bundle_name = "critical_security_policy"
 
         // overrides just for testing locally
         //image_reference = "docker.io/alpine:latest"
@@ -40,7 +42,7 @@ async function run() {
         console.log('Inline Scan Image: ', inline_scan_image);
         console.log('Debug Output: ', debug);
 
-        let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug}`;
+        let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
         if (dockerfile_path) {
             cmd = `${cmd} ${dockerfile_path}`
         }
