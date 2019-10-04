@@ -17,6 +17,7 @@ async function run() {
         // overrides just for testing locally
         //image_reference = "docker.io/alpine:latest"
         //image_reference = "mylocalimage:latest"
+	//image_reference = "docker.io/dnurmi/testrepo:node_critical_pass"
         //dockerfile_path = "/tmp/Dockerfile"
         //scan_scriptname = "inline_scan-v0.5.0"
         //debug = "true"
@@ -28,7 +29,8 @@ async function run() {
             scan_scriptname = "inline_scan-v0.5.0"
         }
         if (!inline_scan_image) {
-            inline_scan_image = "docker.io/dnurmi/testrepo:inline-scan-slim-v0.5.0"
+            //inline_scan_image = "docker.io/dnurmi/testrepo:inline-scan-slim-v0.5.0"
+            inline_scan_image = "docker.io/dnurmi/testrepo:inline-scan-slim-v0.5.1-dev"	    
         }
         if (!debug) {
             debug = "false"

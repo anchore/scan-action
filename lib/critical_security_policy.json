@@ -36,11 +36,15 @@
                         },
                         {
                             "name": "severity_comparison",
-                            "value": ">"
+                            "value": ">="
                         },
                         {
                             "name": "severity",
                             "value": "high"
+                        },
+                        {
+                            "name": "fix_available",
+                            "value": "true"
                         }
                     ],
                     "trigger": "package"
