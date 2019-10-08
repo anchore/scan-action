@@ -1,8 +1,5 @@
 name: "Run JavaScript Action"
-on:
-  push:
-    branches:    
-      - 'master'
+on: [push]
 
 jobs:
   test:
@@ -10,8 +7,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: npm ci
-    - name: Build the Docker image
-      run: docker build . --file ./.github/workflows/Dockerfile --tag localbuild/testimage:latest
-    - uses: anchore/anchore-scan-action@master
+    - name: Run anchore action
+      uses: ./
       with:
-        image_reference: "localbuild/testimage:latest"
+        image_reference: "alpine:latest"
+    - name: View anchore reports
+      run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
+    - name: Upload anchore scan reports
+      uses: actions/upload-artifact@v1
+      with:
+        name: anchore-reports
+        path: ./anchore-reports

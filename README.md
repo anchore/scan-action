@@ -39,7 +39,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag localbuild/testimage:12345
-    - uses: zhill/anchore-scan-action@master
+    - uses: anchore/anchore-scan-action@master
       with:
         image_reference: "localbuild/testimage:12345"
         dockerfile_path: "./Dockerfile"

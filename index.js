@@ -11,13 +11,13 @@ async function run() {
         let scan_scriptname = core.getInput('scan_scriptname');
         let inline_scan_image = core.getInput('inline_scan_image');
         let debug = core.getInput('debug');
-	let policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`
-	let policy_bundle_name = "critical_security_policy"
+        let policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`
+        let policy_bundle_name = "critical_security_policy"
 
         // overrides just for testing locally
         //image_reference = "docker.io/alpine:latest"
         //image_reference = "mylocalimage:latest"
-	//image_reference = "docker.io/dnurmi/testrepo:node_critical_pass"
+        //image_reference = "docker.io/dnurmi/testrepo:node_critical_pass"
         //dockerfile_path = "/tmp/Dockerfile"
         //scan_scriptname = "inline_scan-v0.5.0"
         //debug = "true"

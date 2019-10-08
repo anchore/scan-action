@@ -51,7 +51,7 @@ docker run -d -p 8228:8228 --name local-anchore-engine ${inline_scan_image_arg} 
 docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} system wait --timeout 60 --interval 1.0
 docker cp ${anchore_policy_bundle_path_arg} local-anchore-engine:/tmp/anchore-policy-bundle.json
 docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} policy add /tmp/anchore-policy-bundle.json
-docker exec -t local-anchore-engine anchore-cli policy activate ${anchore_policy_bundle_name_arg}
+docker exec -t local-anchore-engine anchore-cli policy activate ${anchore_policy_bundle_name_arg} >/dev/null 2>&1
 # setup scan script CLI 
 
 # for 'scan' op
@@ -73,7 +73,10 @@ ${SCAN_SCRIPT} analyze ${SCANOPTS} ${image_reference_arg}
 export ANALYZE_RC=$?
 
 mkdir -p ./anchore-reports/
-docker exec -t local-anchore-engine anchore-cli --json evaluate check --detail ${IMAGE_DIGEST_SHA} --tag ${image_reference_arg} --policy ${anchore_policy_bundle_name_arg} > ./anchore-reports/policy_evaluation.json
+echo ""
+echo "--------- Anchore Policy Evaluation ---------"
+docker exec -t local-anchore-engine anchore-cli evaluate check --detail ${IMAGE_DIGEST_SHA} --tag ${image_reference_arg} --policy ${anchore_policy_bundle_name_arg}
+#docker exec -t local-anchore-engine anchore-cli --json evaluate check --detail ${IMAGE_DIGEST_SHA} --tag ${image_reference_arg} --policy ${anchore_policy_bundle_name_arg} > ./anchore-reports/policy_evaluation.json
 docker exec -t local-anchore-engine anchore-cli --json image vuln ${IMAGE_DIGEST_SHA} all > ./anchore-reports/vulnerabilities.json
 docker exec -t local-anchore-engine anchore-cli --json image get ${IMAGE_DIGEST_SHA} > ./anchore-reports/summary.json
 docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} os > ./anchore-reports/content-os.json
@@ -81,7 +84,7 @@ docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIG
 docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} gem > ./anchore-reports/content-gem.json
 docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} python > ./anchore-reports/content-python.json
 docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} npm > ./anchore-reports/content-npm.json
-
+echo ""
 if [ "${debug}" = "true" ]; then
     docker cp local-anchore-engine:/var/log/anchore/ ./anchore-reports/anchore-engine-logs/
 else
