@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 export dirname_arg=$1
 export scriptname_arg=$2
 export inline_scan_image_arg=$3
@@ -9,11 +11,12 @@ export anchore_policy_bundle_path_arg=$6
 export anchore_policy_bundle_name_arg=$7
 export dockerfile_path_arg=$8
 
-
 export IMAGE_DIGEST_SHA="sha256:0a97ccb2868e3c54167317fe7a2fc58e5123290d6c5b653a725091cbf18ca1ea"
 export SCANOPTS="-r http://localhost:8228/v1 -u admin -p foobar -d ${IMAGE_DIGEST_SHA}"
 export CLIOPTS="--json"
 export ANCHORE_CI_IMAGE=${inline_scan_image_arg}
+
+mkdir -p ./anchore-reports/
 
 if [ "${debug}" = "true" ]; then
     CLIOPTS="${CLIOPTS} --debug"
@@ -29,29 +32,29 @@ if [ ! -x ${SCAN_SCRIPT} ]; then
 fi
 
 # make sure the image to be scanned is available and try pulling if not
-if (! docker inspect ${image_reference_arg} >/dev/null 2>&1 ); then
-    docker pull ${image_reference_arg} >/dev/null 2>&1
-    if (! docker inspect ${image_reference_arg} >/dev/null 2>&1); then
-	echo "ERROR: cannot locate local or remote image ${image_reference_arg}"
-	exit 1
+if ! docker inspect ${image_reference_arg} >> ./anchore-reports/run.log 2>&1; then
+    docker pull ${image_reference_arg} >> ./anchore-reports/run.log 2>&1
+    if ! docker inspect ${image_reference_arg} >> ./anchore-reports/run.log 2>&1; then
+        echo "ERROR: cannot locate local or remote image ${image_reference_arg}"
+        exit 1
     fi
 fi
 
 # make sure the anchore inline scan image is available and try pulling if not
-if (! docker inspect ${inline_scan_image_arg} >/dev/null 2>&1 ); then
-    docker pull ${inline_scan_image_arg} >/dev/null 2>&1
-    if (! docker inspect ${inline_scan_image_arg} >/dev/null 2>&1); then
-	echo "ERROR: cannot locate local or remote image ${inline_scan_image_arg}"
-	exit 1
+if ! docker inspect ${inline_scan_image_arg} >> ./anchore-reports/run.log 2>&1; then
+    docker pull ${inline_scan_image_arg} >> ./anchore-reports/run.log 2>&1
+    if ! docker inspect ${inline_scan_image_arg} >> ./anchore-reports/run.log 2>&1; then
+        echo "ERROR: cannot locate local or remote image ${inline_scan_image_arg}"
+        exit 1
     fi
 fi
 
 # start up the inline scan image
-docker run -d -p 8228:8228 --name local-anchore-engine ${inline_scan_image_arg} start
-docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} system wait --timeout 60 --interval 1.0
-docker cp ${anchore_policy_bundle_path_arg} local-anchore-engine:/tmp/anchore-policy-bundle.json
-docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} policy add /tmp/anchore-policy-bundle.json
-docker exec -t local-anchore-engine anchore-cli policy activate ${anchore_policy_bundle_name_arg} >/dev/null 2>&1
+docker run -d -p 8228:8228 --name local-anchore-engine ${inline_scan_image_arg} start >> ./anchore-reports/run.log 2>&1
+docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} system wait --timeout 60 --interval 1.0 >> ./anchore-reports/run.log 2>&1
+docker cp ${anchore_policy_bundle_path_arg} local-anchore-engine:/tmp/anchore-policy-bundle.json >> ./anchore-reports/run.log 2>&1
+docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} policy add /tmp/anchore-policy-bundle.json >> ./anchore-reports/run.log 2>&1
+docker exec -t local-anchore-engine anchore-cli policy activate ${anchore_policy_bundle_name_arg} >> ./anchore-reports/run.log 2>&1
 # setup scan script CLI 
 
 # for 'scan' op
@@ -69,27 +72,28 @@ if [ ! -z "${dockerfile_path_arg}" ]; then
 fi
 
 # perform the scan callout
-${SCAN_SCRIPT} analyze ${SCANOPTS} ${image_reference_arg}
+${SCAN_SCRIPT} analyze ${SCANOPTS} ${image_reference_arg} >> ./anchore-reports/run.log 2>&1
 export ANALYZE_RC=$?
 
-mkdir -p ./anchore-reports/
 echo ""
+# docker exec -t local-anchore-engine anchore-cli image get ${IMAGE_DIGEST_SHA}
 echo "--------- Anchore Policy Evaluation ---------"
 docker exec -t local-anchore-engine anchore-cli evaluate check --detail ${IMAGE_DIGEST_SHA} --tag ${image_reference_arg} --policy ${anchore_policy_bundle_name_arg}
-#docker exec -t local-anchore-engine anchore-cli --json evaluate check --detail ${IMAGE_DIGEST_SHA} --tag ${image_reference_arg} --policy ${anchore_policy_bundle_name_arg} > ./anchore-reports/policy_evaluation.json
+docker exec -t local-anchore-engine anchore-cli --json evaluate check --detail ${IMAGE_DIGEST_SHA} --tag ${image_reference_arg} --policy ${anchore_policy_bundle_name_arg} > ./anchore-reports/policy_evaluation.json
 docker exec -t local-anchore-engine anchore-cli --json image vuln ${IMAGE_DIGEST_SHA} all > ./anchore-reports/vulnerabilities.json
-docker exec -t local-anchore-engine anchore-cli --json image get ${IMAGE_DIGEST_SHA} > ./anchore-reports/summary.json
 docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} os > ./anchore-reports/content-os.json
-docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} java > ./anchore-reports/content-java.json
-docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} gem > ./anchore-reports/content-gem.json
-docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} python > ./anchore-reports/content-python.json
-docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} npm > ./anchore-reports/content-npm.json
+# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} java > ./anchore-reports/content-java.json
+# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} gem > ./anchore-reports/content-gem.json
+# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} python > ./anchore-reports/content-python.json
+# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} npm > ./anchore-reports/content-npm.json
 echo ""
+
 if [ "${debug}" = "true" ]; then
     docker cp local-anchore-engine:/var/log/anchore/ ./anchore-reports/anchore-engine-logs/
+    cat ./anchore-reports/run.log
 else
-    docker stop local-anchore-engine
-    docker rm local-anchore-engine
+    docker stop local-anchore-engine &> /dev/null
+    docker rm local-anchore-engine &> /dev/null
 fi
 
 exit ${ANALYZE_RC}

@@ -1,4 +1,4 @@
-name: "Run JavaScript Action"
+name: "Run Anchore Action"
 on: [push]
 
 jobs:

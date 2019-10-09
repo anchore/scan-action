@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const execSync = require('child_process').execSync;
+const fs = require('fs');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -7,6 +8,7 @@ async function run() {
         core.debug((new Date()).toTimeString());
 
         let image_reference = core.getInput('image_reference');
+        let fail_build = core.getInput('fail_build')
         let dockerfile_path = core.getInput('dockerfile_path');
         let scan_scriptname = core.getInput('scan_scriptname');
         let inline_scan_image = core.getInput('inline_scan_image');
@@ -15,7 +17,7 @@ async function run() {
         let policy_bundle_name = "critical_security_policy"
 
         // overrides just for testing locally
-        //image_reference = "docker.io/alpine:latest"
+        // image_reference = "docker.io/alpine:latest"
         //image_reference = "mylocalimage:latest"
         //image_reference = "docker.io/dnurmi/testrepo:node_critical_pass"
         //dockerfile_path = "/tmp/Dockerfile"
@@ -37,6 +39,11 @@ async function run() {
         } else {
             debug = "true"
         }
+        if (!fail_build) {
+            fail_build = "false"
+        } else {
+            fail_build = "true"
+        }
 
         console.log('Image: ', image_reference);
         console.log('Dockerfile path: ', dockerfile_path);
@@ -50,13 +57,22 @@ async function run() {
         }
         execSync(cmd, {stdio: 'inherit'});
 
+        let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
+        let policyEval = JSON.parse(rawdata);
+        var keys = Object.keys(policyEval[0]);
+        var policyStatus = policyEval[0][keys[0]][Object.keys(policyEval[0][keys[0]])[0]][0].status;
+
         core.debug((new Date()).toTimeString());
 
         // TODO - need to decide and implement output handling of the scan, which produces output in ./anchore-reports on success
         core.setOutput('time', new Date().toTimeString());
-        core.setOutput('billofmaterials', '');
-        core.setOutput('vulnerabilities', '');
-        core.setOutput('policycheck', 'pass');
+        core.setOutput('billofmaterials', './anchore-reports/content-os.json');
+        core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
+        core.setOutput('policycheck', policyStatus);
+
+        if (fail_build && policyStatus == 'fail') {
+            core.setFailed("Image failed Anchore policy evaluation")
+        }
 
     } catch (error) {
         core.setFailed(error.message);
