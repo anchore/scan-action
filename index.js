@@ -8,21 +8,22 @@ async function run() {
         core.debug((new Date()).toTimeString());
 
         let image_reference = core.getInput('image_reference');
-        let fail_build = core.getInput('fail_build')
         let dockerfile_path = core.getInput('dockerfile_path');
         let scan_scriptname = core.getInput('scan_scriptname');
         let inline_scan_image = core.getInput('inline_scan_image');
         let debug = core.getInput('debug');
+        let fail_build = core.getInput('fail_build')
         let policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`
         let policy_bundle_name = "critical_security_policy"
 
         // overrides just for testing locally
-        // image_reference = "docker.io/alpine:latest"
+        image_reference = "docker.io/alpine:3.8"
         //image_reference = "mylocalimage:latest"
         //image_reference = "docker.io/dnurmi/testrepo:node_critical_pass"
         //dockerfile_path = "/tmp/Dockerfile"
         //scan_scriptname = "inline_scan-v0.5.0"
         //debug = "true"
+        //fail_build = "true"
 
         if (!image_reference) {
             throw new Error("Must specify a container image to analyze using 'image_reference' input")
@@ -56,6 +57,7 @@ async function run() {
         if (dockerfile_path) {
             cmd = `${cmd} ${dockerfile_path}`
         }
+        console.log('\nAnalyzing image: ' +image_reference)
         execSync(cmd, {stdio: 'inherit'});
 
         let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
@@ -65,13 +67,12 @@ async function run() {
 
         core.debug((new Date()).toTimeString());
 
-        // TODO - need to decide and implement output handling of the scan, which produces output in ./anchore-reports on success
         core.setOutput('time', new Date().toTimeString());
         core.setOutput('billofmaterials', './anchore-reports/content-os.json');
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
 
-        if (fail_build && policyStatus == 'fail') {
+        if (fail_build == "true" && policyStatus == "fail") {
             core.setFailed("Image failed Anchore policy evaluation")
         }
 
