@@ -17,7 +17,7 @@ async function run() {
         let policy_bundle_name = "critical_security_policy"
 
         // overrides just for testing locally
-        image_reference = "docker.io/alpine:3.8"
+        //image_reference = "docker.io/alpine:3.8"
         //image_reference = "mylocalimage:latest"
         //image_reference = "docker.io/dnurmi/testrepo:node_critical_pass"
         //dockerfile_path = "/tmp/Dockerfile"
