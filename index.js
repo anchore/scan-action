@@ -50,6 +50,7 @@ async function run() {
         console.log('Scriptname: ', scan_scriptname);
         console.log('Inline Scan Image: ', inline_scan_image);
         console.log('Debug Output: ', debug);
+        console.log('Fail Build: ', fail_build);
 
         let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
         if (dockerfile_path) {
@@ -59,8 +60,8 @@ async function run() {
 
         let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
         let policyEval = JSON.parse(rawdata);
-        var keys = Object.keys(policyEval[0]);
-        var policyStatus = policyEval[0][keys[0]][Object.keys(policyEval[0][keys[0]])[0]][0].status;
+        let keys = Object.keys(policyEval[0]);
+        let policyStatus = policyEval[0][keys[0]][Object.keys(policyEval[0][keys[0]])[0]][0].status;
 
         core.debug((new Date()).toTimeString());
 
