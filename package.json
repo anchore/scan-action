@@ -1,34 +1,35 @@
 {
-  "name": "javascript-action",
-  "version": "1.0.0",
-  "description": "JavaScript Action Template",
+  "name": "anchore-scan-action",
+  "version": "0.0.1",
+  "description": "Anchore image scan github action",
   "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
   "scripts": {
     "lint": "eslint index.js",
     "test": "eslint index.js && jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/anchore/anchore-scan-action.git"
   },
   "keywords": [
-    "GitHub",
-    "Actions",
-    "JavaScript"
+    "image",
+    "scanning"
   ],
-  "author": "GitHub",
+  "author": "Anchore Inc.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/anchore/anchore-scan-action/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/core": "^1.1.0",
-    "@actions/exec": "latest"
+    "@actions/core": "^1.1.3"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
-    "jest": "^24.9.0",
-    "test": "^0.6.0"
+    "jest": "^24.9.0"
   }
 }
