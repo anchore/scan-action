@@ -7,12 +7,6 @@ inputs:
   dockerfile_path:
     description: 'Path to the dockerfile'
     required: false
-  scan_scriptname:
-    description: 'Scriptname for the action to use as override - for testing only'
-    required: false    
-  inline_scan_image:
-    description: 'Full tag reference of anchore inline scan image to use as override'
-    required: false
   debug:
     description: 'Set this to any value to enable verbose debug output'
     required: false

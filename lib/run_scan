@@ -95,9 +95,9 @@ echo ""
 if [ "${debug}" = "true" ]; then
     mkdir -p ./anchore-reports/anchore-engine-logs
     docker cp local-anchore-engine:/var/log/anchore/ ./anchore-reports/anchore-engine-logs/
-else
-    docker stop local-anchore-engine >> "${ANCHORE_LOG}" 2>&1
-    docker rm local-anchore-engine >> "${ANCHORE_LOG}" 2>&1
 fi
+
+docker stop local-anchore-engine >> "${ANCHORE_LOG}" 2>&1
+docker rm local-anchore-engine >> "${ANCHORE_LOG}" 2>&1
 
 exit ${ANALYZE_RC}
