@@ -1,8 +1,8 @@
-# Github Action for Anchore Scan
+# GitHub Action for Anchore Scan
 
 **WORK IN PROGRESS**
 
-This is a github action for invoking the Anchore Engine scanner on a docker image and returning some artifacts.
+This is a GitHub Action for invoking the Anchore Engine scanner on a docker image and returning some artifacts.
 
 ## Action parameters
 
