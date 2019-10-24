@@ -10,4 +10,4 @@ jobs:
     - name: Run anchore action
       uses: ./
       with:
-        image_reference: "alpine:latest"
+        image-reference: "alpine:latest"

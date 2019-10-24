@@ -42,8 +42,8 @@ jobs:
       run: docker build . --file Dockerfile --tag localbuild/testimage:12345
     - uses: anchore/anchore-scan-action@master
       with:
-        image_reference: "localbuild/testimage:12345"
-        dockerfile_path: "./Dockerfile"
+        image-reference: "localbuild/testimage:12345"
+        dockerfile-path: "./Dockerfile"
     - name: anchore inline scan JSON results
       run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
 ```
