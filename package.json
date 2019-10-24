@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint index.js",
     "test": "eslint index.js && jest",
-    "build": "ncc build ./index.js"
+    "build": "ncc build ./index.js",
+    "precommit": "npm run build && git add dist/"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@zeit/ncc": "^0.20.5",
     "eslint": "^6.5.1",
+    "husky": "^3.0.9",
     "jest": "^24.9.0"
   }
 }
