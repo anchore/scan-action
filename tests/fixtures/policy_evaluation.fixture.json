@@ -1,7 +1,7 @@
 [
   {
-    "sha256:0c243038b3ffc43d1216ce376c16dbfb9e7eac8440260e419ecd22df3b75646f": {
-      "localhost:5000/nginx:latest": [
+    "sha256:0c24303": {
+      "nginx:latest": [
         {
           "detail": {
             "policy": {
