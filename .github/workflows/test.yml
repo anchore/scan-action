@@ -1,4 +1,5 @@
-name: "Run Anchore Action"
+name: "Tests"
+
 on: [push]
 
 jobs:
@@ -6,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+
     - run: npm ci
-    - name: Run anchore action
-      uses: ./
-      with:
-        image_reference: "alpine:latest"
+    - run: npm test
