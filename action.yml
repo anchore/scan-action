@@ -22,4 +22,4 @@ outputs:
     descrption: 'The json report for evaluating the image against the given policy, if present'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'dist/index.js'
