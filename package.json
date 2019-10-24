@@ -27,10 +27,10 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/core": "^1.1.3",
-    "@zeit/ncc": "^0.20.5"
+    "@actions/core": "^1.1.3"
   },
   "devDependencies": {
+    "@zeit/ncc": "^0.20.5",
     "eslint": "^6.5.1",
     "jest": "^24.9.0"
   }
