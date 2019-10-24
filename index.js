@@ -63,4 +63,8 @@ async function run() {
     }
 }
 
-run();
+module.exports = run;
+
+if (require.main === module) {
+    run();
+}

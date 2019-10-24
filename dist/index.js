@@ -51,7 +51,7 @@ module.exports = require("os");
 /***/ }),
 
 /***/ 104:
-/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
+/***/ (function(module, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(470);
 const execSync = __webpack_require__(129).execSync;
@@ -118,7 +118,11 @@ async function run() {
     }
 }
 
-run();
+module.exports = run;
+
+if (require.main === require.cache[eval('__filename')]) {
+    run();
+}
 
 
 /***/ }),
