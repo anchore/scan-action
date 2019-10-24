@@ -9,7 +9,8 @@
   },
   "scripts": {
     "lint": "eslint index.js",
-    "test": "eslint index.js && jest"
+    "test": "eslint index.js && jest",
+    "build": "ncc build ./index.js"
   },
   "repository": {
     "type": "git",
