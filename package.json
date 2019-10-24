@@ -26,7 +26,8 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/core": "^1.1.3"
+    "@actions/core": "^1.1.3",
+    "@zeit/ncc": "^0.20.5"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
