@@ -1,16 +1,16 @@
 name: 'anchore-scan'
 description: 'Docker image scan with anchore and produce output for downstream'
 inputs:
-  image_reference:  # id of input
+  image-reference:  # id of input
     description: 'The image to scan'
     required: true
-  dockerfile_path:
+  dockerfile-path:
     description: 'Path to the dockerfile'
     required: false
   debug:
     description: 'Set this to any value to enable verbose debug output'
     required: false
-  fail_build:
+  fail-build:
     description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
     required: false
 outputs:

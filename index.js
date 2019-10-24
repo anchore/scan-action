@@ -6,10 +6,10 @@ async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        const image_reference = core.getInput('image_reference');
-        const dockerfile_path = core.getInput('dockerfile_path');
+        const image_reference = core.getInput('image-reference');
+        const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
-        let fail_build = core.getInput('fail_build')
+        let fail_build = core.getInput('fail-build')
         const policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`
         const policy_bundle_name = "critical_security_policy"
 
