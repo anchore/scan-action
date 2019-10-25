@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Scan alpine:latest
-      uses: ./
+    - uses: ./
       with:
-        image-reference: "alpine:latest"
+        image_reference: "alpine:latest"
