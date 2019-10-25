@@ -13,8 +13,8 @@ async function run() {
         const policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`
         const policy_bundle_name = "critical_security_policy"
 
-        const scan_scriptname = "inline_scan-v0.5.0"
-        const inline_scan_image = "docker.io/dnurmi/testrepo:inline-scan-slim-v0.5.1-dev"
+        const scan_scriptname = "inline_scan-v0.5.1"
+        const inline_scan_image = "docker.io/anchore/inline-scan-slim:v0.5.1"
 
         if (!image_reference) {
             throw new Error("Must specify a container image to analyze using 'image_reference' input")

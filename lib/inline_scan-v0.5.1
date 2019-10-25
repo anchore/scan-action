@@ -8,7 +8,7 @@ set -eo pipefail
 
 # If using a locally built stateless CI container, export ANCHORE_CI_IMAGE=<image_name>. 
 # This will override the image name from Dockerhub.
-INLINE_SCAN_IMAGE="${ANCHORE_CI_IMAGE:-docker.io/anchore/inline-scan:v0.5.0}"
+INLINE_SCAN_IMAGE="${ANCHORE_CI_IMAGE:-docker.io/anchore/inline-scan:v0.5.1}"
 DOCKER_NAME="${RANDOM:-temp}-inline-anchore-engine"
 DOCKER_ID=""
 ANALYZE=false
