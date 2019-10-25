@@ -17,19 +17,14 @@ In your `workflow.yaml`, add a step:
  - name: Scan image
    uses: anchore/anchore-scan-action@master
    with:
-     image_reference: "localbuild/testimage:latest"
+     image-reference: "localbuild/testimage:latest"
 ```
 
 As a result of the action, you'll see some files in the `anchore-reports` directory in the workspace:
 
 * `policy_evaluation.json` - Default anchore policy evaluation of the image
 * `vulnerabilities.json` - Vulnerabilities found in the image
-* `summary.json` - Image metadata summary (distro etc)
 * `content-os.json` - OS packages (rpms, debs, etc) found in the image
-* `content-java.json` - Java packages (jars, wars, etc) found in the image
-* `content-gem.json` - Ruby Gems found in the image
-* `content-python.json` - Python PyPi packages found in the image
-* `content-npm.json` - npm packages found in the image
 
 ### Example Workflow
 ```
