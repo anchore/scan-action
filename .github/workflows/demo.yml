@@ -1,0 +1,12 @@
+name: "Run Anchore Scan Action"
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Scan alpine:latest
+      uses: ./
+      with:
+        image-reference: "alpine:latest"
