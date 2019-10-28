@@ -11,7 +11,7 @@ See [`action.yml`](action.yml) for the input, outputs and configuration.
 
 ## Using the Action
 
-###Getting the bill of materials only
+### Getting the bill of materials only
 By default, the action uses anchore engine to analyze the container and provide a listing of the packages found inside,
 the vulnerabilities matched to those packages, and a policy evaluation recommendation. The job step will not fail the workflow
 even if vulnerabilities are found.
@@ -24,7 +24,8 @@ In your workflow file, add a step:
      image-reference: "localbuild/testimage:latest"
 ```
 
-That will run the action but not cause the build to fail based on results. If you want to have the build step fail in cases where
+### Failing the build on policy and/or vulnerabilities
+The above example will run the action but not cause the build to fail based on results. If you want to have the build step fail in cases where
 there are vulnerabilities that violate the [default policy](dist/critical_security_policy.json) (fail only if vulnerabilities exist with severity >= HIGH and which have a fix available), then set the `fail_build` input = `true`.
 That will make the job step fail of the policy evaluations detects a policy violation.
 
