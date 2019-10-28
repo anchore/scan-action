@@ -33,8 +33,8 @@ For example:
  - name: Scan image
    uses: anchore/anchore-scan-action@master
    with:
-     image_reference: "localbuild/testimage:latest"
-     fail_build: true
+     image-reference: "localbuild/testimage:latest"
+     fail-build: true
 ```
 
 As a result of the action, you'll see some files in the `anchore-reports` directory in the workspace:
@@ -60,8 +60,8 @@ jobs:
     - uses: anchore/anchore-scan-action@master
       with:
         image-reference: "localbuild/testimage:latest"
-        dockerfile_path: "./Dockerfile"
-        fail_build: true
+        dockerfile-path: "./Dockerfile"
+        fail-build: true
     - name: anchore inline scan JSON results
       run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
 ```
