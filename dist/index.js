@@ -61,24 +61,53 @@ async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        const image_reference = core.getInput('image-reference');
+        const required_option = {required: true};
+
+        const image_reference = core.getInput('image-reference', required_option);
         const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
         let fail_build = core.getInput('fail-build');
         let include_packages = core.getInput('include-app-packages');
+        const custom_policy_path = core.getInput('custom-policy-path');
         let inline_scan_image = "docker.io/anchore/inline-scan-slim:v0.5.1";
-        const policy_bundle_path = __webpack_require__.ab + "critical_security_policy.json";
-        const policy_bundle_name = "critical_security_policy";
         const scan_scriptname = "inline_scan-v0.5.1";
+        var policy_bundle_path = __webpack_require__.ab + "critical_security_policy.json";
+        var policy_bundle_name = "critical_security_policy";
 
-        if (!image_reference) {
-            throw new Error("Must specify a container image to analyze using 'image_reference' input");
+        if (custom_policy_path) {
+            let workspace = process.env.GITHUB_WORKSPACE;
+            if (!workspace) {
+                workspace = ".";
+            }
+            let bundle_path = `${workspace}/${custom_policy_path}`;
+            let bundle_name = "";
+            core.debug(`Loading custom bundle from ${bundle_path}`);
+
+            // Load the bundle to extract the policy id
+            let custom_policy = fs.readFileSync(bundle_path);
+
+            if(custom_policy) {
+                core.debug('loaded custom bundle ' +custom_policy);
+                custom_policy = JSON.parse(custom_policy);
+                bundle_name = custom_policy.id;
+                if (!bundle_name) {
+                    throw "Could not extract id from custom policy bundle. May be malformed json or not contain id property";
+                } else {
+                    core.info(`Detected custom policy id: ${bundle_name}`);
+                }
+                policy_bundle_name = bundle_name;
+                policy_bundle_path = bundle_path;
+            } else {
+                throw `Custom policy specified at ${policy_bundle_path} but not found`;
+            }
         }
+
         if (!debug) {
             debug = "false";
         } else {
             debug = "true";
         }
+
         if (!fail_build) {
             fail_build = "false";
         } else {
@@ -97,6 +126,10 @@ async function run() {
         core.info('Debug Output: ' +debug);
         core.info('Fail Build: ' +fail_build);
         core.info('Include App Packages: ' +include_packages);
+        core.info('Custom Policy Path: ' +custom_policy_path);
+
+        core.debug('Policy path for evaluation: ' +policy_bundle_path);
+        core.debug('Policy name for evaluation: ' +policy_bundle_name);
 
         let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
         if (dockerfile_path) {
@@ -116,7 +149,7 @@ async function run() {
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
 
-        if (fail_build == "true" && policyStatus == "fail") {
+        if (fail_build === "true"  && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
 
