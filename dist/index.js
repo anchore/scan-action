@@ -65,11 +65,11 @@ async function run() {
         const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
         let fail_build = core.getInput('fail-build')
+        let include_packages = core.getInput('include-packages')
+        let inline_scan_image = "docker.io/anchore/inline-scan-slim:v0.5.1"
         const policy_bundle_path = __webpack_require__.ab + "critical_security_policy.json"
         const policy_bundle_name = "critical_security_policy"
-
         const scan_scriptname = "inline_scan-v0.5.1"
-        const inline_scan_image = "docker.io/anchore/inline-scan-slim:v0.5.1"
 
         if (!image_reference) {
             throw new Error("Must specify a container image to analyze using 'image_reference' input")
@@ -84,12 +84,19 @@ async function run() {
         } else {
             fail_build = "true"
         }
+        if (!include_packages) {
+            include_packages = false
+        } else {
+            include_packages = true
+            inline_scan_image = "docker.io/anchore/inline-scan:v0.5.1"
+        }
 
         core.info('Image: ' +image_reference);
         core.info('Dockerfile path: ' +dockerfile_path);
         core.info('Inline Scan Image: ' +inline_scan_image);
         core.info('Debug Output: ' +debug);
         core.info('Fail Build: ' +fail_build);
+        core.info('Include Packages: ' +include_packages);
 
         let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
         if (dockerfile_path) {
