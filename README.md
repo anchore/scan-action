@@ -44,11 +44,29 @@ As a result of the action, you'll see some files in the `anchore-reports` direct
 * `vulnerabilities.json` - Vulnerabilities found in the image
 * `content-os.json` - OS packages (rpms, debs, etc) found in the image
 
+### Scanning Application Packages and OS Packages in the Container
+
+By default, the action will only match vulnerabilities against OS/distro packages (rpms, dpkg, apk, etc). This is done
+to allow the use of a much smaller scan image and thus faster scans. However, Anchore has the ability to match vulnerabilities
+against npms, gems, python pip packages, and java (jars, wars, etc) as well. This scan will take longer, but produce a more
+holistic view of the container vulnerability set. To enable this feature, set the 'include-app-packages' input parameter to 'true'.
+
+For example:
+```yaml
+ - uses: anchore/anchore-scan-action@master
+       with:
+         image-reference: "localbuild/testimage:latest"
+         dockerfile-path: "./Dockerfile"
+         fail-build: true
+         include-app-package: true
+```
+
+
 ### Example Workflow
 
 Assuming your repository has a Dockerfile in the root directory:
 
-```
+```yaml
 name: Docker Image CI
 on: [push]
 jobs:

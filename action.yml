@@ -13,7 +13,7 @@ inputs:
   fail-build:
     description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
     required: false
-  include-packages:
+  include-app-packages:
     description: 'Set to true to include software packages during vulnerability scanning - this option will increase runtime of the action significantly. By default only OS packages are scanned for vulnerabilities.'
     required: false
 outputs:

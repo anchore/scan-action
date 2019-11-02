@@ -20,7 +20,7 @@ describe('anchore-scan-action', () => {
             .mockReturnValueOnce('./Dockerfile')                // dockerfile-path
             .mockReturnValueOnce('true')                        // debug
             .mockReturnValueOnce('true')                        // fail-build
-            .mockReturnValueOnce('true');                       // include-packages
+            .mockReturnValueOnce('true');                       // include-app-packages
     });
 
     it('completes the build successfully when there are no policy violations', async () => {
