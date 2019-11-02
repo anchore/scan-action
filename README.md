@@ -58,7 +58,7 @@ For example:
          image-reference: "localbuild/testimage:latest"
          dockerfile-path: "./Dockerfile"
          fail-build: true
-         include-app-package: true
+         include-app-packages: true
 ```
 
 
