@@ -15,6 +15,8 @@ inputs:
     required: false
   include-app-packages:
     description: 'Set to true to include software packages during vulnerability scanning - this option will increase runtime of the action significantly. By default only OS packages are scanned for vulnerabilities.'
+  custom-policy-path:
+    description: 'Path to a custom policy json file. See https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/ for information on building bundles'
     required: false
 outputs:
   billofmaterials:
