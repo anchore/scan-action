@@ -1,15 +1,25 @@
-# GitHub Action for Anchore Scan
+[![Test Status][test-img]][test]
 
-This is a GitHub Action for invoking the <a href="https://github.com/anchore/anchore-engine">Anchore Engine</a> scanner on a docker image and returning the vulnerabilities found,
+# GitHub Action for Anchore Inline Scan
+
+This is a GitHub Action for invoking the [Anchore Engine](https://github.com/anchore/anchore-engine) scanner on a docker image and returning the vulnerabilities found,
 manifest of contents found, and a pass/fail policy evaluation that can be used to fail the build if desired.
 
-<a href="https://github.com/anchore/anchore-scan-action"><img alt="GitHub Actions status" src="https://github.com/anchore/anchore-scan-action/workflows/Tests/badge.svg"></a>
+Use this in your workflows to verify the content of Docker containers after build and before pushing, allowing PRs, or deploying updates.
+
+The action invokes the inline version of anchore engine, which is a script and docker image that run completely locally and
+scan a local docker image and return the content, policy evaluation, and a final pass/fail status for the image.
+
+**No data is sent to a remote service to execute the scan, and no credentials are required**
+
+The vulnerability source data (from RedHat, Debian, Alpine, etc) is pre-baked into the container that is executed, so no
+external fetch or initialization is necessary beyond pulling the container to execute. 
+
+## Using the Action
 
 ## Action parameters
 
 See [`action.yml`](action.yml) for the input, outputs and configuration.
-
-## Using the Action
 
 ### Getting the bill of materials only
 By default, the action uses anchore engine to analyze the container and provide a listing of the packages found inside,
@@ -80,7 +90,7 @@ For example, to include a custom policy as: .anchore/policy.json in your code re
 For an overview of policy format and the checks it can perform, see the [Anchore policy bundle documentation](https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/)
 
 
-### Example Workflow
+### Example Workflows
 
 Assuming your repository has a Dockerfile in the root directory:
 
@@ -102,3 +112,18 @@ jobs:
     - name: anchore inline scan JSON results
       run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
 ```
+
+## Contributing
+
+We love contributions, feedback, and bug reports. For issues with the invocation of this action, file [issues](https://github.com/anchore/anchore-scan-action/issues) in this repository.
+
+For contributing, see [Contributing](CONTRIBUTING.rst).
+
+
+## More Information
+For documentation on Anchore itself, including policy language and capabilities see the [Anchore Documentation](https://docs.anchore.com)
+
+Connect with the anchore community directly on [slack](https://anchore.com/slack).
+
+[test]: https://github.com/anchore/anchore-scan-action
+[test-img]: https://github.com/anchore/anchore-scan-action/workflows/Tests/badge.svg
