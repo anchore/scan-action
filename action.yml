@@ -1,7 +1,10 @@
 name: 'anchore-scan'
-description: 'Docker image scan with anchore and produce output for downstream'
+description: 'Analyze a docker container and perform a vulnerability scan and policy evaluation, optionally failing the build if the policy finds violations'
+branding:
+  color: blue
+  icon: check-circle
 inputs:
-  image-reference:  # id of input
+  image-reference:
     description: 'The image to scan'
     required: true
   dockerfile-path:
