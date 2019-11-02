@@ -89,7 +89,6 @@ async function run() {
         let imageTag = Object.keys(policyEval[0][imageId[0]]);
         let policyStatus = policyEval[0][imageId[0]][imageTag][0]['status'];
 
-        core.setOutput('time', new Date().toTimeString());
         core.setOutput('billofmaterials', './anchore-reports/content-os.json');
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
