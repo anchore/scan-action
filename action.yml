@@ -13,6 +13,9 @@ inputs:
   fail-build:
     description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
     required: false
+  include-app-packages:
+    description: 'Set to true to include software packages during vulnerability scanning - this option will increase runtime of the action significantly. By default only OS packages are scanned for vulnerabilities.'
+    required: false
 outputs:
   billofmaterials:
     description: 'The json output report specifying the content of the image'
