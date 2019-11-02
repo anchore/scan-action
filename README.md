@@ -61,6 +61,24 @@ For example:
          include-app-packages: true
 ```
 
+### Supplying a Custom Policy
+
+The default policy the action applies can fail the build if vulnerability with severity >= High is found that has a fix available.
+To have other behavior, you can provide your own policy using the `custom-policy-path` parameter. The path is considered relative
+to the root of the workspace (which gets reset to the repository if you use the `checkout` action).
+
+For example, to include a custom policy as: .anchore/policy.json in your code repository, set:
+```yaml
+ - uses: anchore/anchore-scan-action@master
+       with:
+         image-reference: "localbuild/testimage:latest"
+         dockerfile-path: "./Dockerfile"
+         fail-build: true
+         custom-policy-path: .anchore/policy.json
+```
+
+For an overview of policy format and the checks it can perform, see the [Anchore policy bundle documentation](https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/)
+
 
 ### Example Workflow
 
