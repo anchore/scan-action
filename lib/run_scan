@@ -86,10 +86,10 @@ docker exec -t local-anchore-engine anchore-cli --json evaluate check --detail $
 set -eo pipefail
 docker exec -t local-anchore-engine anchore-cli --json image vuln ${IMAGE_DIGEST_SHA} all > ./anchore-reports/vulnerabilities.json
 docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} os > ./anchore-reports/content-os.json
-# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} java > ./anchore-reports/content-java.json
-# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} gem > ./anchore-reports/content-gem.json
-# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} python > ./anchore-reports/content-python.json
-# docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} npm > ./anchore-reports/content-npm.json
+docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} java > ./anchore-reports/content-java.json
+docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} gem > ./anchore-reports/content-gem.json
+docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} python > ./anchore-reports/content-python.json
+docker exec -t local-anchore-engine anchore-cli --json image content ${IMAGE_DIGEST_SHA} npm > ./anchore-reports/content-npm.json
 echo ""
 
 if [ "${debug}" = "true" ]; then

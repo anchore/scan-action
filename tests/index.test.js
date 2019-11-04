@@ -6,9 +6,11 @@ const _ = require('lodash');
 const core = require('@actions/core');
 const child_process = require('child_process');
 const fs = require('fs');
+const path = require('path');
 
-const run = require('..');
+const main = require('..');
 const policyEvaluationFixture = require('./fixtures/policy_evaluation.fixture');
+const contentMergeFixture = require('./fixtures/content-merge.fixture');
 
 describe('anchore-scan-action', () => {
     beforeEach(() => {
@@ -30,7 +32,7 @@ describe('anchore-scan-action', () => {
         });
         core.setFailed = jest.fn();
 
-        await run();
+        await main.run();
 
         expect(core.setFailed).not.toHaveBeenCalled();
     });
@@ -44,8 +46,41 @@ describe('anchore-scan-action', () => {
         });
         core.setFailed = jest.fn();
 
-        await run();
+        await main.run();
 
         expect(core.setFailed).toHaveBeenCalled();
+    });
+
+    it('tests merge of outputs into single bill of materials with os-only packages', async () => {
+        let merged = main.mergeResults([contentMergeFixture["content-os.json"]]);
+        //console.log("os-only output: " +JSON.stringify(merged));
+        expect(merged.length).toBeGreaterThan(0);
+
+    });
+
+    it('tests merge of outputs into single bill of materials with all packages', async () => {
+        let merged = main.mergeResults([contentMergeFixture["content-os.json"], contentMergeFixture["content-npm.json"], contentMergeFixture["content-gem.json"], contentMergeFixture["content-java.json"], contentMergeFixture["content-python.json"]]);
+        //console.log("merged output: " +JSON.stringify(merged));
+        expect(merged.length).toBeGreaterThan(0);
+    });
+
+    it('tests finding content files in dir', async () => {
+        let testPath = path.join(__dirname, "fixtures");
+        fs.readdirSync = jest.fn(() => {
+            return Object.keys(contentMergeFixture);
+        });
+
+        let contentFiles = main.findContent(testPath);
+        expect(contentFiles.length).toEqual(5);
+    });
+
+    it('tests loading content in list', async () => {
+        fs.readFileSync = jest.fn((i) => {
+            return JSON.stringify(contentMergeFixture[i]);
+        });
+
+        let contentFiles = main.loadContent(Object.keys(contentMergeFixture));
+        expect(contentFiles.length).toEqual(5);
+        console.log(contentFiles);
     });
 });
