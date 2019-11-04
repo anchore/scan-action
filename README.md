@@ -17,10 +17,6 @@ external fetch or initialization is necessary beyond pulling the container to ex
 
 ## Using the Action
 
-## Action parameters
-
-See [`action.yml`](action.yml) for the input, outputs and configuration.
-
 ### Getting the bill of materials only
 By default, the action uses anchore engine to analyze the container and provide a listing of the packages found inside,
 the vulnerabilities matched to those packages, and a policy evaluation recommendation. The job step will not fail the workflow
@@ -88,6 +84,26 @@ For example, to include a custom policy as: .anchore/policy.json in your code re
 ```
 
 For an overview of policy format and the checks it can perform, see the [Anchore policy bundle documentation](https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/)
+
+### Action Inputs
+
+| Input Name | Description | Required | Default Value |
+|-----------------|-------------|----------|---------------|
+| image-reference | The image to scan | :heavy_check_mark: | N/A |
+| dockerfile-path | Path to a dockerfile used to build the image-reference image to add metadata for policy evaluation |  | null |
+| debug | Verbose logging output |  | false |
+| fail-build | Fail the build if policy evaluation returns a fail | | false |
+| include-app-packages | Include application packages for vulnerability matches. Requires more vuln data and thus scan will be slower but better results | | false |
+| custom-policy-path | A path to a policy json file for specifying a policy other than the default, which fails on >high vulnerabilities with fixes | | null |
+
+### Action Outputs 
+
+| Output Name | Description | Type | 
+|-----------------|-------------|----------|
+| billofmaterials | Path to a json file with the list of packages found in the image | string |
+| vulnerabilities | Path to a json file with list of vulnerabilities found in image | string |
+| policycheck | Policy evaluation status of the image, either 'pass' or 'fail' | string |
+
 
 
 ### Example Workflows
