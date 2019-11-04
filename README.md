@@ -32,7 +32,7 @@ In your workflow file, add a step:
 
 ### Failing the build on policy and/or vulnerabilities
 The above example will run the action but not cause the build to fail based on results. If you want to have the build step fail in cases where
-there are vulnerabilities that violate the [default policy](dist/critical_security_policy.json) (fail only if vulnerabilities exist with severity >= HIGH and which have a fix available), then set the `fail_build` input = `true`.
+there are vulnerabilities that violate the [default policy](dist/critical_security_policy.json) (fail only if vulnerabilities exist with severity >= HIGH and which have a fix available), then set the `fail-build` input = `true`.
 That will make the job step fail of the policy evaluations detects a policy violation.
 
 For example: 
