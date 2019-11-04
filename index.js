@@ -2,6 +2,40 @@ const core = require('@actions/core');
 const execSync = require('child_process').execSync;
 const fs = require('fs');
 
+// Find all 'content-*.json' files in the directory. dirname should include the full path
+function findContent(searchDir) {
+    let contentFiles = [];
+    let match = /content-.*\.json/;
+    var dirItems = fs.readdirSync(searchDir);
+    if (dirItems) {
+        for (let i = 0; i < dirItems.length; i++) {
+            if (match.test(dirItems[i])) {
+                contentFiles.push(`${searchDir}/${dirItems[i]}`);
+            }
+        }
+    } else {
+        console.log("no dir content found");
+    }
+
+    console.log(contentFiles);
+    return contentFiles;
+}
+
+// Load the json content of each file in a list and return them as a list
+function loadContent(files) {
+    let contents = [];
+    if (files) {
+        files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
+    }
+    return contents
+}
+
+// Merge the multiple content output types into a single array
+function mergeResults(contentArray) {
+    return contentArray.reduce((merged, n) => merged.concat(n.content), []);
+}
+
+
 async function run() {
     try {
         core.debug((new Date()).toTimeString());
@@ -36,14 +70,14 @@ async function run() {
                 custom_policy = JSON.parse(custom_policy);
                 bundle_name = custom_policy.id;
                 if (!bundle_name) {
-                    throw "Could not extract id from custom policy bundle. May be malformed json or not contain id property";
+                    throw new Error("Could not extract id from custom policy bundle. May be malformed json or not contain id property");
                 } else {
                     core.info(`Detected custom policy id: ${bundle_name}`);
                 }
                 policy_bundle_name = bundle_name;
                 policy_bundle_path = bundle_path;
             } else {
-                throw `Custom policy specified at ${policy_bundle_path} but not found`;
+                throw new Error(`Custom policy specified at ${policy_bundle_path} but not found`);
             }
         }
 
@@ -110,39 +144,6 @@ async function run() {
     } catch (error) {
         core.setFailed(error.message);
     }
-}
-
-// Find all 'content-*.json' files in the directory. dirname should include the full path
-function findContent(searchDir) {
-    let contentFiles = [];
-    let match = /content-.*\.json/;
-    var dirItems = fs.readdirSync(searchDir);
-    if (dirItems) {
-        for (let i = 0; i < dirItems.length; i++) {
-            if (match.test(dirItems[i])) {
-                contentFiles.push(`${searchDir}/${dirItems[i]}`);
-            }
-        }
-    } else {
-        console.log("no dir content found");
-    }
-
-    console.log(contentFiles);
-    return contentFiles;
-}
-
-// Load the json content of each file in a list and return them as a list
-function loadContent(files) {
-    let contents = [];
-    if (files) {
-        files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
-    }
-    return contents
-}
-
-// Merge the multiple content output types into a single array
-function mergeResults(contentArray) {
-    return contentArray.reduce((merged, n) => merged.concat(n.content), []);
 }
 
 module.exports = {run, mergeResults, findContent, loadContent};
