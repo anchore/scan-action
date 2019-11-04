@@ -145,7 +145,9 @@ async function run() {
         let policyStatus = policyEval[0][imageId[0]][imageTag][0]['status'];
 
         try {
-            let billOfMaterials = mergeResults(loadContent(findContent("./anchore-reports/")));
+            let billOfMaterials = {
+                "packages": mergeResults(loadContent(findContent("./anchore-reports/")))
+            };
             fs.writeFileSync(billOfMaterialsPath, JSON.stringify(billOfMaterials));
         } catch (error) {
             core.error("Error constructing bill of materials from anchore output: " + error);
