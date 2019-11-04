@@ -1,5 +1,5 @@
-name: 'anchore-scan'
-description: 'Scan a docker container, including vulnerabilities, and perform policy evaluation optionally failing build'
+name: 'Anchore Container Scanner'
+description: 'Scan docker containers with Anchore for vulnerabilities and policy violations'
 branding:
   color: blue
   icon: check-circle
