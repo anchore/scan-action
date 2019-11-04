@@ -48,7 +48,7 @@ As a result of the action, you'll see some files in the `anchore-reports` direct
 
 * `policy_evaluation.json` - Default anchore policy evaluation of the image
 * `vulnerabilities.json` - Vulnerabilities found in the image
-* `content-os.json` - OS packages (rpms, debs, etc) found in the image
+* `content.json` - packages (rpms, debs, npms, jars, gems, etc) found in the image, including versions, locations, and licenses
 
 ### Scanning Application Packages and OS Packages in the Container
 
