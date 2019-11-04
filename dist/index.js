@@ -62,7 +62,7 @@ async function run() {
         core.debug((new Date()).toTimeString());
 
         const required_option = {required: true};
-
+        const billOfMaterialsPath = "./anchore-reports/content.json";
         const image_reference = core.getInput('image-reference', required_option);
         const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
@@ -86,8 +86,8 @@ async function run() {
             // Load the bundle to extract the policy id
             let custom_policy = fs.readFileSync(bundle_path);
 
-            if(custom_policy) {
-                core.debug('loaded custom bundle ' +custom_policy);
+            if (custom_policy) {
+                core.debug('loaded custom bundle ' + custom_policy);
                 custom_policy = JSON.parse(custom_policy);
                 bundle_name = custom_policy.id;
                 if (!bundle_name) {
@@ -120,22 +120,22 @@ async function run() {
             inline_scan_image = "docker.io/anchore/inline-scan:v0.5.1";
         }
 
-        core.info('Image: ' +image_reference);
-        core.info('Dockerfile path: ' +dockerfile_path);
-        core.info('Inline Scan Image: ' +inline_scan_image);
-        core.info('Debug Output: ' +debug);
-        core.info('Fail Build: ' +fail_build);
-        core.info('Include App Packages: ' +include_packages);
-        core.info('Custom Policy Path: ' +custom_policy_path);
+        core.info('Image: ' + image_reference);
+        core.info('Dockerfile path: ' + dockerfile_path);
+        core.info('Inline Scan Image: ' + inline_scan_image);
+        core.info('Debug Output: ' + debug);
+        core.info('Fail Build: ' + fail_build);
+        core.info('Include App Packages: ' + include_packages);
+        core.info('Custom Policy Path: ' + custom_policy_path);
 
-        core.debug('Policy path for evaluation: ' +policy_bundle_path);
-        core.debug('Policy name for evaluation: ' +policy_bundle_name);
+        core.debug('Policy path for evaluation: ' + policy_bundle_path);
+        core.debug('Policy name for evaluation: ' + policy_bundle_name);
 
         let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
         if (dockerfile_path) {
             cmd = `${cmd} ${dockerfile_path}`
         }
-        core.info('\nAnalyzing image: ' +image_reference);
+        core.info('\nAnalyzing image: ' + image_reference);
         execSync(cmd, {stdio: 'inherit'});
 
         let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
@@ -144,11 +144,19 @@ async function run() {
         let imageTag = Object.keys(policyEval[0][imageId[0]]);
         let policyStatus = policyEval[0][imageId[0]][imageTag][0]['status'];
 
-        core.setOutput('billofmaterials', './anchore-reports/content-os.json');
+        try {
+            let billOfMaterials = mergeResults(loadContent(findContent("./anchore-reports/")));
+            fs.writeFileSync(billOfMaterialsPath, JSON.stringify(billOfMaterials));
+        } catch (error) {
+            core.error("Error constructing bill of materials from anchore output: " + error);
+            throw error;
+        }
+
+        core.setOutput('billofmaterials', billOfMaterialsPath);
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
 
-        if (fail_build === "true"  && policyStatus === "fail") {
+        if (fail_build === "true" && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
 
@@ -157,7 +165,40 @@ async function run() {
     }
 }
 
-module.exports = run;
+// Find all 'content-*.json' files in the directory. dirname should include the full path
+function findContent(searchDir) {
+    let contentFiles = [];
+    let match = /content-.*\.json/;
+    var dirItems = fs.readdirSync(searchDir);
+    if (dirItems) {
+        for (let i = 0; i < dirItems.length; i++) {
+            if (match.test(dirItems[i])) {
+                contentFiles.push(`${searchDir}/${dirItems[i]}`);
+            }
+        }
+    } else {
+        console.log("no dir content found");
+    }
+
+    console.log(contentFiles);
+    return contentFiles;
+}
+
+// Load the json content of each file in a list and return them as a list
+function loadContent(files) {
+    let contents = [];
+    if (files) {
+        files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
+    }
+    return contents
+}
+
+// Merge the multiple content output types into a single array
+function mergeResults(contentArray) {
+    return contentArray.reduce((merged, n) => merged.concat(n.content), []);
+}
+
+module.exports = {run, mergeResults, findContent, loadContent};
 
 if (require.main === require.cache[eval('__filename')]) {
     run();
