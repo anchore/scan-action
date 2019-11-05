@@ -25,7 +25,7 @@ even if vulnerabilities are found.
 In your workflow file, add a step:
 ```yaml
  - name: Scan image
-   uses: anchore/anchore-scan-action@master
+   uses: anchore/scan-action@master
    with:
      image-reference: "localbuild/testimage:latest"
 ```
@@ -38,7 +38,7 @@ That will make the job step fail of the policy evaluations detects a policy viol
 For example: 
 ```yaml
  - name: Scan image
-   uses: anchore/anchore-scan-action@master
+   uses: anchore/scan-action@master
    with:
      image-reference: "localbuild/testimage:latest"
      fail-build: true
@@ -59,7 +59,7 @@ holistic view of the container vulnerability set. To enable this feature, set th
 
 For example:
 ```yaml
- - uses: anchore/anchore-scan-action@master
+ - uses: anchore/scan-action@master
        with:
          image-reference: "localbuild/testimage:latest"
          dockerfile-path: "./Dockerfile"
@@ -75,7 +75,7 @@ to the root of the workspace (which gets reset to the repository if you use the 
 
 For example, to include a custom policy as: .anchore/policy.json in your code repository, set:
 ```yaml
- - uses: anchore/anchore-scan-action@master
+ - uses: anchore/scan-action@master
        with:
          image-reference: "localbuild/testimage:latest"
          dockerfile-path: "./Dockerfile"
@@ -120,7 +120,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-    - uses: anchore/anchore-scan-action@master
+    - uses: anchore/scan-action@master
       with:
         image-reference: "localbuild/testimage:latest"
         dockerfile-path: "./Dockerfile"
