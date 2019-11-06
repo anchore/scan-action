@@ -141,5 +141,5 @@ For documentation on Anchore itself, including policy language and capabilities 
 
 Connect with the anchore community directly on [slack](https://anchore.com/slack).
 
-[test]: https://github.com/anchore/anchore-scan-action
+[test]: https://github.com/anchore/scan-action
 [test-img]: https://github.com/anchore/scan-action/workflows/Tests/badge.svg
