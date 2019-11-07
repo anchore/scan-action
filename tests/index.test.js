@@ -1,10 +1,10 @@
 jest.mock('@actions/core');
-jest.mock('child_process');
+jest.mock('@actions/exec');
 jest.mock('fs');
 
 const _ = require('lodash');
 const core = require('@actions/core');
-const child_process = require('child_process');
+const exec = require('@actions/exec');
 const fs = require('fs');
 const path = require('path');
 
@@ -14,7 +14,7 @@ const contentMergeFixture = require('./fixtures/content-merge.fixture');
 
 describe('anchore-scan-action', () => {
     beforeEach(() => {
-        child_process.execSync = jest.fn();
+        exec.exec = jest.fn();
 
         core.getInput = jest
             .fn()
@@ -81,6 +81,5 @@ describe('anchore-scan-action', () => {
 
         let contentFiles = main.loadContent(Object.keys(contentMergeFixture));
         expect(contentFiles.length).toEqual(5);
-        console.log(contentFiles);
     });
 });
