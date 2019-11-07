@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const execSync = require('child_process').execSync;
+const exec = require('@actions/exec');
 const fs = require('fs');
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
@@ -115,7 +115,7 @@ async function run() {
             cmd = `${cmd} ${dockerfile_path}`
         }
         core.info('\nAnalyzing image: ' + image_reference);
-        execSync(cmd, {stdio: 'inherit'});
+        await exec(cmd);
 
         let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
         let policyEval = JSON.parse(rawdata);
