@@ -81,6 +81,5 @@ describe('anchore-scan-action', () => {
 
         let contentFiles = main.loadContent(Object.keys(contentMergeFixture));
         expect(contentFiles.length).toEqual(5);
-        console.log(contentFiles);
     });
 });

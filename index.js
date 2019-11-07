@@ -14,10 +14,10 @@ function findContent(searchDir) {
             }
         }
     } else {
-        console.log("no dir content found");
+        core.debug("no dir content found");
     }
 
-    console.log(contentFiles);
+    core.debug(contentFiles);
     return contentFiles;
 }
 
