@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const exec = require('@actions/exec');
+const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path

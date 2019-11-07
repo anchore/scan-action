@@ -635,7 +635,7 @@ module.exports = require("os");
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(470);
-const exec = __webpack_require__(986);
+const { exec } = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
