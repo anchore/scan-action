@@ -1,6 +1,6 @@
 [![Test Status][test-img]][test]
 
-# GitHub Action for Anchore Inline Scan
+# GitHub Action for Anchore Container Scanning
 
 This is a GitHub Action for invoking the [Anchore Engine](https://github.com/anchore/anchore-engine) scanner on a docker image and returning the vulnerabilities found,
 manifest of contents found, and a pass/fail policy evaluation that can be used to fail the build if desired.
