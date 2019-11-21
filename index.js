@@ -1,6 +1,10 @@
+const cache = require('@actions/tool-cache');
 const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const fs = require('fs');
+
+const scanScript = 'anchoreInlineScan';
+const defaultAnchoreVersion = '0.5.2';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
@@ -35,23 +39,71 @@ function mergeResults(contentArray) {
     return contentArray.reduce((merged, n) => merged.concat(n.content), []);
 }
 
+async function downloadInlineScan(version) {
+    core.debug(`Installing ${version}`);
+  
+    // Download the tool
+    const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
+  
+    // Make sure the tool's executable bit is set
+    await exec(`chmod +x ${downloadPath}`);
+  
+    // Cache the downloaded file
+    return cache.cacheFile(downloadPath, scanScript, scanScript, version);
+  }
+
+async function installInlineScan(version) {
+    let scanScriptPath = cache.find(scanScript, version);
+    if (!scanScriptPath) {
+        // Not found, install it
+        scanScriptPath = await downloadInlineScan(version);
+    }
+
+    // Add tool to path for this and future actions to use 
+    core.addPath(scanScriptPath);
+}
 
 async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        const required_option = {required: true};
+        // const required_option = {required: true};
         const billOfMaterialsPath = "./anchore-reports/content.json";
-        const image_reference = core.getInput('image-reference', required_option);
+        // const image_reference = core.getInput('image-reference', required_option);
+        const image_reference = 'alpine:latest'
         const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
         let fail_build = core.getInput('fail-build');
         let include_packages = core.getInput('include-app-packages');
         const custom_policy_path = core.getInput('custom-policy-path');
-        let inline_scan_image = "docker.io/anchore/inline-scan-slim:v0.5.1";
-        const scan_scriptname = "inline_scan-v0.5.1";
+        let version = core.getInput('version');
         var policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`;
         var policy_bundle_name = "critical_security_policy";
+        var inline_scan_image;
+
+        if (!debug) {
+            debug = "false";
+        } else {
+            debug = "true";
+        }
+
+        if (!fail_build) {
+            fail_build = "false";
+        } else {
+            fail_build = "true";
+        }
+
+        if (!version) {
+            version = `${defaultAnchoreVersion}`;
+        }
+
+        if (!include_packages) {
+            include_packages = false;
+            inline_scan_image = `docker.io/anchore/inline-scan-slim:v${version}`;
+        } else {
+            include_packages = true;
+            inline_scan_image = `docker.io/anchore/inline-scan:v${version}`;
+        }
 
         if (custom_policy_path) {
             let workspace = process.env.GITHUB_WORKSPACE;
@@ -81,23 +133,7 @@ async function run() {
             }
         }
 
-        if (!debug) {
-            debug = "false";
-        } else {
-            debug = "true";
-        }
-
-        if (!fail_build) {
-            fail_build = "false";
-        } else {
-            fail_build = "true";
-        }
-        if (!include_packages) {
-            include_packages = false;
-        } else {
-            include_packages = true;
-            inline_scan_image = "docker.io/anchore/inline-scan:v0.5.1";
-        }
+        await installInlineScan(version)
 
         core.info('Image: ' + image_reference);
         core.info('Dockerfile path: ' + dockerfile_path);
@@ -110,7 +146,7 @@ async function run() {
         core.debug('Policy path for evaluation: ' + policy_bundle_path);
         core.debug('Policy name for evaluation: ' + policy_bundle_name);
 
-        let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
+        let cmd = `${__dirname}/lib/run_scan ${scanScript} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
         if (dockerfile_path) {
             cmd = `${cmd} ${dockerfile_path}`
         }
