@@ -943,7 +943,7 @@ const core = __webpack_require__(470);
 const { exec } = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
-const scanScript = 'anchoreInlineScan';
+const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.5.2';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path

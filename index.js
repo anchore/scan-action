@@ -3,7 +3,7 @@ const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const fs = require('fs');
 
-const scanScript = 'anchoreInlineScan';
+const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.5.2';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
