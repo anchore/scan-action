@@ -971,6 +971,7 @@ function loadContent(files) {
     if (files) {
         files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
     }
+
     return contents
 }
 
@@ -981,13 +982,10 @@ function mergeResults(contentArray) {
 
 async function downloadInlineScan(version) {
     core.debug(`Installing ${version}`);
-  
-    // Download the tool
     const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
-  
     // Make sure the tool's executable bit is set
     await exec(`chmod +x ${downloadPath}`);
-  
+
     // Cache the downloaded file
     return cache.cacheFile(downloadPath, scanScript, scanScript, version);
   }
@@ -1007,10 +1005,10 @@ async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        // const required_option = {required: true};
+        const required_option = {required: true};
         const billOfMaterialsPath = "./anchore-reports/content.json";
-        // const image_reference = core.getInput('image-reference', required_option);
-        const image_reference = 'alpine:latest'
+        const image_reference = core.getInput('image-reference', required_option);
+        // const image_reference = 'alpine:latest'
         const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
         let fail_build = core.getInput('fail-build');
@@ -3791,6 +3789,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = __webpack_require__(357);
 const fs = __webpack_require__(747);
 const path = __webpack_require__(622);
+console.log(process.version);
 _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
 exports.IS_WINDOWS = process.platform === 'win32';
 function exists(fsPath) {
@@ -3971,6 +3970,7 @@ function isUnixExecutable(stats) {
         ((stats.mode & 64) > 0 && stats.uid === process.getuid()));
 }
 //# sourceMappingURL=io-util.js.map
+
 
 /***/ }),
 

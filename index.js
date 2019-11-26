@@ -31,6 +31,7 @@ function loadContent(files) {
     if (files) {
         files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
     }
+
     return contents
 }
 
@@ -41,13 +42,10 @@ function mergeResults(contentArray) {
 
 async function downloadInlineScan(version) {
     core.debug(`Installing ${version}`);
-  
-    // Download the tool
     const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
-  
     // Make sure the tool's executable bit is set
     await exec(`chmod +x ${downloadPath}`);
-  
+
     // Cache the downloaded file
     return cache.cacheFile(downloadPath, scanScript, scanScript, version);
   }
@@ -67,10 +65,10 @@ async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        // const required_option = {required: true};
+        const required_option = {required: true};
         const billOfMaterialsPath = "./anchore-reports/content.json";
-        // const image_reference = core.getInput('image-reference', required_option);
-        const image_reference = 'alpine:latest'
+        const image_reference = core.getInput('image-reference', required_option);
+        // const image_reference = 'alpine:latest'
         const dockerfile_path = core.getInput('dockerfile-path');
         let debug = core.getInput('debug');
         let fail_build = core.getInput('fail-build');

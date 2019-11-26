@@ -1,12 +1,11 @@
 jest.mock('@actions/core');
 jest.mock('@actions/exec');
-jest.mock('fs');
 
 const _ = require('lodash');
 const core = require('@actions/core');
 const exec = require('@actions/exec');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 
 const main = require('..');
 const policyEvaluationFixture = require('./fixtures/policy_evaluation.fixture');
