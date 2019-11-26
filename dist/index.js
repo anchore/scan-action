@@ -3789,7 +3789,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = __webpack_require__(357);
 const fs = __webpack_require__(747);
 const path = __webpack_require__(622);
-console.log(process.version);
 _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
 exports.IS_WINDOWS = process.platform === 'win32';
 function exists(fsPath) {
@@ -3970,7 +3969,6 @@ function isUnixExecutable(stats) {
         ((stats.mode & 64) > 0 && stats.uid === process.getuid()));
 }
 //# sourceMappingURL=io-util.js.map
-
 
 /***/ }),
 
