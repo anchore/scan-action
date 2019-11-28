@@ -6,61 +6,6 @@ const fs = require('fs');
 const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.5.2';
 
-// Find all 'content-*.json' files in the directory. dirname should include the full path
-function findContent(searchDir) {
-    let contentFiles = [];
-    let match = /content-.*\.json/;
-    var dirItems = fs.readdirSync(searchDir);
-    if (dirItems) {
-        for (let i = 0; i < dirItems.length; i++) {
-            if (match.test(dirItems[i])) {
-                contentFiles.push(`${searchDir}/${dirItems[i]}`);
-            }
-        }
-    } else {
-        core.debug("no dir content found");
-    }
-
-    core.debug(contentFiles);
-    return contentFiles;
-}
-
-// Load the json content of each file in a list and return them as a list
-function loadContent(files) {
-    let contents = [];
-    if (files) {
-        files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
-    }
-
-    return contents
-}
-
-// Merge the multiple content output types into a single array
-function mergeResults(contentArray) {
-    return contentArray.reduce((merged, n) => merged.concat(n.content), []);
-}
-
-async function downloadInlineScan(version) {
-    core.debug(`Installing ${version}`);
-    const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
-    // Make sure the tool's executable bit is set
-    await exec(`chmod +x ${downloadPath}`);
-
-    // Cache the downloaded file
-    return cache.cacheFile(downloadPath, scanScript, scanScript, version);
-  }
-
-async function installInlineScan(version) {
-    let scanScriptPath = cache.find(scanScript, version);
-    if (!scanScriptPath) {
-        // Not found, install it
-        scanScriptPath = await downloadInlineScan(version);
-    }
-
-    // Add tool to path for this and future actions to use 
-    core.addPath(scanScriptPath);
-}
-
 async function run() {
     try {
         core.debug((new Date()).toTimeString());
@@ -179,6 +124,59 @@ async function run() {
     } catch (error) {
         core.setFailed(error.message);
     }
+}
+
+// Find all 'content-*.json' files in the directory. dirname should include the full path
+function findContent(searchDir) {
+    let contentFiles = [];
+    let match = /content-.*\.json/;
+    var dirItems = fs.readdirSync(searchDir);
+    if (dirItems) {
+        for (let i = 0; i < dirItems.length; i++) {
+            if (match.test(dirItems[i])) {
+                contentFiles.push(`${searchDir}/${dirItems[i]}`);
+            }
+        }
+    } else {
+        core.debug("no dir content found");
+    }
+
+    core.debug(contentFiles);
+    return contentFiles;
+}
+
+// Load the json content of each file in a list and return them as a list
+function loadContent(files) {
+    let contents = [];
+    if (files) {
+        files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
+    }
+
+    return contents
+}
+
+// Merge the multiple content output types into a single array
+function mergeResults(contentArray) {
+    return contentArray.reduce((merged, n) => merged.concat(n.content), []);
+}
+
+// Download and cache the Anchore inline_scan script to Runner's local filesystem
+async function downloadInlineScan(version) {
+    core.debug(`Installing ${version}`);
+    const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
+    await exec(`chmod +x ${downloadPath}`);
+
+    return cache.cacheFile(downloadPath, scanScript, scanScript, version);
+  }
+
+// Add cached inline_scan script to Runner PATH
+async function installInlineScan(version) {
+    let scanScriptPath = cache.find(scanScript, version);
+    if (!scanScriptPath) {
+        scanScriptPath = await downloadInlineScan(version);
+    }
+
+    core.addPath(scanScriptPath);
 }
 
 module.exports = {run, mergeResults, findContent, loadContent};
