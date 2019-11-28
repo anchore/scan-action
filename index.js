@@ -79,13 +79,13 @@ async function run() {
 
         await installInlineScan(version)
 
-        core.info('Image: ' + imageReference);
-        core.info('Dockerfile path: ' + dockerfilePath);
-        core.info('Inline Scan Image: ' + inlineScanImage);
-        core.info('Debug Output: ' + debug);
-        core.info('Fail Build: ' + failBuild);
-        core.info('Include App Packages: ' + includePackages);
-        core.info('Custom Policy Path: ' + customPolicyPath);
+        core.debug('Image: ' + imageReference);
+        core.debug('Dockerfile path: ' + dockerfilePath);
+        core.debug('Inline Scan Image: ' + inlineScanImage);
+        core.debug('Debug Output: ' + debug);
+        core.debug('Fail Build: ' + failBuild);
+        core.debug('Include App Packages: ' + includePackages);
+        core.debug('Custom Policy Path: ' + customPolicyPath);
 
         core.debug('Policy path for evaluation: ' + policyBundlePath);
         core.debug('Policy name for evaluation: ' + policyBundleName);

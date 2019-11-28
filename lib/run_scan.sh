@@ -14,6 +14,7 @@ export IMAGE_DIGEST_SHA="sha256:0a97ccb2868e3c54167317fe7a2fc58e5123290d6c5b653a
 export SCANOPTS="-r http://localhost:8228/v1 -u admin -p foobar -d ${IMAGE_DIGEST_SHA}"
 export CLIOPTS="--json"
 export ANCHORE_CI_IMAGE="${inline_scan_image_arg}"
+export SCAN_SCRIPT="${scriptname_arg}"
 export ANCHORE_LOG=./anchore-reports/run.log
 
 mkdir -p ./anchore-reports/
@@ -26,7 +27,6 @@ if [[ "${debug}" = "true" ]]; then
 fi
 
 # make sure the actual scan script is available
-SCAN_SCRIPT="${scriptname_arg}"
 if ! hash "${SCAN_SCRIPT}"; then
    echo "ERROR: cannot locate executable scan script ${SCAN_SCRIPT}" >> "${ANCHORE_LOG}" 2>&1
    exit 1
@@ -41,17 +41,15 @@ if ! docker inspect "${image_reference_arg}" >> "${ANCHORE_LOG}" 2>&1; then
     fi
 fi
 
-# make sure the anchore inline scan image is available and try pulling if not
-if ! docker inspect "${inline_scan_image_arg}" >> "${ANCHORE_LOG}" 2>&1; then
-    docker pull "${inline_scan_image_arg}" >> "${ANCHORE_LOG}" 2>&1
-    if ! docker inspect "${inline_scan_image_arg}" >> "${ANCHORE_LOG}" 2>&1; then
-        echo "ERROR: cannot locate local or remote image ${inline_scan_image_arg}" >> "${ANCHORE_LOG}" 2>&1
-        exit 1
-    fi
+# make sure the anchore inline scan image is available
+docker pull "${ANCHORE_CI_IMAGE}" >> "${ANCHORE_LOG}" 2>&1
+if ! docker inspect "${ANCHORE_CI_IMAGE}" >> "${ANCHORE_LOG}" 2>&1; then
+    echo "ERROR: cannot locate local or remote image ${ANCHORE_CI_IMAGE}" >> "${ANCHORE_LOG}" 2>&1
+    exit 1
 fi
 
 # start up the inline scan image
-docker run -d -p 8228:8228 --name local-anchore-engine "${inline_scan_image_arg}" start >> "${ANCHORE_LOG}" 2>&1
+docker run -d -p 8228:8228 --name local-anchore-engine "${ANCHORE_CI_IMAGE}" start >> "${ANCHORE_LOG}" 2>&1
 docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} system wait --timeout 60 --interval 1.0 >> "${ANCHORE_LOG}" 2>&1
 docker cp "${anchore_policy_bundle_path_arg}" local-anchore-engine:/tmp/anchore-policy-bundle.json >> "${ANCHORE_LOG}" 2>&1
 docker exec -t local-anchore-engine anchore-cli ${CLIOPTS} policy add /tmp/anchore-policy-bundle.json >> "${ANCHORE_LOG}" 2>&1
