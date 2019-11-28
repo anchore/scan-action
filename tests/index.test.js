@@ -57,11 +57,12 @@ describe('functional-tests', () => {
         core.getInput = jest
             .fn()
             .mockReturnValueOnce('localbuild/testimage:12345')  // image-reference
+            .mockReturnValueOnce(null)                          // custom-policy-path
             .mockReturnValueOnce('./Dockerfile')                // dockerfile-path
             .mockReturnValueOnce('true')                        // debug
             .mockReturnValueOnce('true')                        // fail-build
             .mockReturnValueOnce('true')                        // include-app-packages
-            .mockReturnValueOnce(null);                         // custom-policy-path
+            .mockReturnValueOnce(null);                         // version
     });
 
     it('completes the build successfully when there are no policy violations', async () => {

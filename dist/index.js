@@ -1054,12 +1054,12 @@ async function run() {
             core.debug(`Loading custom bundle from ${bundlePath}`);
 
             // Load the bundle to extract the policy id
-            let custom_policy = fs.readFileSync(bundlePath);
+            let customPolicy = fs.readFileSync(bundlePath);
 
-            if (custom_policy) {
-                core.debug('loaded custom bundle ' + custom_policy);
-                custom_policy = JSON.parse(custom_policy);
-                bundleName = custom_policy.id;
+            if (customPolicy) {
+                core.debug('loaded custom bundle ' + customPolicy);
+                customPolicy = JSON.parse(customPolicy);
+                bundleName = customPolicy.id;
                 if (!bundleName) {
                     throw new Error("Could not extract id from custom policy bundle. May be malformed json or not contain id property");
                 } else {
