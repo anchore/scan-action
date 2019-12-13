@@ -4,7 +4,7 @@ const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.5.2';
+const defaultAnchoreVersion = '0.6.0';
 
 async function run() {
     try {

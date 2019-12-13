@@ -944,7 +944,7 @@ const { exec } = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.5.2';
+const defaultAnchoreVersion = '0.6.0';
 
 async function run() {
     try {
