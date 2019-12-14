@@ -1,6 +1,10 @@
+const cache = require('@actions/tool-cache');
 const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const fs = require('fs');
+
+const scanScript = 'inline_scan';
+const defaultAnchoreVersion = '0.6.0';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
@@ -27,6 +31,7 @@ function loadContent(files) {
     if (files) {
         files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
     }
+
     return contents
 }
 
@@ -35,51 +40,45 @@ function mergeResults(contentArray) {
     return contentArray.reduce((merged, n) => merged.concat(n.content), []);
 }
 
+async function downloadInlineScan(version) {
+    core.debug(`Installing ${version}`);
+    const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
+    // Make sure the tool's executable bit is set
+    await exec(`chmod +x ${downloadPath}`);
+
+    // Cache the downloaded file
+    return cache.cacheFile(downloadPath, scanScript, scanScript, version);
+  }
+
+async function installInlineScan(version) {
+    let scanScriptPath = cache.find(scanScript, version);
+    if (!scanScriptPath) {
+        // Not found, install it
+        scanScriptPath = await downloadInlineScan(version);
+    }
+
+    // Add tool to path for this and future actions to use 
+    core.addPath(scanScriptPath);
+}
 
 async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        const required_option = {required: true};
+        const requiredOption = {required: true};
+        const imageReference = core.getInput('image-reference', requiredOption);
+        const customPolicyPath = core.getInput('custom-policy-path');
+        const dockerfilePath = core.getInput('dockerfile-path');
+        var debug = core.getInput('debug');
+        var failBuild = core.getInput('fail-build');
+        var includePackages = core.getInput('include-app-packages');
+        var version = core.getInput('version');
+
         const billOfMaterialsPath = "./anchore-reports/content.json";
-        const image_reference = core.getInput('image-reference', required_option);
-        const dockerfile_path = core.getInput('dockerfile-path');
-        let debug = core.getInput('debug');
-        let fail_build = core.getInput('fail-build');
-        let include_packages = core.getInput('include-app-packages');
-        const custom_policy_path = core.getInput('custom-policy-path');
-        let inline_scan_image = "docker.io/anchore/inline-scan-slim:v0.5.1";
-        const scan_scriptname = "inline_scan-v0.5.1";
-        var policy_bundle_path = `${__dirname}/lib/critical_security_policy.json`;
-        var policy_bundle_name = "critical_security_policy";
-
-        if (custom_policy_path) {
-            let workspace = process.env.GITHUB_WORKSPACE;
-            if (!workspace) {
-                workspace = ".";
-            }
-            let bundle_path = `${workspace}/${custom_policy_path}`;
-            let bundle_name = "";
-            core.debug(`Loading custom bundle from ${bundle_path}`);
-
-            // Load the bundle to extract the policy id
-            let custom_policy = fs.readFileSync(bundle_path);
-
-            if (custom_policy) {
-                core.debug('loaded custom bundle ' + custom_policy);
-                custom_policy = JSON.parse(custom_policy);
-                bundle_name = custom_policy.id;
-                if (!bundle_name) {
-                    throw new Error("Could not extract id from custom policy bundle. May be malformed json or not contain id property");
-                } else {
-                    core.info(`Detected custom policy id: ${bundle_name}`);
-                }
-                policy_bundle_name = bundle_name;
-                policy_bundle_path = bundle_path;
-            } else {
-                throw new Error(`Custom policy specified at ${policy_bundle_path} but not found`);
-            }
-        }
+        const runScan = `${__dirname}/lib/run_scan.sh`;
+        var policyBundlePath = `${__dirname}/lib/critical_security_policy.json`;
+        var policyBundleName = "critical_security_policy";
+        var inlineScanImage;
 
         if (!debug) {
             debug = "false";
@@ -87,34 +86,70 @@ async function run() {
             debug = "true";
         }
 
-        if (!fail_build) {
-            fail_build = "false";
+        if (!failBuild) {
+            failBuild = "false";
         } else {
-            fail_build = "true";
+            failBuild = "true";
         }
-        if (!include_packages) {
-            include_packages = false;
+
+        if (!version) {
+            version = `${defaultAnchoreVersion}`;
+        }
+
+        if (!includePackages) {
+            includePackages = false;
+            inlineScanImage = `docker.io/anchore/inline-scan-slim:v${version}`;
         } else {
-            include_packages = true;
-            inline_scan_image = "docker.io/anchore/inline-scan:v0.5.1";
+            includePackages = true;
+            inlineScanImage = `docker.io/anchore/inline-scan:v${version}`;
         }
 
-        core.info('Image: ' + image_reference);
-        core.info('Dockerfile path: ' + dockerfile_path);
-        core.info('Inline Scan Image: ' + inline_scan_image);
-        core.info('Debug Output: ' + debug);
-        core.info('Fail Build: ' + fail_build);
-        core.info('Include App Packages: ' + include_packages);
-        core.info('Custom Policy Path: ' + custom_policy_path);
+        if (customPolicyPath) {
+            let workspace = process.env.GITHUB_WORKSPACE;
+            if (!workspace) {
+                workspace = ".";
+            }
+            let bundlePath = `${workspace}/${customPolicyPath}`;
+            let bundleName = "";
+            core.debug(`Loading custom bundle from ${bundlePath}`);
 
-        core.debug('Policy path for evaluation: ' + policy_bundle_path);
-        core.debug('Policy name for evaluation: ' + policy_bundle_name);
+            // Load the bundle to extract the policy id
+            let customPolicy = fs.readFileSync(bundlePath);
 
-        let cmd = `${__dirname}/lib/run_scan ${__dirname}/lib ${scan_scriptname} ${inline_scan_image} ${image_reference} ${debug} ${policy_bundle_path} ${policy_bundle_name}`;
-        if (dockerfile_path) {
-            cmd = `${cmd} ${dockerfile_path}`
+            if (customPolicy) {
+                core.debug('loaded custom bundle ' + customPolicy);
+                customPolicy = JSON.parse(customPolicy);
+                bundleName = customPolicy.id;
+                if (!bundleName) {
+                    throw new Error("Could not extract id from custom policy bundle. May be malformed json or not contain id property");
+                } else {
+                    core.info(`Detected custom policy id: ${bundleName}`);
+                }
+                policyBundleName = bundleName;
+                policyBundlePath = bundlePath;
+            } else {
+                throw new Error(`Custom policy specified at ${policyBundlePath} but not found`);
+            }
         }
-        core.info('\nAnalyzing image: ' + image_reference);
+
+        await installInlineScan(version)
+
+        core.debug('Image: ' + imageReference);
+        core.debug('Dockerfile path: ' + dockerfilePath);
+        core.debug('Inline Scan Image: ' + inlineScanImage);
+        core.debug('Debug Output: ' + debug);
+        core.debug('Fail Build: ' + failBuild);
+        core.debug('Include App Packages: ' + includePackages);
+        core.debug('Custom Policy Path: ' + customPolicyPath);
+
+        core.debug('Policy path for evaluation: ' + policyBundlePath);
+        core.debug('Policy name for evaluation: ' + policyBundleName);
+
+        let cmd = `${runScan} ${scanScript} ${inlineScanImage} ${imageReference} ${debug} ${policyBundlePath} ${policyBundleName}`;
+        if (dockerfilePath) {
+            cmd = `${cmd} ${dockerfilePath}`
+        }
+        core.info('\nAnalyzing image: ' + imageReference);
         await exec(cmd);
 
         let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
@@ -137,7 +172,7 @@ async function run() {
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
 
-        if (fail_build === "true" && policyStatus === "fail") {
+        if (failBuild === "true" && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
 
