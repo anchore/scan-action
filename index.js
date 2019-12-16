@@ -132,7 +132,7 @@ async function run() {
             }
         }
 
-        await installInlineScan(version)
+        await installInlineScan(version);
 
         core.debug('Image: ' + imageReference);
         core.debug('Dockerfile path: ' + dockerfilePath);
