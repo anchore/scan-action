@@ -21,8 +21,8 @@ inputs:
   custom-policy-path:
     description: 'Path to a custom policy json file. See https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/ for information on building bundles'
     required: false
-  version:
-    description: 'Specify anchore-engine version (eg 0.5.2)'
+  anchore-version:
+    description: 'Optionally, specify anchore-engine version (eg 0.5.2) to use instead of the default version'
     required: false
 outputs:
   billofmaterials:
