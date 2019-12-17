@@ -1012,7 +1012,7 @@ async function run() {
         var debug = core.getInput('debug');
         var failBuild = core.getInput('fail-build');
         var includePackages = core.getInput('include-app-packages');
-        var version = core.getInput('version');
+        var version = core.getInput('anchore-version');
 
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const runScan = __webpack_require__.ab + "run_scan.sh";
@@ -1072,7 +1072,7 @@ async function run() {
             }
         }
 
-        await installInlineScan(version)
+        await installInlineScan(version);
 
         core.debug('Image: ' + imageReference);
         core.debug('Dockerfile path: ' + dockerfilePath);
