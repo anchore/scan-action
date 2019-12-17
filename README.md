@@ -95,6 +95,8 @@ For an overview of policy format and the checks it can perform, see the [Anchore
 | fail-build | Fail the build if policy evaluation returns a fail | | false |
 | include-app-packages | Include application packages for vulnerability matches. Requires more vuln data and thus scan will be slower but better results | | false |
 | custom-policy-path | A path to a policy json file for specifying a policy other than the default, which fails on >high vulnerabilities with fixes | | null |
+| anchore-version | An optional parameter to specify a specific version of anchore to use for the scan. Default is the version locked to the scan-action release | false | v0.6.0 |
+
 
 ### Action Outputs 
 
