@@ -17,12 +17,18 @@ export ANCHORE_CI_IMAGE="${inline_scan_image_arg}"
 export SCAN_SCRIPT="${scriptname_arg}"
 export ANCHORE_LOG=./anchore-reports/run.log
 
+trap 'debug' EXIT ERR SIGTERM
+debug() {
+    if [[ "${debug}" = "true" ]]; then
+        cat "${ANCHORE_LOG}"
+    fi
+}
+
 mkdir -p ./anchore-reports/
 
 if [[ "${debug}" = "true" ]]; then
     CLIOPTS="${CLIOPTS} --debug"
     SCANOPTS="${SCANOPTS} -V"
-    ANCHORE_LOG=/dev/console
     set -x
 fi
 
