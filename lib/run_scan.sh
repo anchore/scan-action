@@ -22,7 +22,7 @@ mkdir -p ./anchore-reports/
 if [[ "${debug}" = "true" ]]; then
     CLIOPTS="${CLIOPTS} --debug"
     SCANOPTS="${SCANOPTS} -V"
-    ANCHORE_LOG=/dev/stderr
+    ANCHORE_LOG=/dev/fd/2
     set -x
 fi
 
