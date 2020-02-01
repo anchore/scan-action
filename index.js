@@ -4,7 +4,7 @@ const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.6.0';
+const defaultAnchoreVersion = '0.6.1';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {

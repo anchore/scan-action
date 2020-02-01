@@ -10,3 +10,4 @@ jobs:
     - uses: ./
       with:
         image-reference: "alpine:latest"
+        debug: true
