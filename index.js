@@ -21,7 +21,7 @@ function findContent(searchDir) {
         core.debug("no dir content found");
     }
 
-    core.debug(contentFiles);
+    core.debug(contentFiles.toString());
     return contentFiles;
 }
 
@@ -66,7 +66,8 @@ async function run() {
         core.debug((new Date()).toTimeString());
 
         const requiredOption = {required: true};
-        const imageReference = core.getInput('image-reference', requiredOption);
+        // const imageReference = core.getInput('image-reference', requiredOption);
+        const imageReference = "alpine:latest"
         const customPolicyPath = core.getInput('custom-policy-path');
         const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
