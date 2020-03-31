@@ -66,8 +66,7 @@ async function run() {
         core.debug((new Date()).toTimeString());
 
         const requiredOption = {required: true};
-        // const imageReference = core.getInput('image-reference', requiredOption);
-        const imageReference = "alpine:latest"
+        const imageReference = core.getInput('image-reference', requiredOption);
         const customPolicyPath = core.getInput('custom-policy-path');
         const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
