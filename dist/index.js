@@ -944,7 +944,7 @@ const { exec } = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.6.1';
+const defaultAnchoreVersion = '0.7.0';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
