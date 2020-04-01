@@ -31,7 +31,6 @@ function loadContent(files) {
     if (files) {
         files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
     }
-
     return contents
 }
 
@@ -67,6 +66,7 @@ async function run() {
 
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
+        // const imageReference = "alpine:latest"
         const customPolicyPath = core.getInput('custom-policy-path');
         const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
