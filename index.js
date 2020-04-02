@@ -86,10 +86,10 @@ async function run() {
             debug = "true";
         }
 
-        if (!failBuild) {
-            failBuild = "false";
-        } else {
+        if (failBuild.toLowerCase() == "true") {
             failBuild = "true";
+        } else {
+            failBuild = "false";
         }
 
         if (!version) {
