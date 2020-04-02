@@ -4,7 +4,7 @@ const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.6.1';
+const defaultAnchoreVersion = '0.7.0';
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
@@ -21,7 +21,7 @@ function findContent(searchDir) {
         core.debug("no dir content found");
     }
 
-    core.debug(contentFiles);
+    core.debug(contentFiles.toString());
     return contentFiles;
 }
 
@@ -31,7 +31,6 @@ function loadContent(files) {
     if (files) {
         files.forEach(item => contents.push(JSON.parse(fs.readFileSync(item))));
     }
-
     return contents
 }
 
@@ -67,6 +66,7 @@ async function run() {
 
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
+        // const imageReference = "alpine:latest"
         const customPolicyPath = core.getInput('custom-policy-path');
         const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
