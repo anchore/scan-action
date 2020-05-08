@@ -1,0 +1,22 @@
+name: "Run Anchore Scan Action (ACS SARIF Demo)"
+
+on: [push]
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v1
+
+    - name: Run the local anchore scan action itself with sarif generation enabled
+      uses: ./
+      with:
+        image-reference: "debian:8"
+        debug: true
+        acs-report-enable: true
+        #acs-report-severity-cutoff: "Medium"
+    - name: Upload Anchore Scan SARIF
+      uses: Anthophila/codeql-action/codeql/upload-sarif@master
+      with:
+        sarif_file: results.sarif

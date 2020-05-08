@@ -25,6 +25,12 @@ inputs:
   anchore-version:
     description: 'Optionally, specify anchore-engine version (eg 0.5.2) to use instead of the default version'
     required: false
+  acs-report-enable:
+    description: 'Optionally, specify sarif generation for beta users'
+    required: false
+  acs-report-severity-cutoff:
+    description: 'Set vuln severity cutoff value'
+    required: "Medium"
 outputs:
   billofmaterials:
     description: 'The json output report specifying the content of the image'
