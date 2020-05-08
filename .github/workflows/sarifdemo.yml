@@ -16,7 +16,10 @@ jobs:
         debug: true
         acs-report-enable: true
         #acs-report-severity-cutoff: "Medium"
-    - name: Upload Anchore Scan SARIF
-      uses: Anthophila/codeql-action/codeql/upload-sarif@master
-      with:
-        sarif_file: results.sarif
+    - name: Inspect Generated SARIF
+      run: cat results.sarif
+# Uncomment this section to enable report upload
+#    - name: Upload Anchore Scan SARIF
+#      uses: Anthophila/codeql-action/codeql/upload-sarif@master
+#      with:
+#        sarif_file: results.sarif
