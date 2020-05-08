@@ -95,9 +95,9 @@ For an overview of policy format and the checks it can perform, see the [Anchore
 | fail-build | Fail the build if policy evaluation returns a fail | | false |
 | include-app-packages | Include application packages for vulnerability matches. Requires more vuln data and thus scan will be slower but better results | | false |
 | custom-policy-path | A path to a policy json file for specifying a policy other than the default, which fails on >high vulnerabilities with fixes | | null |
-| anchore-version | An optional parameter to specify a specific version of anchore to use for the scan. Default is the version locked to the scan-action release | false | v0.6.0 |
-| acs-report-enable | Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. |
-| acs-report-severity-cutoff | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium". |
+| anchore-version | An optional parameter to specify a specific version of anchore to use for the scan. Default is the version locked to the scan-action release | false | v0.7.1 |
+| acs-report-enable | Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. | | false |
+| acs-report-severity-cutoff | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium". | | Medium |
 
 ### Action Outputs 
 
