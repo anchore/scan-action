@@ -26,10 +26,10 @@ inputs:
     description: 'Optionally, specify anchore-engine version (eg 0.5.2) to use instead of the default version'
     required: false
   acs-report-enable:
-    description: 'Optionally, specify sarif generation for beta users'
+    description: 'Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.'
     required: false
   acs-report-severity-cutoff:
-    description: 'Set vuln severity cutoff value'
+    description: 'With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium".'
     required: "Medium"
 outputs:
   billofmaterials:

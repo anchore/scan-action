@@ -96,7 +96,8 @@ For an overview of policy format and the checks it can perform, see the [Anchore
 | include-app-packages | Include application packages for vulnerability matches. Requires more vuln data and thus scan will be slower but better results | | false |
 | custom-policy-path | A path to a policy json file for specifying a policy other than the default, which fails on >high vulnerabilities with fixes | | null |
 | anchore-version | An optional parameter to specify a specific version of anchore to use for the scan. Default is the version locked to the scan-action release | false | v0.6.0 |
-
+| acs-report-enable | Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. |
+| acs-report-severity-cutoff | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium". |
 
 ### Action Outputs 
 
@@ -129,6 +130,35 @@ jobs:
         fail-build: true
     - name: anchore inline scan JSON results
       run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
+```
+
+Same example as above, but with Automated Code Scanning (ACS) feature enabled - with this example, the action will generate a SARIF report, which can be uploaded and then displayed as a Code Scanning Report in the GitHub UI.
+
+```yaml
+name: Docker Image CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag localbuild/testimage:latest
+    - uses: anchore/scan-action@master
+      with:
+        image-reference: "localbuild/testimage:latest"
+        dockerfile-path: "./Dockerfile"
+        fail-build: true
+        acs-report-enable: true
+        #acs-report-severity-cutoff: "Medium"
+    - name: anchore inline scan JSON results
+      run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
+    - name: anchore action SARIF report
+      run: cat results.sarif
+    - name: upload Anchore scan SARIF report
+      uses: Anthophila/codeql-action/codeql/upload-sarif@master
+      with:
+        sarif_file: results.sarif
 ```
 
 ## Contributing
