@@ -61,8 +61,12 @@ function render_rules(vulnerabilities) {
     return(ret);
 }
 
-function render_results(vulnerabilities, severity_cutoff_param) {
+function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param) {
     var ret = {}
+    var dockerfile_location = dockerfile_path_param
+    if (!dockerfile_location) {
+        dockerfile_location = "Dockerfile"
+    }
     if (vulnerabilities) {
     ret = vulnerabilities.map(v =>
                                    {
@@ -75,14 +79,14 @@ function render_results(vulnerabilities, severity_cutoff_param) {
                                        "id": "default"
                                        },
                                        "analysisTarget": {
-                                       "uri": "Dockerfile",
+                                       "uri": dockerfile_location,
                                        "index": 0
                                        },
                                        "locations": [
                                        {
                                            "physicalLocation": {
                                            "artifactLocation": {
-                                               "uri": "Dockerfile"
+                                               "uri": dockerfile_location
                                            },
                                            "region": {
                                                "startLine": 1,
@@ -113,7 +117,7 @@ function render_results(vulnerabilities, severity_cutoff_param) {
     return(ret);
 }
 
-function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version) {
+function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version, dockerfile_path_param) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let vulnerabilities_raw = JSON.parse(rawdata);
     let vulnerabilities = vulnerabilities_raw.vulnerabilities;
@@ -140,7 +144,7 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "kind": "namespace"
                     }
         ],
-        "results": render_results(vulnerabilities, severity_cutoff_param), 
+        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
         "columnKind": "utf16CodeUnits"
             }
     ]
@@ -337,7 +341,7 @@ async function run() {
         }
 
         if (acsReportEnable) {
-            try {sarifGeneration(version, acsSevCutoff);}
+            try {sarifGeneration(version, acsSevCutoff, dockerfilePath);}
             catch (err) {throw new Error(err)}
         }
 
@@ -354,9 +358,9 @@ async function run() {
     }
 }
 
-function sarifGeneration(anchore_version, severity_cutoff_param){
+function sarifGeneration(anchore_version, severity_cutoff_param, dockerfile_path_param){
     // sarif generate section
-    let sarifOutput = vulnerabilities_to_sarif("./anchore-reports/vulnerabilities.json", severity_cutoff_param, anchore_version);
+    let sarifOutput = vulnerabilities_to_sarif("./anchore-reports/vulnerabilities.json", severity_cutoff_param, anchore_version, dockerfile_path_param);
     fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
     // end sarif generate section
 }
