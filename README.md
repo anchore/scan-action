@@ -156,7 +156,7 @@ jobs:
     - name: anchore action SARIF report
       run: cat results.sarif
     - name: upload Anchore scan SARIF report
-      uses: Anthophila/codeql-action/codeql/upload-sarif@master
+      uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: results.sarif
 ```
