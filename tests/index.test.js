@@ -1,3 +1,4 @@
+const error = require('../dist');
 jest.mock('@actions/core');
 jest.mock('@actions/exec');
 jest.mock('@actions/tool-cache');
@@ -72,6 +73,8 @@ describe('functional-tests', () => {
             .mockReturnValueOnce('./Dockerfile')                // dockerfile-path
             .mockReturnValueOnce('true')                        // debug
             .mockReturnValueOnce('true')                        // fail-build
+            .mockReturnValueOnce('false')                       // acs-report
+            .mockReturnValueOnce('Medium')                      // sev-cut-off
             .mockReturnValueOnce('true')                        // include-app-packages
             .mockReturnValueOnce(null);                         // version
     });

@@ -1085,6 +1085,154 @@ const fs = __webpack_require__(747);
 const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.7.2';
 
+// sarif code
+function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
+    var ret = "error"
+    const severityLevels = {
+    'Unknown': 0,
+    'Negligible': 1,
+    'Low': 2,
+    'Medium': 3,
+    'High': 4,
+    'Critical': 5
+    }
+
+    if (severityLevels[input_severity] < severityLevels[severity_cutoff_param]) {
+    ret = "warning"
+    }
+    
+    return(ret)
+}
+
+function render_rules(vulnerabilities) {
+    var ret = {}
+    if (vulnerabilities) {
+    ret = vulnerabilities.map(v =>
+                  {
+                      return {
+                      "id": "ANCHOREVULN_"+v.vuln+"_"+v.package_type+"_"+v.package,
+                      "shortDescription": {
+                          "text": v.vuln + " Severity=" + v.severity + " Package=" + v.package
+                      },
+                      "fullDescription": {
+                          "text": v.vuln + " Severity=" + v.severity + " Package=" + v.package
+                      },
+                      "help": {
+                          "text": "Vulnerability "+v.vuln+"\n"+
+                          "Severity: "+v.severity+"\n"+
+                          "Package: "+v.package_name+"\n"+
+                          "Version: "+v.package_version+"\n"+
+                          "Fix Version: "+v.fix+"\n"+                                             
+                          "Type: "+v.package_type+"\n"+
+                          "Location: "+v.package_path+"\n"+
+                          "Data Namespace: "+v.feed + ", "+v.feed_group+"\n"+
+                          "Link: ["+v.vuln+"]("+v.url+")",
+                          "markdown": "**Vulnerability "+v.vuln+"**\n"+
+                          "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
+                          "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
+                          "|"+v.severity+"|"+v.package_name+"|"+v.package_version+"|"+v.fix+"|"+v.package_type+"|"+v.package_path+"|"+v.feed_group+"|["+v.vuln+"]("+v.url+")|\n"
+                      }
+                      
+                      }
+                  }
+                 );
+    }
+    return(ret);
+}
+
+function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param) {
+    var ret = {}
+    var dockerfile_location = dockerfile_path_param
+    if (!dockerfile_location) {
+        dockerfile_location = "Dockerfile"
+    }
+    if (vulnerabilities) {
+    ret = vulnerabilities.map(v =>
+                                   {
+                                   return {
+                                       "ruleId": "ANCHOREVULN_"+v.vuln+"_"+v.package_type+"_"+v.package,
+                                       "ruleIndex": 0,
+                                       "level": convert_severity_to_acs_level(v.severity, severity_cutoff_param),
+                                       "message": {
+                                       "text": "This dockerfile results in a container image that has installed software with a vulnerability: ("+v.package+" type="+v.package_type+")",
+                                       "id": "default"
+                                       },
+                                       "analysisTarget": {
+                                       "uri": dockerfile_location,
+                                       "index": 0
+                                       },
+                                       "locations": [
+                                       {
+                                           "physicalLocation": {
+                                           "artifactLocation": {
+                                               "uri": dockerfile_location
+                                           },
+                                           "region": {
+                                               "startLine": 1,
+                                               "startColumn": 1,
+                                               "endLine": 1,
+                                               "endColumn": 1,
+                                               "byteOffset": 1,
+                                               "byteLength": 1
+                                           }
+                                           },
+                                           "logicalLocations": [
+                                           {
+                                               "fullyQualifiedName": "dockerfile"
+                                           }
+                                           ]
+                                       }
+                                       ],
+                                       "suppressions": [
+                                       {
+                                           "kind": "external"
+                                       }
+                                       ],
+                                       "baselineState": "unchanged"
+                                   }
+                                   }
+                                  ) 
+    }
+    return(ret);
+}
+
+function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version, dockerfile_path_param) {
+    let rawdata = fs.readFileSync(input_vulnerabilities);
+    let vulnerabilities_raw = JSON.parse(rawdata);
+    let vulnerabilities = vulnerabilities_raw.vulnerabilities;
+
+    const sarifOutput = {
+    "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+    "version": "2.1.0",
+    "runs": [
+            {
+        "tool": {
+            "driver": {
+            "name": "Anchore Container Vulnerability Report",
+            "fullName": "Anchore Container Vulnerability Report",
+            "version": anchore_version,
+            "semanticVersion": anchore_version,
+            "dottedQuadFileVersion": anchore_version + ".0",
+            "rules": render_rules(vulnerabilities)
+            }
+        },
+        "logicalLocations": [
+                    {
+            "name": "dockerfile",
+            "fullyQualifiedName": "dockerfile",
+            "kind": "namespace"
+                    }
+        ],
+        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
+        "columnKind": "utf16CodeUnits"
+            }
+    ]
+    }
+    
+    return(sarifOutput)
+}
+
+
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
     let contentFiles = [];
@@ -1145,19 +1293,22 @@ async function run() {
 
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
-        // const imageReference = "alpine:latest"
+        //const imageReference = "alpine:latest"
         const customPolicyPath = core.getInput('custom-policy-path');
         const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
+        //var debug = "debug"
         var failBuild = core.getInput('fail-build');
+        var acsReportEnable = core.getInput('acs-report-enable');
+        var acsSevCutoff = core.getInput('acs-report-severity-cutoff');
         var includePackages = core.getInput('include-app-packages');
         var version = core.getInput('anchore-version');
-
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const runScan = __webpack_require__.ab + "run_scan.sh";
         var policyBundlePath = __webpack_require__.ab + "critical_security_policy.json";
         var policyBundleName = "critical_security_policy";
         var inlineScanImage;
+        const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
 
         if (!debug) {
             debug = "false";
@@ -1165,11 +1316,30 @@ async function run() {
             debug = "true";
         }
 
-        if (failBuild.toLowerCase() == "true") {
-            failBuild = "true";
+        if (failBuild.toLowerCase() === "true") {
+            failBuild = true;
         } else {
-            failBuild = "false";
+            failBuild = false;
         }
+
+        if (acsReportEnable.toLowerCase() === "true") {
+            acsReportEnable = true;
+        } else {
+            acsReportEnable = false;
+        }
+
+        if (!acsSevCutoff) {
+            acsSevCutoff = "Medium"
+        }
+        else if (
+            !SEVERITY_LIST.some(
+              item =>
+                typeof acsSevCutoff === 'string' &&
+                item === acsSevCutoff,
+            )
+          ) {
+            throw new Error ('Invalid acs-report-severity-cutoff value is set - please ensure you are choosing either Unknown, Negligible, Low, Medium, High, or Critical');
+          }
 
         if (!version) {
             version = `${defaultAnchoreVersion}`;
@@ -1220,6 +1390,8 @@ async function run() {
         core.debug('Fail Build: ' + failBuild);
         core.debug('Include App Packages: ' + includePackages);
         core.debug('Custom Policy Path: ' + customPolicyPath);
+        core.debug('ACS Enable: ' + acsReportEnable);	
+        core.debug('ACS Severity Cutoff: ' + acsSevCutoff);	
 
         core.debug('Policy path for evaluation: ' + policyBundlePath);
         core.debug('Policy name for evaluation: ' + policyBundleName);
@@ -1247,11 +1419,16 @@ async function run() {
             throw error;
         }
 
+        if (acsReportEnable) {
+            try {sarifGeneration(version, acsSevCutoff, dockerfilePath);}
+            catch (err) {throw new Error(err)}
+        }
+
         core.setOutput('billofmaterials', billOfMaterialsPath);
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
-
-        if (failBuild === "true" && policyStatus === "fail") {
+        
+        if (failBuild === true && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
 
@@ -1260,10 +1437,17 @@ async function run() {
     }
 }
 
-module.exports = {run, mergeResults, findContent, loadContent};
+function sarifGeneration(anchore_version, severity_cutoff_param, dockerfile_path_param){
+    // sarif generate section
+    let sarifOutput = vulnerabilities_to_sarif("./anchore-reports/vulnerabilities.json", severity_cutoff_param, anchore_version, dockerfile_path_param);
+    fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
+    // end sarif generate section
+}
+
+module.exports = {run, mergeResults, findContent, loadContent, vulnerabilities_to_sarif, convert_severity_to_acs_level};
 
 if (require.main === require.cache[eval('__filename')]) {
-    run();
+    run().catch((err)=>{throw new Error(err)});
 }
 
 
