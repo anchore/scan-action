@@ -62,7 +62,7 @@ For example:
  - uses: anchore/scan-action@master
        with:
          image-reference: "localbuild/testimage:latest"
-         dockerfile-path: "./Dockerfile"
+         dockerfile-path: "Dockerfile"
          fail-build: true
          include-app-packages: true
 ```
@@ -78,7 +78,7 @@ For example, to include a custom policy as: .anchore/policy.json in your code re
  - uses: anchore/scan-action@master
        with:
          image-reference: "localbuild/testimage:latest"
-         dockerfile-path: "./Dockerfile"
+         dockerfile-path: "Dockerfile"
          fail-build: true
          custom-policy-path: .anchore/policy.json
 ```
@@ -126,7 +126,7 @@ jobs:
     - uses: anchore/scan-action@master
       with:
         image-reference: "localbuild/testimage:latest"
-        dockerfile-path: "./Dockerfile"
+        dockerfile-path: "Dockerfile"
         fail-build: true
     - name: anchore inline scan JSON results
       run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
@@ -147,7 +147,7 @@ jobs:
     - uses: anchore/scan-action@master
       with:
         image-reference: "localbuild/testimage:latest"
-        dockerfile-path: "./Dockerfile"
+        dockerfile-path: "Dockerfile"
         fail-build: true
         acs-report-enable: true
         #acs-report-severity-cutoff: "Medium"
