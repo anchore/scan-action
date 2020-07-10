@@ -1083,7 +1083,7 @@ const { exec } = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.7.2';
+const defaultAnchoreVersion = '0.7.3';
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
