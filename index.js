@@ -231,7 +231,7 @@ async function run() {
         var inlineScanImage;
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
 
-        if (debug && debug.toLowerCase() === "true") {
+        if (debug.toLowerCase() === "true") {
             debug = "true";
         } else {
             debug = "false";
@@ -263,7 +263,7 @@ async function run() {
             version = `${defaultAnchoreVersion}`;
         }
 
-        if (includePackages && includePackages.toLowerCase() === "true") {
+        if (includePackages.toLowerCase() === "true") {
             includePackages = true;
             inlineScanImage = `docker.io/anchore/inline-scan:v${version}`;
         } else {
