@@ -1,6 +1,6 @@
 name: "Run Anchore Scan Action (ACS SARIF Demo)"
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   demo:
