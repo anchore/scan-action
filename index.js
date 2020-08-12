@@ -231,10 +231,10 @@ async function run() {
         var inlineScanImage;
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
 
-        if (!debug) {
-            debug = "false";
-        } else {
+        if (debug.toLowerCase() === "true") {
             debug = "true";
+        } else {
+            debug = "false";
         }
 
         if (failBuild.toLowerCase() === "true") {
@@ -249,10 +249,7 @@ async function run() {
             acsReportEnable = false;
         }
 
-        if (!acsSevCutoff) {
-            acsSevCutoff = "Medium"
-        }
-        else if (
+        if (
             !SEVERITY_LIST.some(
               item =>
                 typeof acsSevCutoff === 'string' &&
@@ -260,18 +257,18 @@ async function run() {
             )
           ) {
             throw new Error ('Invalid acs-report-severity-cutoff value is set - please ensure you are choosing either Unknown, Negligible, Low, Medium, High, or Critical');
-          }
+        }
 
         if (!version) {
             version = `${defaultAnchoreVersion}`;
         }
 
-        if (!includePackages) {
-            includePackages = false;
-            inlineScanImage = `docker.io/anchore/inline-scan-slim:v${version}`;
-        } else {
+        if (includePackages.toLowerCase() === "true") {
             includePackages = true;
             inlineScanImage = `docker.io/anchore/inline-scan:v${version}`;
+        } else {
+            includePackages = false;
+            inlineScanImage = `docker.io/anchore/inline-scan-slim:v${version}`;
         }
 
         if (customPolicyPath) {
