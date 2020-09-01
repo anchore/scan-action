@@ -69,56 +69,12 @@ describe('functional-tests', () => {
         core.getInput = jest
             .fn()
             .mockReturnValueOnce('localbuild/testimage:12345')  // image-reference
-            .mockReturnValueOnce(null)                          // custom-policy-path
             .mockReturnValueOnce('./Dockerfile')                // dockerfile-path
             .mockReturnValueOnce('true')                        // debug
             .mockReturnValueOnce('true')                        // fail-build
             .mockReturnValueOnce('false')                       // acs-report
             .mockReturnValueOnce('Medium')                      // sev-cut-off
-            .mockReturnValueOnce('true')                        // include-app-packages
-            .mockReturnValueOnce(null);                         // version
+            .mockReturnValueOnce(null)                          // version	
     });
 
-    it('completes the build successfully when there are no policy violations', async () => {
-        const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
-        mockReadFileSync.mockImplementation(() => {
-            let str;
-            try {
-                str = JSON.stringify(policyEvaluationFixture);
-            } catch (error) {
-                throw new Error(error);
-            }
-            return str;
-        });
-
-        core.setFailed = jest.fn();
-
-        await main.run();
-
-        expect(core.setFailed).not.toHaveBeenCalled();
-
-        mockReadFileSync.mockRestore();  // restore fs.readFileSync()
-    });
-
-    it('fails the build when there is a policy violation', async () => {
-        const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
-        mockReadFileSync.mockImplementation(() => {
-            _.set(policyEvaluationFixture[0], 'sha256:0c24303.nginx:latest[0].status', 'fail');
-            let str;
-            try {
-                str = JSON.stringify(policyEvaluationFixture);
-            } catch (error) {
-                throw new Error(error);
-            }
-            return str;
-        });
-
-        core.setFailed = jest.fn();
-
-        await main.run();
-
-        expect(core.setFailed).toHaveBeenCalled();
-
-        mockReadFileSync.mockRestore();  // restore fs.readFileSync()
-    });
 });
