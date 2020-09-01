@@ -97,7 +97,7 @@ For an overview of policy format and the checks it can perform, see the [Anchore
 | custom-policy-path | A path to a policy json file for specifying a policy other than the default, which fails on >high vulnerabilities with fixes | | null |
 | anchore-version | An optional parameter to specify a specific version of anchore to use for the scan. Default is the version locked to the scan-action release | false | v0.7.3 |
 | acs-report-enable | Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. | | false |
-| acs-report-severity-cutoff | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium". | | Medium |
+| severity-cutoff | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium". | | Medium |
 
 ### Action Outputs 
 
@@ -150,7 +150,7 @@ jobs:
         dockerfile-path: "Dockerfile"
         fail-build: true
         acs-report-enable: true
-        #acs-report-severity-cutoff: "Medium"
+        #severity-cutoff: "Medium"
     - name: anchore inline scan JSON results
       run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
     - name: anchore action SARIF report
