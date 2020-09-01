@@ -1082,7 +1082,7 @@ const core = __webpack_require__(470);
 const { exec } = __webpack_require__(986);
 const fs = __webpack_require__(747);
 
-const scanScript = 'inline_scan';
+//const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.8.0';
 
 const grypeBinary = 'grype'
@@ -1259,7 +1259,7 @@ function grype_render_rules(vulnerabilities) {
                           "Type: "+v.artifact.type+"\n"+
                           "Location: "+v.artifact.locations[0].path+"\n"+
                           //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
-			  "Data Namespace: "+ "unknown" + "\n"+
+                          "Data Namespace: "+ "unknown" + "\n"+
                           "Link: ["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")",
                           "markdown": "**Vulnerability "+v.vulnerability.id+"**\n"+
                           "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
@@ -1401,6 +1401,7 @@ function mergeResults(contentArray) {
     return contentArray.reduce((merged, n) => merged.concat(n.content), []);
 }
 
+/*
 async function downloadInlineScan(version) {
     core.debug(`Installing ${version}`);
     const downloadPath = await cache.downloadTool(`https://ci-tools.anchore.io/inline_scan-v${version}`);
@@ -1421,7 +1422,7 @@ async function installInlineScan(version) {
     // Add tool to path for this and future actions to use 
     core.addPath(scanScriptPath);
 }
-
+*/
 
 async function downloadGrype(version) {
     core.debug(`Installing ${version}`);
@@ -1468,7 +1469,7 @@ async function run() {
         var version = core.getInput('anchore-version');
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
-
+	console.log(billOfMaterialsPath);
         if (debug.toLowerCase() === "true") {
             debug = "true";
         } else {
@@ -1494,7 +1495,7 @@ async function run() {
                 item === severityCutoff,
             )
           ) {
-            throw new Error ('Invalid acs-report-severity-cutoff value is set - please ensure you are choosing either Unknown, Negligible, Low, Medium, High, or Critical');
+            throw new Error (`Invalid severity-cutoff value is set ${debug} ${severityCutoff} - please ensure you are choosing either Unknown, Negligible, Low, Medium, High, or Critical`);
         }
 
         if (!version) {
@@ -1516,9 +1517,9 @@ async function run() {
 	let cmdArgs = [`-o`, `json`, `${imageReference}`];
 	const cmdOpts = {};
 	cmdOpts.listeners = {
-	    stdout: (data=Buffer) => {
-		cmdOutput += data.toString();
-	    }
+            stdout: (data=Buffer) => {
+                cmdOutput += data.toString();
+            }
 	};
 	cmdOpts.silent = true;
 	//cmdOpts.cwd = './something';
@@ -1570,13 +1571,14 @@ async function run() {
     }
 }
 
+/*
 function sarifGeneration(anchore_version, severity_cutoff_param, dockerfile_path_param){
     // sarif generate section
     let sarifOutput = vulnerabilities_to_sarif("./anchore-reports/vulnerabilities.json", severity_cutoff_param, anchore_version, dockerfile_path_param);
     fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
     // end sarif generate section
 }
-
+*/
 function sarifGrypeGeneration(version, severity_cutoff_param, dockerfile_path_param){
     // sarif generate section
     let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version, dockerfile_path_param);
