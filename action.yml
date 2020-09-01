@@ -18,13 +18,6 @@ inputs:
     description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
     required: false
     default: 'false'
-  include-app-packages:
-    description: 'Set to true to include software packages during vulnerability scanning - this option will increase runtime of the action significantly. By default only OS packages are scanned for vulnerabilities.'
-    required: false
-    default: 'false'
-  custom-policy-path:
-    description: 'Path to a custom policy json file. See https://docs.anchore.com/current/docs/engine/general/concepts/policy/bundles/ for information on building bundles'
-    required: false
   anchore-version:
     description: 'Optionally, specify anchore-engine version (eg 0.5.2) to use instead of the default version'
     required: false
@@ -32,8 +25,8 @@ inputs:
     description: 'Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.'
     required: false
     default: 'false'
-  acs-report-severity-cutoff:
-    description: 'With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium".'
+  severity-cutoff:
+    description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium".'
     required: false
     default: "Medium"
 outputs:
@@ -41,8 +34,6 @@ outputs:
     description: 'The json output report specifying the content of the image'
   vulnerabilities:
     description: 'The found vulnerabilities for the image'
-  policycheck:
-    description: 'The json report for evaluating the image against the given policy, if present'
 runs:
   using: 'node12'
   main: 'dist/index.js'
