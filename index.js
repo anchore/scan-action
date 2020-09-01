@@ -6,6 +6,9 @@ const fs = require('fs');
 const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.8.1';
 
+const grypeBinary = 'grype'
+const grypeVersion = '0.1.0-beta.6'
+
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
     var ret = "error"
@@ -117,6 +120,7 @@ function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_
     return(ret);
 }
 
+
 function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version, dockerfile_path_param) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let vulnerabilities_raw = JSON.parse(rawdata);
@@ -145,6 +149,137 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
                     }
         ],
         "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
+        "columnKind": "utf16CodeUnits"
+            }
+    ]
+    }
+    
+    return(sarifOutput)
+}
+
+
+function grype_render_rules(vulnerabilities) {
+    var ret = {}
+    if (vulnerabilities) {
+    ret = vulnerabilities.map(v =>
+                  {
+                      return {
+                      "id": "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version,
+                      "shortDescription": {
+                          "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                      },
+                      "fullDescription": {
+                          "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                      },
+                      "help": {
+                          "text": "Vulnerability "+v.vulnerability.id+"\n"+
+                          "Severity: "+v.vulnerability.severity+"\n"+
+                          "Package: "+v.artifact.name+"\n"+
+                          "Version: "+v.artifact.version+"\n"+
+                          "Fix Version: "+"unknown"+"\n"+
+                          "Type: "+v.artifact.type+"\n"+
+                          "Location: "+v.artifact.locations[0].path+"\n"+
+                          //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
+			  "Data Namespace: "+ "unknown" + "\n"+
+                          "Link: ["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")",
+                          "markdown": "**Vulnerability "+v.vulnerability.id+"**\n"+
+                          "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
+                          "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
+                          "|"+v.vulnerability.severity+"|"+v.artifact.name+"|"+v.artifact.version+"|"+"unknown"+"|"+v.artifact.type+"|"+v.artifact.locations[0].path+"|"+"unknown"+"|["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")|\n"
+                      }
+                      
+                      }
+                  }
+                 );
+    }
+    return(ret);
+}
+
+function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param) {
+    var ret = {}
+    var dockerfile_location = dockerfile_path_param
+    if (!dockerfile_location) {
+        dockerfile_location = "Dockerfile"
+    }
+    if (vulnerabilities) {
+    ret = vulnerabilities.map(v =>
+                                   {
+                                   return {
+                                       "ruleId": "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version,
+                                       "ruleIndex": 0,
+                                       "level": convert_severity_to_acs_level(v.vulnerability.severity, severity_cutoff_param),
+                                       "message": {
+                                       "text": "This dockerfile results in a container image that has installed software with a vulnerability: (name="+v.artifact.name+" version="+v.artifact.version+" type="+v.artifact.type+")",
+                                       "id": "default"
+                                       },
+                                       "analysisTarget": {
+                                       "uri": dockerfile_location,
+                                       "index": 0
+                                       },
+                                       "locations": [
+                                       {
+                                           "physicalLocation": {
+                                           "artifactLocation": {
+                                               "uri": dockerfile_location
+                                           },
+                                           "region": {
+                                               "startLine": 1,
+                                               "startColumn": 1,
+                                               "endLine": 1,
+                                               "endColumn": 1,
+                                               "byteOffset": 1,
+                                               "byteLength": 1
+                                           }
+                                           },
+                                           "logicalLocations": [
+                                           {
+                                               "fullyQualifiedName": "dockerfile"
+                                           }
+                                           ]
+                                       }
+                                       ],
+                                       "suppressions": [
+                                       {
+                                           "kind": "external"
+                                       }
+                                       ],
+                                       "baselineState": "unchanged"
+                                   }
+                                   }
+                                  ) 
+    }
+    return(ret);
+}
+
+
+function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version, dockerfile_path_param) {
+    let rawdata = fs.readFileSync(input_vulnerabilities);
+    let vulnerabilities = JSON.parse(rawdata);
+    //let vulnerabilities = vulnerabilities_raw.vulnerabilities;
+
+    const sarifOutput = {
+    "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+    "version": "2.1.0",
+    "runs": [
+            {
+        "tool": {
+            "driver": {
+            "name": "Anchore Container Vulnerability Report (T0)",
+            "fullName": "Anchore Container Vulnerability Report (T0)",
+            "version": version,
+            "semanticVersion": version,
+            "dottedQuadFileVersion": version + ".0",
+            "rules": grype_render_rules(vulnerabilities)
+            }
+        },
+        "logicalLocations": [
+                    {
+            "name": "dockerfile",
+            "fullyQualifiedName": "dockerfile",
+            "kind": "namespace"
+                    }
+        ],
+        "results": grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
         "columnKind": "utf16CodeUnits"
             }
     ]
@@ -208,27 +343,51 @@ async function installInlineScan(version) {
     core.addPath(scanScriptPath);
 }
 
+
+async function downloadGrype(version) {
+    core.debug(`Installing ${version}`);
+
+    // Download the installer, and run
+    const installPath = await cache.downloadTool(`https://raw.githubusercontent.com/anchore/grype/main/install.sh`);
+    // Make sure the tool's executable bit is set
+    await exec(`chmod +x ${installPath}`);
+
+    let cmd = `${installPath} -b ${installPath}_grype`
+    await exec(cmd);
+    let grypePath = `${installPath}_grype/grype`
+
+    // Cache the downloaded file
+    return cache.cacheFile(grypePath, `grype`, `grype`, version);
+  }
+
+async function installGrype(version) {
+    let grypePath = cache.find(grypeBinary, version);
+    if (!grypePath) {
+        // Not found, install it
+        grypePath = await downloadGrype(version);
+    }
+
+    // Add tool to path for this and future actions to use 
+    core.addPath(grypePath);
+}
+
 async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
-        //const imageReference = "alpine:latest"
-        const customPolicyPath = core.getInput('custom-policy-path');
-        const dockerfilePath = core.getInput('dockerfile-path');
+        //const imageReference = "alpine:3.7"
+	const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
-        //var debug = "debug"
+        //var debug = 'false';
         var failBuild = core.getInput('fail-build');
         var acsReportEnable = core.getInput('acs-report-enable');
-        var acsSevCutoff = core.getInput('acs-report-severity-cutoff');
-        var includePackages = core.getInput('include-app-packages');
+	//var acsReportEnable = "true";
+	var severityCutoff = core.getInput('severity-cutoff');
+	//var severityCutoff = "Medium"
         var version = core.getInput('anchore-version');
         const billOfMaterialsPath = "./anchore-reports/content.json";
-        const runScan = `${__dirname}/lib/run_scan.sh`;
-        var policyBundlePath = `${__dirname}/lib/critical_security_policy.json`;
-        var policyBundleName = "critical_security_policy";
-        var inlineScanImage;
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
 
         if (debug.toLowerCase() === "true") {
@@ -252,8 +411,8 @@ async function run() {
         if (
             !SEVERITY_LIST.some(
               item =>
-                typeof acsSevCutoff === 'string' &&
-                item === acsSevCutoff,
+                typeof severityCutoff === 'string' &&
+                item === severityCutoff,
             )
           ) {
             throw new Error ('Invalid acs-report-severity-cutoff value is set - please ensure you are choosing either Unknown, Negligible, Low, Medium, High, or Critical');
@@ -263,65 +422,42 @@ async function run() {
             version = `${defaultAnchoreVersion}`;
         }
 
-        if (includePackages.toLowerCase() === "true") {
-            includePackages = true;
-            inlineScanImage = `docker.io/anchore/inline-scan:v${version}`;
-        } else {
-            includePackages = false;
-            inlineScanImage = `docker.io/anchore/inline-scan-slim:v${version}`;
-        }
-
-        if (customPolicyPath) {
-            let workspace = process.env.GITHUB_WORKSPACE;
-            if (!workspace) {
-                workspace = ".";
-            }
-            let bundlePath = `${workspace}/${customPolicyPath}`;
-            let bundleName = "";
-            core.debug(`Loading custom bundle from ${bundlePath}`);
-
-            // Load the bundle to extract the policy id
-            let customPolicy = fs.readFileSync(bundlePath);
-
-            if (customPolicy) {
-                core.debug('loaded custom bundle ' + customPolicy);
-                customPolicy = JSON.parse(customPolicy);
-                bundleName = customPolicy.id;
-                if (!bundleName) {
-                    throw new Error("Could not extract id from custom policy bundle. May be malformed json or not contain id property");
-                } else {
-                    core.info(`Detected custom policy id: ${bundleName}`);
-                }
-                policyBundleName = bundleName;
-                policyBundlePath = bundlePath;
-            } else {
-                throw new Error(`Custom policy specified at ${policyBundlePath} but not found`);
-            }
-        }
-
-        await installInlineScan(version);
-
+        //await installInlineScan(version);
+	await installGrype(grypeVersion);
+	
         core.debug('Image: ' + imageReference);
-        core.debug('Dockerfile path: ' + dockerfilePath);
-        core.debug('Inline Scan Image: ' + inlineScanImage);
         core.debug('Debug Output: ' + debug);
         core.debug('Fail Build: ' + failBuild);
-        core.debug('Include App Packages: ' + includePackages);
-        core.debug('Custom Policy Path: ' + customPolicyPath);
+        core.debug('Severity Cutoff: ' + severityCutoff);		
         core.debug('ACS Enable: ' + acsReportEnable);	
-        core.debug('ACS Severity Cutoff: ' + acsSevCutoff);	
 
-        core.debug('Policy path for evaluation: ' + policyBundlePath);
-        core.debug('Policy name for evaluation: ' + policyBundleName);
+	// Run the grype analyzer
+	let cmdOutput = '';
+	let cmd = `${grypeBinary}`;
+	let cmdArgs = [`-o`, `json`, `${imageReference}`];
+	const cmdOpts = {};
+	cmdOpts.listeners = {
+	    stdout: (data=Buffer) => {
+		cmdOutput += data.toString();
+	    }
+	};
+	cmdOpts.silent = true;
+	//cmdOpts.cwd = './something';
 
-        let cmd = `${runScan} ${scanScript} ${inlineScanImage} ${imageReference} ${debug} ${policyBundlePath} ${policyBundleName}`;
-        if (dockerfilePath) {
-            cmd = `${cmd} ${dockerfilePath}`
-        }
         core.info('\nAnalyzing image: ' + imageReference);
-        await exec(cmd);
+	await exec(cmd, cmdArgs, cmdOpts);
+	let grypeVulnerabilities = JSON.parse(cmdOutput);
 
-        let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
+	// handle output
+	fs.writeFileSync('./vulnerabilities.json', JSON.stringify(grypeVulnerabilities));
+
+        if (acsReportEnable) {
+            try {sarifGrypeGeneration(version, severityCutoff, dockerfilePath);}
+            catch (err) {throw new Error(err)}
+        }	
+	
+        /*
+	let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
         let policyEval = JSON.parse(rawdata);
         let imageId = Object.keys(policyEval[0]);
         let imageTag = Object.keys(policyEval[0][imageId[0]]);
@@ -349,7 +485,7 @@ async function run() {
         if (failBuild === true && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
-
+	*/
     } catch (error) {
         core.setFailed(error.message);
     }
@@ -358,6 +494,13 @@ async function run() {
 function sarifGeneration(anchore_version, severity_cutoff_param, dockerfile_path_param){
     // sarif generate section
     let sarifOutput = vulnerabilities_to_sarif("./anchore-reports/vulnerabilities.json", severity_cutoff_param, anchore_version, dockerfile_path_param);
+    fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
+    // end sarif generate section
+}
+
+function sarifGrypeGeneration(version, severity_cutoff_param, dockerfile_path_param){
+    // sarif generate section
+    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version, dockerfile_path_param);
     fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
     // end sarif generate section
 }

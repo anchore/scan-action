@@ -15,7 +15,7 @@ jobs:
         image-reference: "debian:8"
         debug: true
         acs-report-enable: true
-        #acs-report-severity-cutoff: "Medium"
+        #severity-cutoff: "Medium"
     - name: Inspect Generated SARIF
       run: cat results.sarif
 # Uncomment this section to enable report upload
