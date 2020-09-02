@@ -4,7 +4,7 @@ const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.8.0';
+const defaultAnchoreVersion = '0.8.1';
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
