@@ -379,18 +379,18 @@ async function run() {
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
         //const imageReference = "alpine:3.7"
-	    const dockerfilePath = core.getInput('dockerfile-path');
+        const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
         //var debug = 'false';
         var failBuild = core.getInput('fail-build');
         var acsReportEnable = core.getInput('acs-report-enable');
-	    //var acsReportEnable = "true";
-	    var severityCutoff = core.getInput('severity-cutoff');
-	    //var severityCutoff = "Medium"
+        //var acsReportEnable = "true";
+        var severityCutoff = core.getInput('severity-cutoff');
+        //var severityCutoff = "Medium"
         var version = core.getInput('anchore-version');
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
-	    console.log(billOfMaterialsPath);
+        console.log(billOfMaterialsPath);
         if (debug.toLowerCase() === "true") {
             debug = "true";
         } else {
@@ -425,7 +425,7 @@ async function run() {
 
         //await installInlineScan(version);
         core.debug(`Installing grype version ${version}`);
-	    await installGrype(grypeVersion);
+        await installGrype(grypeVersion);
 
         core.debug('Image: ' + imageReference);
         core.debug('Debug Output: ' + debug);
@@ -454,8 +454,8 @@ async function run() {
         //cmdOpts.cwd = './something';
 
         core.info('\nAnalyzing: ' + imageReference);
-	await exec(cmd, cmdArgs, cmdOpts);
-	    let grypeVulnerabilities = JSON.parse(cmdOutput);
+    await exec(cmd, cmdArgs, cmdOpts);
+        let grypeVulnerabilities = JSON.parse(cmdOutput);
 
         // handle output
         fs.writeFileSync('./vulnerabilities.json', JSON.stringify(grypeVulnerabilities));
@@ -466,7 +466,7 @@ async function run() {
         }
 
         /*
-	let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
+    let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
         let policyEval = JSON.parse(rawdata);
         let imageId = Object.keys(policyEval[0]);
         let imageTag = Object.keys(policyEval[0][imageId[0]]);
@@ -494,7 +494,7 @@ async function run() {
         if (failBuild === true && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
-	*/
+    */
     } catch (error) {
         core.setFailed(error.message);
     }
