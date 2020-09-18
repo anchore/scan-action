@@ -11,3 +11,7 @@ jobs:
       with:
         image-reference: "alpine:latest"
         debug: true
+    - uses: ./
+      with:
+        image-reference: "dir://tests/python"
+        debug: true
