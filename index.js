@@ -2,6 +2,7 @@ const cache = require('@actions/tool-cache');
 const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const fs = require('fs');
+const { stderr } = require('process');
 
 //const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.8.0';
@@ -435,18 +436,25 @@ async function run() {
 
         // Run the grype analyzer
         let cmdOutput = '';
+        let stdErr = '';
         let cmd = `${grypeBinary}`;
         let cmdArgs = [`-vv`, `-o`, `json`, `${imageReference}`];
         const cmdOpts = {};
         cmdOpts.listeners = {
                 stdout: (data=Buffer) => {
                     cmdOutput += data.toString();
+                },
+                stderr: (data=Buffer) => {
+                    stdErr += data.toString();
                 }
         };
+
+        // XXX make this optional
+        core.info(stdErr)
         //cmdOpts.silent = true;
         //cmdOpts.cwd = './something';
 
-        core.info('\nAnalyzing image: ' + imageReference);
+        core.info('\nAnalyzing: ' + imageReference);
     	await exec(cmd, cmdArgs, cmdOpts);
 	    let grypeVulnerabilities = JSON.parse(cmdOutput);
 
