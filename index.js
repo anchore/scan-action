@@ -450,12 +450,12 @@ async function run() {
         };
 
         // XXX make this optional
-        core.info(stdErr);
+        core.info('\nCaptured stderr from grype:\n' + stdErr);
         //cmdOpts.silent = true;
         //cmdOpts.cwd = './something';
 
         core.info('\nAnalyzing: ' + imageReference);
-    	await exec(cmd, cmdArgs, cmdOpts);
+	await exec(cmd, cmdArgs, cmdOpts);
 	    let grypeVulnerabilities = JSON.parse(cmdOutput);
 
         // handle output
