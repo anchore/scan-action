@@ -450,7 +450,7 @@ async function run() {
         };
 
         // XXX make this optional
-        core.info(stdErr)
+        core.info(stdErr);
         //cmdOpts.silent = true;
         //cmdOpts.cwd = './something';
 
