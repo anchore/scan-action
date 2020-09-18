@@ -433,6 +433,8 @@ async function run() {
         core.debug('Severity Cutoff: ' + severityCutoff);
         core.debug('ACS Enable: ' + acsReportEnable);
 
+        core.debug('Creating options for GRYPE analyzer');
+
         // Run the grype analyzer
         let cmdOutput = '';
         let stdErr = '';
