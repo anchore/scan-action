@@ -379,18 +379,18 @@ async function run() {
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
         //const imageReference = "alpine:3.7"
-	const dockerfilePath = core.getInput('dockerfile-path');
+	    const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
         //var debug = 'false';
         var failBuild = core.getInput('fail-build');
         var acsReportEnable = core.getInput('acs-report-enable');
-	//var acsReportEnable = "true";
-	var severityCutoff = core.getInput('severity-cutoff');
-	//var severityCutoff = "Medium"
+	    //var acsReportEnable = "true";
+	    var severityCutoff = core.getInput('severity-cutoff');
+	    //var severityCutoff = "Medium"
         var version = core.getInput('anchore-version');
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
-	console.log(billOfMaterialsPath);
+	    console.log(billOfMaterialsPath);
         if (debug.toLowerCase() === "true") {
             debug = "true";
         } else {
@@ -424,7 +424,8 @@ async function run() {
         }
 
         //await installInlineScan(version);
-	await installGrype(grypeVersion);
+        core.debug(`Installing grype version ${version}`);
+	    await installGrype(grypeVersion);
 	
         core.debug('Image: ' + imageReference);
         core.debug('Debug Output: ' + debug);
@@ -432,25 +433,25 @@ async function run() {
         core.debug('Severity Cutoff: ' + severityCutoff);		
         core.debug('ACS Enable: ' + acsReportEnable);	
 
-	// Run the grype analyzer
-	let cmdOutput = '';
-	let cmd = `${grypeBinary}`;
-	let cmdArgs = [`-o`, `json`, `${imageReference}`];
-	const cmdOpts = {};
-	cmdOpts.listeners = {
-            stdout: (data=Buffer) => {
-                cmdOutput += data.toString();
-            }
-	};
-	cmdOpts.silent = true;
-	//cmdOpts.cwd = './something';
+        // Run the grype analyzer
+        let cmdOutput = '';
+        let cmd = `${grypeBinary}`;
+        let cmdArgs = [`-o`, `json`, `${imageReference}`];
+        const cmdOpts = {};
+        cmdOpts.listeners = {
+                stdout: (data=Buffer) => {
+                    cmdOutput += data.toString();
+                }
+        };
+        //cmdOpts.silent = true;
+        //cmdOpts.cwd = './something';
 
         core.info('\nAnalyzing image: ' + imageReference);
-	await exec(cmd, cmdArgs, cmdOpts);
-	let grypeVulnerabilities = JSON.parse(cmdOutput);
+    	await exec(cmd, cmdArgs, cmdOpts);
+	    let grypeVulnerabilities = JSON.parse(cmdOutput);
 
-	// handle output
-	fs.writeFileSync('./vulnerabilities.json', JSON.stringify(grypeVulnerabilities));
+        // handle output
+        fs.writeFileSync('./vulnerabilities.json', JSON.stringify(grypeVulnerabilities));
 
         if (acsReportEnable) {
             try {sarifGrypeGeneration(version, severityCutoff, dockerfilePath);}
