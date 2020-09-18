@@ -436,7 +436,7 @@ async function run() {
         // Run the grype analyzer
         let cmdOutput = '';
         let cmd = `${grypeBinary}`;
-        let cmdArgs = [`-o`, `json`, `${imageReference}`];
+        let cmdArgs = [`-vv`, `-o`, `json`, `${imageReference}`];
         const cmdOpts = {};
         cmdOpts.listeners = {
                 stdout: (data=Buffer) => {
