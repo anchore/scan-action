@@ -2,7 +2,6 @@ const cache = require('@actions/tool-cache');
 const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const fs = require('fs');
-const { stderr } = require('process');
 
 //const scanScript = 'inline_scan';
 const defaultAnchoreVersion = '0.8.0';
@@ -25,7 +24,7 @@ function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
     if (severityLevels[input_severity] < severityLevels[severity_cutoff_param]) {
     ret = "warning"
     }
-    
+
     return(ret)
 }
 
@@ -47,7 +46,7 @@ function render_rules(vulnerabilities) {
                           "Severity: "+v.severity+"\n"+
                           "Package: "+v.package_name+"\n"+
                           "Version: "+v.package_version+"\n"+
-                          "Fix Version: "+v.fix+"\n"+                                             
+                          "Fix Version: "+v.fix+"\n"+
                           "Type: "+v.package_type+"\n"+
                           "Location: "+v.package_path+"\n"+
                           "Data Namespace: "+v.feed + ", "+v.feed_group+"\n"+
@@ -57,7 +56,7 @@ function render_rules(vulnerabilities) {
                           "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
                           "|"+v.severity+"|"+v.package_name+"|"+v.package_version+"|"+v.fix+"|"+v.package_type+"|"+v.package_path+"|"+v.feed_group+"|["+v.vuln+"]("+v.url+")|\n"
                       }
-                      
+
                       }
                   }
                  );
@@ -116,7 +115,7 @@ function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_
                                        "baselineState": "unchanged"
                                    }
                                    }
-                                  ) 
+                                  )
     }
     return(ret);
 }
@@ -149,12 +148,12 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "kind": "namespace"
                     }
         ],
-        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
+        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param),
         "columnKind": "utf16CodeUnits"
             }
     ]
     }
-    
+
     return(sarifOutput)
 }
 
@@ -188,7 +187,7 @@ function grype_render_rules(vulnerabilities) {
                           "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
                           "|"+v.vulnerability.severity+"|"+v.artifact.name+"|"+v.artifact.version+"|"+"unknown"+"|"+v.artifact.type+"|"+v.artifact.locations[0].path+"|"+"unknown"+"|["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")|\n"
                       }
-                      
+
                       }
                   }
                  );
@@ -247,7 +246,7 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile
                                        "baselineState": "unchanged"
                                    }
                                    }
-                                  ) 
+                                  )
     }
     return(ret);
 }
@@ -280,12 +279,12 @@ function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_p
             "kind": "namespace"
                     }
         ],
-        "results": grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
+        "results": grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param),
         "columnKind": "utf16CodeUnits"
             }
     ]
     }
-    
+
     return(sarifOutput)
 }
 
@@ -341,7 +340,7 @@ async function installInlineScan(version) {
         scanScriptPath = await downloadInlineScan(version);
     }
 
-    // Add tool to path for this and future actions to use 
+    // Add tool to path for this and future actions to use
     core.addPath(scanScriptPath);
 }
 */
@@ -369,7 +368,7 @@ async function installGrype(version) {
         grypePath = await downloadGrype(version);
     }
 
-    // Add tool to path for this and future actions to use 
+    // Add tool to path for this and future actions to use
     core.addPath(grypePath);
 }
 
@@ -427,12 +426,12 @@ async function run() {
         //await installInlineScan(version);
         core.debug(`Installing grype version ${version}`);
 	    await installGrype(grypeVersion);
-	
+
         core.debug('Image: ' + imageReference);
         core.debug('Debug Output: ' + debug);
         core.debug('Fail Build: ' + failBuild);
-        core.debug('Severity Cutoff: ' + severityCutoff);		
-        core.debug('ACS Enable: ' + acsReportEnable);	
+        core.debug('Severity Cutoff: ' + severityCutoff);
+        core.debug('ACS Enable: ' + acsReportEnable);
 
         // Run the grype analyzer
         let cmdOutput = '';
@@ -464,8 +463,8 @@ async function run() {
         if (acsReportEnable) {
             try {sarifGrypeGeneration(version, severityCutoff, dockerfilePath);}
             catch (err) {throw new Error(err)}
-        }	
-	
+        }
+
         /*
 	let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
         let policyEval = JSON.parse(rawdata);
@@ -491,7 +490,7 @@ async function run() {
         core.setOutput('billofmaterials', billOfMaterialsPath);
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
-        
+
         if (failBuild === true && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
