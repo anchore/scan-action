@@ -7,7 +7,7 @@ const fs = require('fs');
 const defaultAnchoreVersion = '0.8.0';
 
 const grypeBinary = 'grype'
-const grypeVersion = '0.1.0-beta.6'
+const grypeVersion = '0.1.0-beta.7'
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
@@ -357,7 +357,8 @@ async function downloadGrype(version) {
     core.debug(`Installing ${version}`);
 
     // Download the installer, and run
-    const installPath = await cache.downloadTool(`https://raw.githubusercontent.com/anchore/grype/main/install.sh`);
+    
+    const installPath = await cache.downloadTool(`https://raw.githubusercontent.com/anchore/grype/v${grypeVersion}/install.sh`);
     // Make sure the tool's executable bit is set
     await exec(`chmod +x ${installPath}`);
 
@@ -427,7 +428,6 @@ async function run() {
             version = `${defaultAnchoreVersion}`;
         }
 
-        //await installInlineScan(version);
         core.debug(`Installing grype version ${version}`);
         await installGrype(grypeVersion);
 
