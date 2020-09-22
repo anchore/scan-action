@@ -1,6 +1,6 @@
-name: "Run Anchore Scan Action"
+name: "Run Anchore's Grype Scan Action"
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   grype:
