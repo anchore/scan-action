@@ -71,12 +71,36 @@ function render_rules(vulnerabilities) {
     return(ret);
 }
 
-function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param) {
-    var ret = {}
-    var dockerfile_location = dockerfile_path_param
-    if (!dockerfile_location) {
-        dockerfile_location = "Dockerfile"
+function getLocation(v) {
+    dockerfilePath = core.getInput('dockerfile-path');
+    if (dockerfilePath != "") {
+        return dockerfilePath;
     }
+    if (v.artifact.locations.length) {
+        return v.artifact.locations[0];
+    }
+    // XXX there is room for improvement here, trying to mimick previous behavior
+    // If no `dockerfile-path` was provided, and in the improbable situation where there
+    // are no locations for the artifact, return 'Dockerfile'
+    return "Dockerfile"
+}
+
+function textMessage(v) {
+    scheme = sourceScheme();
+    if (["dir", "tar"].includes(scheme)) {
+        prefix = "The path " + getLocation(v) + " would result in an installed vulnerability: "
+    } else {
+        prefix = "The container image contains software with a vulnerability: "
+    }
+    return prefix + "("+v.package+" type="+v.package_type+")"
+}
+
+function render_results(vulnerabilities, severity_cutoff_param) {
+    var ret = {}
+    // var dockerfile_location = dockerfile_path_param
+    // if (!dockerfile_location) {
+    //     dockerfile_location = "Dockerfile"
+    // }
     if (vulnerabilities) {
     ret = vulnerabilities.map(v =>
                                    {
@@ -85,18 +109,18 @@ function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_
                                        "ruleIndex": 0,
                                        "level": convert_severity_to_acs_level(v.severity, severity_cutoff_param),
                                        "message": {
-                                       "text": "This dockerfile results in a container image that has installed software with a vulnerability: ("+v.package+" type="+v.package_type+")",
+                                       "text": textMessage(v),
                                        "id": "default"
                                        },
                                        "analysisTarget": {
-                                       "uri": dockerfile_location,
+                                       "uri": getLocation(v),
                                        "index": 0
                                        },
                                        "locations": [
                                        {
                                            "physicalLocation": {
                                            "artifactLocation": {
-                                               "uri": dockerfile_location
+                                               "uri": getLocation(v)
                                            },
                                            "region": {
                                                "startLine": 1,
@@ -128,7 +152,7 @@ function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_
 }
 
 
-function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version, dockerfile_path_param) {
+function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let vulnerabilities_raw = JSON.parse(rawdata);
     let vulnerabilities = vulnerabilities_raw.vulnerabilities;
@@ -155,7 +179,7 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "kind": "namespace"
                     }
         ],
-        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param),
+        "results": render_results(vulnerabilities, severity_cutoff_param),
         "columnKind": "utf16CodeUnits"
             }
     ]
@@ -208,12 +232,12 @@ function grype_render_rules(vulnerabilities) {
     return(ret);
 }
 
-function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param) {
+function grype_render_results(vulnerabilities, severity_cutoff_param) {
     var ret = {}
-    var dockerfile_location = dockerfile_path_param
-    if (!dockerfile_location) {
-        dockerfile_location = "Dockerfile"
-    }
+    // var dockerfile_location = dockerfile_path_param
+    // if (!dockerfile_location) {
+    //     dockerfile_location = "Dockerfile"
+    // }
     if (vulnerabilities) {
     
 
@@ -224,18 +248,18 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile
                                        "ruleIndex": 0,
                                        "level": convert_severity_to_acs_level(v.vulnerability.severity, severity_cutoff_param),
                                        "message": {
-                                       "text": "This dockerfile results in a container image that has installed software with a vulnerability: (name="+v.artifact.name+" version="+v.artifact.version+" type="+v.artifact.type+")",
+                                       "text": textMessage(v),
                                        "id": "default"
                                        },
                                        "analysisTarget": {
-                                       "uri": dockerfile_location,
-                                       "index": 0
+                                       "uri": getLocation(v),
+                                       //"index": 0
                                        },
                                        "locations": [
                                        {
                                            "physicalLocation": {
                                            "artifactLocation": {
-                                               "uri": dockerfile_location
+                                               "uri": getLocation(v)
                                            },
                                            "region": {
                                                "startLine": 1,
@@ -267,7 +291,7 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile
 }
 
 
-function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version, dockerfile_path_param) {
+function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let vulnerabilities = JSON.parse(rawdata);
     //let vulnerabilities = vulnerabilities_raw.vulnerabilities;
@@ -294,7 +318,7 @@ function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_p
             "kind": "namespace"
                     }
         ],
-        "results": grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param),
+        "results": grype_render_results(vulnerabilities, severity_cutoff_param),
         "columnKind": "utf16CodeUnits"
             }
     ]
@@ -388,13 +412,59 @@ async function installGrype(version) {
     core.addPath(grypePath);
 }
 
+function sourceScheme() {
+    // Any newer schemes like OCI need to be added here
+    schemes = ["dir", "tar", "docker"]
+    image = core.getInput('image-reference');
+    source = core.getInput('source');
+
+    if (source != "") {
+        inputValue = source;
+    } else {
+        inputValue = image;
+    }
+    
+    parts = inputValue.split(":");
+    // return the scheme if found
+    if (schemes.includes(parts[0])) {
+        return parts[0];
+    }
+    // A repo:tag probably, so use docker
+    return "docker";
+
+}
+function sourceInput() {
+    image = core.getInput('image-reference');
+    source = core.getInput('source');
+
+    // If both are defined, prefer `source`
+    if (image != "" && source != "") {
+        // XXX Add an extra warning about making it an error condition?
+        core.warning("Both 'image-reference' and 'source' were specified, 'source' is preferred and will be used");
+        return source;
+    }
+    // If `source` is defined then prioritize it
+    if (source != "") {
+        return source;
+    }
+    // Finally, just use the image coming from the deprecated `image-reference`
+    core.warning("Please use 'source' instead of 'image-reference'")
+    return image;
+}
+
+
 async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
         const requiredOption = {required: true};
-        const imageReference = core.getInput('image-reference', requiredOption);
-        const dockerfilePath = core.getInput('dockerfile-path');
+        // XXX backwards compatibility: image-reference was required, but grype accepts other source
+        // types like a directory or a tar. This block will now support both `image-reference` and `source`
+        // with a preference for `source` in the case both are supplied
+        //const imageReference = core.getInput('image-reference', requiredOption);
+        const source = sourceInput();
+        //const dockerfilePath = core.getInput('dockerfile-path');
+        
         var debug = core.getInput('debug');
         var failBuild = core.getInput('fail-build');
         var acsReportEnable = core.getInput('acs-report-enable');
@@ -438,7 +508,7 @@ async function run() {
         core.debug(`Installing grype version ${version}`);
         await installGrype(grypeVersion);
 
-        core.debug('Image: ' + imageReference);
+        core.debug('Image: ' + source);
         core.debug('Debug Output: ' + debug);
         core.debug('Fail Build: ' + failBuild);
         core.debug('Severity Cutoff: ' + severityCutoff);
@@ -450,7 +520,7 @@ async function run() {
         let cmdOutput = '';
         let stdErr = '';
         let cmd = `${grypeBinary}`;
-        let cmdArgs = [`-vv`, `-o`, `json`, `${imageReference}`];
+        let cmdArgs = [`-vv`, `-o`, `json`, `${source}`];
         const cmdOpts = {};
         cmdOpts.listeners = {
                 stdout: (data=Buffer) => {
@@ -462,10 +532,7 @@ async function run() {
         };
 
 
-        //cmdOpts.silent = true;
-        //cmdOpts.cwd = './something';
-
-        core.info('\nAnalyzing: ' + imageReference);
+        core.info('\nAnalyzing: ' + source);
     await exec(cmd, cmdArgs, cmdOpts);
         
         core.info('\nCaptured stderr from grype:\n' + stdErr);
@@ -475,7 +542,8 @@ async function run() {
         fs.writeFileSync('./vulnerabilities.json', JSON.stringify(grypeVulnerabilities));
 
         if (acsReportEnable) {
-            try {sarifGrypeGeneration(version, severityCutoff, dockerfilePath);}
+            //try {sarifGrypeGeneration(version, severityCutoff, dockerfilePath);}
+            try {sarifGrypeGeneration(version, severityCutoff);}
             catch (err) {throw new Error(err)}
         }
 
@@ -522,9 +590,9 @@ function sarifGeneration(anchore_version, severity_cutoff_param, dockerfile_path
     // end sarif generate section
 }
 */
-function sarifGrypeGeneration(version, severity_cutoff_param, dockerfile_path_param){
+function sarifGrypeGeneration(version, severity_cutoff_param){
     // sarif generate section
-    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version, dockerfile_path_param);
+    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
     fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
     // end sarif generate section
 }
