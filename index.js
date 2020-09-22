@@ -424,7 +424,6 @@ async function run() {
             version = `${defaultAnchoreVersion}`;
         }
 
-        //await installInlineScan(version);
         core.debug(`Installing grype version ${version}`);
         await installGrype(grypeVersion);
 
