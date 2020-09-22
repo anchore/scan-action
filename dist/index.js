@@ -168,36 +168,42 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
 function grype_render_rules(vulnerabilities) {
     var ret = {}
     if (vulnerabilities) {
-    ret = vulnerabilities.map(v =>
-                  {
-                      return {
-                      "id": "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version,
-                      "shortDescription": {
-                          "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
-                      },
-                      "fullDescription": {
-                          "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
-                      },
-                      "help": {
-                          "text": "Vulnerability "+v.vulnerability.id+"\n"+
-                          "Severity: "+v.vulnerability.severity+"\n"+
-                          "Package: "+v.artifact.name+"\n"+
-                          "Version: "+v.artifact.version+"\n"+
-                          "Fix Version: "+"unknown"+"\n"+
-                          "Type: "+v.artifact.type+"\n"+
-                          "Location: "+v.artifact.locations[0].path+"\n"+
-                          //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
-                          "Data Namespace: "+ "unknown" + "\n"+
-                          "Link: ["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")",
-                          "markdown": "**Vulnerability "+v.vulnerability.id+"**\n"+
-                          "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
-                          "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
-                          "|"+v.vulnerability.severity+"|"+v.artifact.name+"|"+v.artifact.version+"|"+"unknown"+"|"+v.artifact.type+"|"+v.artifact.locations[0].path+"|"+"unknown"+"|["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")|\n"
-                      }
-
-                      }
-                  }
-                 );
+    let vulnIDs = [];
+    // This uses .reduce() because there can be duplicate vulnerabilities which the SARIF schema complains about.
+    ret = vulnerabilities.reduce(function(result, v) {
+        if (!vulnIDs.includes(v.vulnerability.id)) {
+          vulnIDs.push(v.vulnerability.id);
+          result.push(
+            {
+                "id": "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version,
+                "shortDescription": {
+                    "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                },
+                "fullDescription": {
+                    "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                },
+                "help": {
+                    "text": "Vulnerability "+v.vulnerability.id+"\n"+
+                    "Severity: "+v.vulnerability.severity+"\n"+
+                    "Package: "+v.artifact.name+"\n"+
+                    "Version: "+v.artifact.version+"\n"+
+                    "Fix Version: "+"unknown"+"\n"+
+                    "Type: "+v.artifact.type+"\n"+
+                    "Location: "+v.artifact.locations[0].path+"\n"+
+                    //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
+                    "Data Namespace: "+ "unknown" + "\n"+
+                    "Link: ["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")",
+                    "markdown": "**Vulnerability "+v.vulnerability.id+"**\n"+
+                    "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
+                    "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
+                    "|"+v.vulnerability.severity+"|"+v.artifact.name+"|"+v.artifact.version+"|"+"unknown"+"|"+v.artifact.type+"|"+v.artifact.locations[0].path+"|"+"unknown"+"|["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")|\n"
+                }
+              }
+          );
+          
+        }
+        return result;
+      }, []);
     }
     return(ret);
 }
@@ -209,8 +215,10 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile
         dockerfile_location = "Dockerfile"
     }
     if (vulnerabilities) {
+    
+
     ret = vulnerabilities.map(v =>
-                                   {
+                                   {  
                                    return {
                                        "ruleId": "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version,
                                        "ruleIndex": 0,
@@ -252,8 +260,8 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, dockerfile
                                        ],
                                        "baselineState": "unchanged"
                                    }
-                                   }
-                                  )
+                                }
+                            )
     }
     return(ret);
 }
@@ -386,15 +394,11 @@ async function run() {
 
         const requiredOption = {required: true};
         const imageReference = core.getInput('image-reference', requiredOption);
-        //const imageReference = "alpine:3.7"
         const dockerfilePath = core.getInput('dockerfile-path');
         var debug = core.getInput('debug');
-        //var debug = 'false';
         var failBuild = core.getInput('fail-build');
         var acsReportEnable = core.getInput('acs-report-enable');
-        //var acsReportEnable = "true";
         var severityCutoff = core.getInput('severity-cutoff');
-        //var severityCutoff = "Medium"
         var version = core.getInput('anchore-version');
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
@@ -431,7 +435,6 @@ async function run() {
             version = `${defaultAnchoreVersion}`;
         }
 
-        //await installInlineScan(version);
         core.debug(`Installing grype version ${version}`);
         await installGrype(grypeVersion);
 
@@ -464,7 +467,7 @@ async function run() {
 
         core.info('\nAnalyzing: ' + imageReference);
     await exec(cmd, cmdArgs, cmdOpts);
-        // XXX make this optional
+        
         core.info('\nCaptured stderr from grype:\n' + stdErr);
         let grypeVulnerabilities = JSON.parse(cmdOutput);
 
