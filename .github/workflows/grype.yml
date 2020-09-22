@@ -1,0 +1,26 @@
+name: "Run Anchore's Grype Scan Action"
+
+on: [push]
+
+jobs:
+  grype:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    #- uses: ./
+    #  with:
+    #    image-reference: "alpine:latest"
+    #    debug: true
+    - uses: ./
+      with:
+        image-reference: "dir://tests/python"
+        acs-report-enable: true
+        debug: true
+    - name: Inspect Generated SARIF
+      run: cat results.sarif
+# Uncomment this section to enable report upload
+    - name: Upload Anchore Scan SARIF
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: results.sarif
+
