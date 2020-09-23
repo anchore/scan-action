@@ -3,9 +3,6 @@ const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const fs = require('fs');
 
-//const scanScript = 'inline_scan';
-const defaultAnchoreVersion = '0.8.0';
-
 const grypeBinary = 'grype'
 const grypeVersion = '0.1.0-beta.7'
 
@@ -90,10 +87,7 @@ function textMessage(v) {
 
 function render_results(vulnerabilities, severity_cutoff_param) {
     var ret = {}
-    // var dockerfile_location = dockerfile_path_param
-    // if (!dockerfile_location) {
-    //     dockerfile_location = "Dockerfile"
-    // }
+
     if (vulnerabilities) {
     ret = vulnerabilities.map(v =>
                                    {
@@ -227,10 +221,6 @@ function grype_render_rules(vulnerabilities) {
 
 function grype_render_results(vulnerabilities, severity_cutoff_param) {
     var ret = {}
-    // var dockerfile_location = dockerfile_path_param
-    // if (!dockerfile_location) {
-    //     dockerfile_location = "Dockerfile"
-    // }
     if (vulnerabilities) {
     
 
@@ -456,13 +446,12 @@ async function run() {
         // with a preference for `source` in the case both are supplied
         //const imageReference = core.getInput('image-reference', requiredOption);
         const source = sourceInput();
-        //const dockerfilePath = core.getInput('dockerfile-path');
         
         var debug = core.getInput('debug');
         var failBuild = core.getInput('fail-build');
         var acsReportEnable = core.getInput('acs-report-enable');
         var severityCutoff = core.getInput('severity-cutoff');
-        var version = core.getInput('anchore-version');
+        var version = core.getInput('grype-version');
         const billOfMaterialsPath = "./anchore-reports/content.json";
         const SEVERITY_LIST = ['Unknown', 'Negligible', 'Low', 'Medium', 'High', 'Critical'];
         console.log(billOfMaterialsPath);
@@ -495,7 +484,7 @@ async function run() {
         }
 
         if (!version) {
-            version = `${defaultAnchoreVersion}`;
+            version = `${grypeVersion}`;
         }
 
         core.debug(`Installing grype version ${version}`);
