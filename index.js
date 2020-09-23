@@ -93,7 +93,7 @@ function dottedQuadFileVersion(version) {
     // pass the schema while issuing a warning.
     const pattern = /[0-9]+(\.[0-9]+){3}/
     // grype has some releases with dashes, ensure these are pruned
-    version = version.split('-')[0]
+    version = version.split('-')[0];
     
     // None of the Grype versions will ever have version with four parts, add a trailing `.0` here
     version = version + ".0";
@@ -553,49 +553,19 @@ async function run() {
         fs.writeFileSync('./vulnerabilities.json', JSON.stringify(grypeVulnerabilities));
 
         if (acsReportEnable) {
-            //try {sarifGrypeGeneration(version, severityCutoff, dockerfilePath);}
-            try {sarifGrypeGeneration(version, severityCutoff);}
+            try {sarifGrypeGeneration(severityCutoff, version);}
             catch (err) {throw new Error(err)}
         }
 
-        /*
-    let rawdata = fs.readFileSync('./anchore-reports/policy_evaluation.json');
-        let policyEval = JSON.parse(rawdata);
-        let imageId = Object.keys(policyEval[0]);
-        let imageTag = Object.keys(policyEval[0][imageId[0]]);
-        let policyStatus = policyEval[0][imageId[0]][imageTag][0]['status'];
 
-        try {
-            let billOfMaterials = {
-                "packages": mergeResults(loadContent(findContent("./anchore-reports/")))
-            };
-            fs.writeFileSync(billOfMaterialsPath, JSON.stringify(billOfMaterials));
-        } catch (error) {
-            core.error("Error constructing bill of materials from anchore output: " + error);
-            throw error;
-        }
-
-        if (acsReportEnable) {
-            try {sarifGeneration(version, acsSevCutoff, dockerfilePath);}
-            catch (err) {throw new Error(err)}
-        }
-
-        core.setOutput('billofmaterials', billOfMaterialsPath);
-        core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
-        core.setOutput('policycheck', policyStatus);
-
-        if (failBuild === true && policyStatus === "fail") {
-            core.setFailed("Image failed Anchore policy evaluation");
-        }
-    */
     } catch (error) {
         core.setFailed(error.message);
     }
 }
 
-function sarifGrypeGeneration(severity_cutoff_param){
+function sarifGrypeGeneration(severity_cutoff_param, version){
     // sarif generate section
-    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param);
+    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
     fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
     // end sarif generate section
 }
