@@ -92,6 +92,33 @@ function textMessage(v) {
     return prefix + "("+v.package+" type="+v.package_type+")"
 }
 
+
+function dottedQuadFileVersion(version) {
+    // The dotted quad version requirements of the SARIF schema has some strict requirements. Because
+    // it is tied to the version which can be (optionally) set by the user, it isn't enough to blindly
+    // add a trailing ".0" - This function validates the end result, falling back to a version that would
+    // pass the schema while issuing a warning.
+    const pattern = /[0-9]+(\.[0-9]+){3}/
+    // grype has some releases with dashes, ensure these are pruned
+    version = version.split('-')[0]
+    
+    // None of the Grype versions will ever have version with four parts, add a trailing `.0` here
+    version = version + ".0";
+
+    if (!version.match(pattern)) {
+        // After prunning and adding a trailing .0 we still got a failure. Warn about this, and fallback to
+        // a made-up version guaranteed to work.
+        core.warning(
+            `Unable to produce an acceptable four-part dotted version: ${version} \n` +
+            `SARIF reporting requires pattern matching against "[0-9]+(\.[0-9]+){3}" \n` +
+            "Will fallback to 0.0.0.0" 
+        );
+        return "0.0.0.0";
+    }
+    return version;
+}
+
+
 function render_results(vulnerabilities, severity_cutoff_param) {
     var ret = {}
 
@@ -146,7 +173,7 @@ function render_results(vulnerabilities, severity_cutoff_param) {
 }
 
 
-function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, anchore_version) {
+function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let vulnerabilities_raw = JSON.parse(rawdata);
     let vulnerabilities = vulnerabilities_raw.vulnerabilities;
@@ -160,9 +187,9 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "driver": {
             "name": "Anchore Container Vulnerability Report",
             "fullName": "Anchore Container Vulnerability Report",
-            "version": anchore_version,
-            "semanticVersion": anchore_version,
-            "dottedQuadFileVersion": anchore_version + ".0",
+            "version": version,
+            "semanticVersion": version,
+            "dottedQuadFileVersion": dottedQuadFileVersion(version),
             "rules": render_rules(vulnerabilities)
             }
         },
@@ -243,6 +270,8 @@ function grype_render_results(vulnerabilities, severity_cutoff_param) {
                                        },
                                        "analysisTarget": {
                                        "uri": getLocation(v),
+                                       // XXX This is possibly a bug. The SARIF schema invalidates this when the index is present because there
+                                       // aren't any other elements present. 
                                        //"index": 0
                                        },
                                        "locations": [
@@ -297,7 +326,7 @@ function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_p
             "fullName": "Anchore Container Vulnerability Report (T0)",
             "version": version,
             "semanticVersion": version,
-            "dottedQuadFileVersion": version + ".0",
+            "dottedQuadFileVersion": dottedQuadFileVersion(version),
             "rules": grype_render_rules(vulnerabilities)
             }
         },
@@ -522,7 +551,7 @@ async function run() {
 
 
         core.info('\nAnalyzing: ' + source);
-    await exec(cmd, cmdArgs, cmdOpts);
+        await exec(cmd, cmdArgs, cmdOpts);
         
         core.info('\nCaptured stderr from grype:\n' + stdErr);
         let grypeVulnerabilities = JSON.parse(cmdOutput);
@@ -571,17 +600,9 @@ async function run() {
     }
 }
 
-/*
-function sarifGeneration(anchore_version, severity_cutoff_param, dockerfile_path_param){
+function sarifGrypeGeneration(severity_cutoff_param){
     // sarif generate section
-    let sarifOutput = vulnerabilities_to_sarif("./anchore-reports/vulnerabilities.json", severity_cutoff_param, anchore_version, dockerfile_path_param);
-    fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
-    // end sarif generate section
-}
-*/
-function sarifGrypeGeneration(version, severity_cutoff_param){
-    // sarif generate section
-    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
+    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param);
     fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
     // end sarif generate section
 }
