@@ -62,12 +62,19 @@ function render_rules(vulnerabilities) {
 }
 
 function getLocation(v) {
-    dockerfilePath = core.getInput('dockerfile-path');
-    if (dockerfilePath != "") {
-        return dockerfilePath;
-    }
+    // dockerfilePath = core.getInput('dockerfile-path');
+    // if (dockerfilePath != "") {
+    //     return dockerfilePath;
+    // }
+
     if (v.artifact.locations.length) {
-        return v.artifact.locations[0];
+        // If the scan was against a directory, the location will be a string
+        location = v.artifact.locations[0];
+        if (typeof location === "string") {
+            return location;
+        }
+        // Otherwise it is an object with "path" and "layer" keys
+        return location["path"];
     }
     // XXX there is room for improvement here, trying to mimick previous behavior
     // If no `dockerfile-path` was provided, and in the improbable situation where there
