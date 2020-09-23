@@ -69,14 +69,9 @@ function render_rules(vulnerabilities) {
 }
 
 function getLocation(v) {
-    // dockerfilePath = core.getInput('dockerfile-path');
-    // if (dockerfilePath != "") {
-    //     return dockerfilePath;
-    // }
-
     if (v.artifact.locations.length) {
         // If the scan was against a directory, the location will be a string
-        location = v.artifact.locations[0];
+        var location = v.artifact.locations[0];
         if (typeof location === "string") {
             return location;
         }
@@ -90,7 +85,8 @@ function getLocation(v) {
 }
 
 function textMessage(v) {
-    scheme = sourceScheme();
+    var scheme = sourceScheme();
+    var prefix
     if (["dir", "tar"].includes(scheme)) {
         prefix = "The path " + getLocation(v) + " would result in an installed vulnerability: "
     } else {
@@ -117,7 +113,7 @@ function dottedQuadFileVersion(version) {
         // a made-up version guaranteed to work.
         core.warning(
             `Unable to produce an acceptable four-part dotted version: ${version} \n` +
-            `SARIF reporting requires pattern matching against "[0-9]+(\.[0-9]+){3}" \n` +
+            `SARIF reporting requires pattern matching against "[0-9]+(\\.[0-9]+){3}" \n` +
             "Will fallback to 0.0.0.0" 
         );
         return "0.0.0.0";
@@ -440,9 +436,10 @@ async function installGrype(version) {
 
 function sourceScheme() {
     // Any newer schemes like OCI need to be added here
-    schemes = ["dir", "tar", "docker"]
-    image = core.getInput('image-reference');
-    source = core.getInput('source');
+    var schemes = ["dir", "tar", "docker"]
+    var image = core.getInput('image-reference');
+    var source = core.getInput('source');
+    var inputValue
 
     if (source != "") {
         inputValue = source;
@@ -450,7 +447,7 @@ function sourceScheme() {
         inputValue = image;
     }
     
-    parts = inputValue.split(":");
+    var parts = inputValue.split(":");
     // return the scheme if found
     if (schemes.includes(parts[0])) {
         return parts[0];
@@ -460,8 +457,8 @@ function sourceScheme() {
 
 }
 function sourceInput() {
-    image = core.getInput('image-reference');
-    source = core.getInput('source');
+    var image = core.getInput('image-reference');
+    var source = core.getInput('source');
 
     // If both are defined, prefer `source`
     if (image != "" && source != "") {
@@ -483,11 +480,10 @@ async function run() {
     try {
         core.debug((new Date()).toTimeString());
 
-        const requiredOption = {required: true};
+        //const requiredOption = {required: true};
         // XXX backwards compatibility: image-reference was required, but grype accepts other source
         // types like a directory or a tar. This block will now support both `image-reference` and `source`
         // with a preference for `source` in the case both are supplied
-        //const imageReference = core.getInput('image-reference', requiredOption);
         const source = sourceInput();
         
         var debug = core.getInput('debug');
