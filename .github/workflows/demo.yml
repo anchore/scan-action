@@ -1,17 +1,24 @@
-name: "Run Anchore Scan Action"
+name: "[Demo] Run Scan Action"
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  test-image:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: ./
       with:
-        image-reference: "alpine:latest"
+        image: "alpine:latest"
         debug: true
+
+  test-directory:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - uses: ./
       with:
-        image-reference: "dir://tests/python"
+        path: "dir:tests/python"
         debug: true
+        severity-cutoff: "Negligible"
+        #grype-version: "main"

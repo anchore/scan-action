@@ -1,25 +1,48 @@
-name: "Run Anchore Scan Action (ACS SARIF Demo)"
+name: "[SARIF] Run Scan Action"
 
 on: [push, pull_request]
 
 jobs:
-  demo:
+  sarif-image:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
 
-    - name: Run the local anchore scan action itself with sarif generation enabled
+    - name: Run the local Scan Action with SARIF generation enabled
       uses: ./
       with:
-        image-reference: "debian:8"
+        image: "debian:8"
         debug: true
         acs-report-enable: true
         #severity-cutoff: "Medium"
+
     - name: Inspect Generated SARIF
       run: cat results.sarif
-# Uncomment this section to enable report upload
-    - name: Upload Anchore Scan SARIF
+
+    - name: Upload SARIF
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: results.sarif
+
+  sarif-directory:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+
+    - name: Run the local Scan Action with SARIF generation enabled
+      uses: ./
+      with:
+        path: "dir:tests/python"
+        debug: true
+        acs-report-enable: true
+        #severity-cutoff: "Medium"
+
+    - name: Inspect Generated SARIF
+      run: cat results.sarif
+
+    - name: Upload SARIF
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: results.sarif
