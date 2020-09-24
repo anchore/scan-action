@@ -1,17 +1,22 @@
-name: "Run Anchore Scan Action"
+name: "[Demo] Run Scan Action"
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  test-image:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: ./
       with:
-        image-reference: "alpine:latest"
+        source: "alpine:latest"
         debug: true
+
+  test-directory:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - uses: ./
       with:
-        image-reference: "dir://tests/python"
+        source: "dir://tests/python"
         debug: true
