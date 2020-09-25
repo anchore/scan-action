@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ./
       with:
-        source: "alpine:latest"
+        image: "alpine:latest"
         debug: true
 
   test-directory:
@@ -18,5 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ./
       with:
-        source: "dir://tests/python"
+        path: "dir://tests/python"
         debug: true
+        acs-report-severity-cutoff: "Negligible"
+        #grype-version: "main"

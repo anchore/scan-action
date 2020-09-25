@@ -423,55 +423,43 @@ async function installGrype(version) {
 }
 
 function sourceScheme() {
+    // This potentially can be removed once grype starts reporting what it used to perform the scan
+    // in the JSON output
     // Any newer schemes like OCI need to be added here
-    var schemes = ["dir", "tar", "docker"]
-    var image = core.getInput('image-reference');
-    var source = core.getInput('source');
-    var inputValue
-
-    if (source != "") {
-        inputValue = source;
-    } else {
-        inputValue = image;
+    if (core.getInput("image") != "") {
+        return "docker"
     }
-    
-    var parts = inputValue.split(":");
-    // return the scheme if found
-    if (schemes.includes(parts[0])) {
-        return parts[0];
-    }
-    // A repo:tag probably, so use docker
-    return "docker";
-
+    // Only two options are currently supported
+    return "dir"
 }
-function sourceInput() {
-    var image = core.getInput('image-reference');
-    var source = core.getInput('source');
 
-    // If both are defined, prefer `source`
-    if (image != "" && source != "") {
-        // XXX Add an extra warning about making it an error condition?
-        core.warning("Both 'image-reference' and 'source' were specified, 'source' is preferred and will be used");
-        return source;
-    }
-    // If `source` is defined then prioritize it
-    if (source != "") {
-        return source;
-    }
-    // Finally, just use the image coming from the deprecated `image-reference`
-    core.warning("Please use 'source' instead of 'image-reference'")
-    return image;
+function sourceInput() {
+  var image = core.getInput("image");
+  var path = core.getInput("path");
+
+  if (image && path) {
+    core.setFailed("Cannot use both 'image' and 'path' as sources");
+  }
+
+  if (!(image || path)) {
+    core.setFailed(
+      "At least one source for scanning needs to be provided. Available options are: image, and path"
+    );
+  }
+
+  if (image != "") {
+    return "dir:" + image;
+  }
+
+  return path;
 }
 
 
 async function run() {
     try {
       core.debug(new Date().toTimeString());
-
-      //const requiredOption = {required: true};
-      // XXX backwards compatibility: image-reference was required, but grype accepts other source
-      // types like a directory or a tar. This block will now support both `image-reference` and `source`
-      // with a preference for `source` in the case both are supplied
+      // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
+      // a check must happen to ensure one is selected at least, and then return it
       const source = sourceInput();
 
       var debug = core.getInput("debug");

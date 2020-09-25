@@ -12,7 +12,7 @@ jobs:
     - name: Run the local Scan Action with SARIF generation enabled
       uses: ./
       with:
-        source: "debian:8"
+        image: "debian:8"
         debug: true
         acs-report-enable: true
         #severity-cutoff: "Medium"
@@ -34,7 +34,7 @@ jobs:
     - name: Run the local Scan Action with SARIF generation enabled
       uses: ./
       with:
-        source: "dir://tests/python"
+        path: "dir://tests/python"
         debug: true
         acs-report-enable: true
         #severity-cutoff: "Medium"
