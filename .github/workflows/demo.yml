@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ./
       with:
-        path: "dir://tests/python"
+        path: "dir:tests/python"
         debug: true
         severity-cutoff: "Negligible"
         #grype-version: "main"
