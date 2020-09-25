@@ -20,5 +20,5 @@ jobs:
       with:
         path: "dir://tests/python"
         debug: true
-        acs-report-severity-cutoff: "Negligible"
+        severity-cutoff: "Negligible"
         #grype-version: "main"
