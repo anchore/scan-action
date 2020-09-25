@@ -4,9 +4,12 @@ branding:
   color: blue
   icon: check-circle
 inputs:
-  image-reference:
+  image:
     description: 'The image to scan'
-    required: true
+    required: false
+  path:
+    description: 'The path to scan'
+    required: false
   dockerfile-path:
     description: 'Path to the dockerfile'
     required: false
@@ -18,8 +21,8 @@ inputs:
     description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
     required: false
     default: 'false'
-  anchore-version:
-    description: 'Optionally, specify anchore-engine version (eg 0.5.2) to use instead of the default version'
+  grype-version:
+    description: 'Optionally, specify the Grype version (e.g. 0.1.0) to use instead of the default version'
     required: false
   acs-report-enable:
     description: 'Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.'
