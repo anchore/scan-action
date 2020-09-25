@@ -468,7 +468,7 @@ async function run() {
       var severityCutoff = core.getInput("severity-cutoff");
       var version = core.getInput("grype-version");
       const billOfMaterialsPath = "./anchore-reports/content.json";
-      const SEVERITY_LIST = ["Negligible", "Low", "Medium", "High", "Critical"];
+      const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
       console.log(billOfMaterialsPath);
       if (debug.toLowerCase() === "true") {
         debug = "true";
@@ -491,11 +491,11 @@ async function run() {
       if (
         !SEVERITY_LIST.some(
           (item) =>
-            typeof severityCutoff === "string" && item === severityCutoff
+            typeof severityCutoff.toLowerCase() === "string" && item === severityCutoff
         )
       ) {
         throw new Error(
-          `Invalid severity-cutoff value is set ${debug} ${severityCutoff} - please ensure you are choosing either Negligible, Low, Medium, High, or Critical`
+          `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
         );
       }
 
