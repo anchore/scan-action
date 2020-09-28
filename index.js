@@ -449,10 +449,10 @@ function sourceInput() {
   }
 
   if (image != "") {
-    return "dir:" + image;
+    return image;
   }
 
-  return path;
+  return "dir:" + path;
 }
 
 
