@@ -1,5 +1,5 @@
 name: 'Anchore Container Scan'
-description: 'Scan docker containers with Anchore for vulnerabilities and policy violations'
+description: 'Scan docker containers with Grype for vulnerabilities'
 branding:
   color: blue
   icon: check-circle
@@ -9,9 +9,6 @@ inputs:
     required: false
   path:
     description: 'The path to scan'
-    required: false
-  dockerfile-path:
-    description: 'Path to the dockerfile'
     required: false
   debug:
     description: 'Set this to any value to enable verbose debug output'
