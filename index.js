@@ -319,7 +319,8 @@ function grype_render_results(vulnerabilities, severity_cutoff_param) {
 
 function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
-    let vulnerabilities = JSON.parse(rawdata);
+    let parsed = JSON.parse(rawdata);
+    let vulnerabilities = parsed.matches;
 
     const sarifOutput = {
     "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
