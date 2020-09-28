@@ -11,7 +11,7 @@ const { exec } = __webpack_require__(940);
 const fs = __webpack_require__(747);
 
 const grypeBinary = 'grype'
-const grypeVersion = '0.1.0-beta.6'
+const grypeVersion = '0.1.0-beta.11'
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
@@ -603,6 +603,7 @@ module.exports = {run, mergeResults, findContent, loadContent, vulnerabilities_t
 if (require.main === require.cache[eval('__filename')]) {
     run().catch((err)=>{throw new Error(err)});
 }
+
 
 /***/ }),
 

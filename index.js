@@ -4,7 +4,7 @@ const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 const grypeBinary = 'grype'
-const grypeVersion = '0.1.0-beta.6'
+const grypeVersion = '0.1.0-beta.11'
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
