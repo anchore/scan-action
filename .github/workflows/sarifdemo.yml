@@ -34,7 +34,7 @@ jobs:
     - name: Run the local Scan Action with SARIF generation enabled
       uses: ./
       with:
-        path: "dir:tests/python"
+        path: "tests/python"
         debug: true
         acs-report-enable: true
         #severity-cutoff: "Medium"

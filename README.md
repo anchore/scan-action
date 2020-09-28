@@ -59,7 +59,7 @@ To scan a directory, add the following step:
 The `path` key allows any valid path for the current project. The root of the path (`"."` in this example) is the repository root.
 
 ## Failing a build on vulnerability severity
-To have the build step fail in cases where there are vulnerabilities with a specific severity level, then set the `fail-build` to `true`. By default, the severity level is `Medium`, but this can be adjusted using the `severity-cutoff` field.
+To have the build step fail in cases where there are vulnerabilities with a specific severity level, then set the `fail-build` to `true`. By default, the severity level is `medium`, but this can be adjusted using the `severity-cutoff` field.
 
 ```yaml
  - name: Scan image
@@ -77,7 +77,7 @@ With a different severity level:
    with:
      image: "localbuild/testimage:latest"
      fail-build: true
-     severity-cutoff: Critical
+     severity-cutoff: critical
 ```
 
 
@@ -90,9 +90,9 @@ The only required key is `image`; all the other keys are optional. These are all
 | `image` | The image to scan | N/A |
 | `debug` | Verbose logging output | `false` |
 | `fail-build` | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.  | `false` |
-| `grype-version` | An optional parameter to specify a specific version of `grype` to use for the scan. Default is the version locked to the scan-action release | `v0.1.0-beta.10` |
+| `grype-version` | An optional parameter to specify a specific version of `grype` to use for the scan. Default is the version locked to the scan-action release | `0.1.0` |
 | `acs-report-enable` | Optionally, enable the feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. | `false` |
-| `severity-cutoff` | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "Negligible", "Low", "Medium", "High" and "Critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "Medium". | `"Medium"` |
+| `severity-cutoff` | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium". | `"medium"` |
 
 ### Action Outputs
 

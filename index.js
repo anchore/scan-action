@@ -4,10 +4,14 @@ const { exec } = require('@actions/exec');
 const fs = require('fs');
 
 const grypeBinary = 'grype'
-const grypeVersion = '0.1.0-beta.6'
+const grypeVersion = '0.1.0'
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
+  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the 
+  // severity from the vulnerability will be capitalized, so this must be capitalized again to calculate
+  // using the same object
+  let param = severity_cutoff_param[0].toUpperCase() + severity_cutoff_param.substring(1)
   var ret = "error";
   const severityLevels = {
     Unknown: 0,
@@ -18,7 +22,7 @@ function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
     Critical: 5,
   };
 
-  if (severityLevels[input_severity] < severityLevels[severity_cutoff_param]) {
+  if (severityLevels[input_severity] < severityLevels[param]) {
     ret = "warning";
   }
 
@@ -388,29 +392,23 @@ function mergeResults(contentArray) {
 }
 
 async function downloadGrype(version) {
-    var url;
-    core.debug(`Installing ${version}`);
-    
-    // Support using a branch instead of a version by (naively) checking if the version
-    // is using a digit or not. This will break if a branch starts with a number
-    if (version.match(/^\d/)) {
-        url = `https://raw.githubusercontent.com/anchore/grype/v${version}/install.sh`;
-    } else {
-        url = `https://raw.githubusercontent.com/anchore/grype/${version}/install.sh`;
-    }
+  let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
 
-    // Download the installer, and run
-    const installPath = await cache.downloadTool(url);
-    // Make sure the tool's executable bit is set
-    await exec(`chmod +x ${installPath}`);
+  core.debug(`Installing ${version}`);
 
-    let cmd = `${installPath} -b ${installPath}_grype`
-    await exec(cmd);
-    let grypePath = `${installPath}_grype/grype`
+  // TODO: when grype starts supporting unreleased versions, support it here
+  // Download the installer, and run
+  const installPath = await cache.downloadTool(url);
+  // Make sure the tool's executable bit is set
+  await exec(`chmod +x ${installPath}`);
 
-    // Cache the downloaded file
-    return cache.cacheFile(grypePath, `grype`, `grype`, version);
-  }
+  let cmd = `${installPath} -b ${installPath}_grype v${version}`;
+  await exec(cmd);
+  let grypePath = `${installPath}_grype/grype`;
+
+  // Cache the downloaded file
+  return cache.cacheFile(grypePath, `grype`, `grype`, version);
+}
 
 async function installGrype(version) {
     let grypePath = cache.find(grypeBinary, version);
@@ -449,10 +447,10 @@ function sourceInput() {
   }
 
   if (image != "") {
-    return "dir:" + image;
+    return image;
   }
 
-  return path;
+  return "dir:" + path;
 }
 
 
@@ -492,7 +490,7 @@ async function run() {
       if (
         !SEVERITY_LIST.some(
           (item) =>
-            typeof severityCutoff.toLowerCase() === "string" && item === severityCutoff
+            typeof severityCutoff.toLowerCase() === "string" && item === severityCutoff.toLowerCase()
         )
       ) {
         throw new Error(
@@ -517,7 +515,6 @@ async function run() {
 
       // Run the grype analyzer
       let cmdOutput = "";
-      let stdErr = "";
       let cmd = `${grypeBinary}`;
       let cmdArgs = [`-vv`, `-o`, `json`];
       if (severityCutoff != "") {
@@ -530,9 +527,6 @@ async function run() {
         stdout: (data = Buffer) => {
           cmdOutput += data.toString();
         },
-        stderr: (data = Buffer) => {
-          stdErr += data.toString();
-        },
       };
 
       cmdOpts.ignoreReturnCode = true;
@@ -540,8 +534,6 @@ async function run() {
       core.info("\nAnalyzing: " + source);
       core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
       let exitCode = await exec(cmd, cmdArgs, cmdOpts);
-
-      core.info("\nCaptured stderr from grype:\n" + stdErr);
       let grypeVulnerabilities = JSON.parse(cmdOutput);
 
       // handle output
@@ -552,7 +544,7 @@ async function run() {
 
       if (acsReportEnable) {
         try {
-          sarifGrypeGeneration(severityCutoff, version);
+          sarifGrypeGeneration(severityCutoff.toLowerCase(), version);
         } catch (err) {
           throw new Error(err);
         }
