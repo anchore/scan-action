@@ -556,6 +556,8 @@ async function run() {
         );
       }
 
+      core.setOutput('vulnerabilities', './vulnerabilities.json');
+
       // If there is a non-zero exit status code there are a couple of potential reporting paths
       if (failBuild === false && exitCode > 0) {
         // There was a non-zero exit status but it wasn't because of failing severity, this must be
