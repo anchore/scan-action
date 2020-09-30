@@ -28,10 +28,10 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/core": "^1.2.4",
+    "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.4",
-    "@actions/tool-cache": "^1.5.5",
-    "lodash": "^4.17.19"
+    "@actions/tool-cache": "^1.6.0",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.24.1",
