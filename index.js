@@ -215,14 +215,15 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
 function grype_render_rules(vulnerabilities) {
     var ret = {}
     if (vulnerabilities) {
-    let vulnIDs = [];
+    let ruleIDs = [];
     // This uses .reduce() because there can be duplicate vulnerabilities which the SARIF schema complains about.
     ret = vulnerabilities.reduce(function(result, v) {
-        if (!vulnIDs.includes(v.vulnerability.id)) {
-          vulnIDs.push(v.vulnerability.id);
+        let ruleID = "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version;
+        if (!ruleIDs.includes(ruleID)) {
+          ruleIDs.push(ruleID);
           result.push(
             {
-                "id": "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version,
+                "id": ruleID,
                 "shortDescription": {
                     "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
                 },
