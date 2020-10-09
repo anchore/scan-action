@@ -2,12 +2,12 @@ module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 932:
+/***/ 14:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const cache = __webpack_require__(784);
-const core = __webpack_require__(186);
-const { exec } = __webpack_require__(514);
+const cache = __webpack_require__(418);
+const core = __webpack_require__(764);
+const { exec } = __webpack_require__(940);
 const fs = __webpack_require__(747);
 
 const grypeBinary = 'grype'
@@ -15,7 +15,7 @@ const grypeVersion = '0.1.0'
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
-  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the 
+  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the
   // severity from the vulnerability will be capitalized, so this must be capitalized again to calculate
   // using the same object
   let param = severity_cutoff_param[0].toUpperCase() + severity_cutoff_param.substring(1)
@@ -99,7 +99,7 @@ function textMessage(v) {
   } else {
     prefix = "The container image contains software with a vulnerability: ";
   }
-  return prefix + "(" + v.package + " type=" + v.package_type + ")";
+  return prefix + "(" + v.artifact.name + " type=" + v.artifact.type + ")";
 }
 
 
@@ -255,7 +255,7 @@ function grype_render_rules(vulnerabilities) {
                 }
               }
           );
-          
+
         }
         return result;
       }, []);
@@ -604,7 +604,7 @@ if (require.main === require.cache[eval('__filename')]) {
 
 /***/ }),
 
-/***/ 351:
+/***/ 793:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -618,7 +618,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const os = __importStar(__webpack_require__(87));
-const utils_1 = __webpack_require__(278);
 /**
  * Commands
  *
@@ -672,14 +671,28 @@ class Command {
         return cmdStr;
     }
 }
+/**
+ * Sanitizes an input into a string so it can be passed into issueCommand safely
+ * @param input input to sanitize into a string
+ */
+function toCommandValue(input) {
+    if (input === null || input === undefined) {
+        return '';
+    }
+    else if (typeof input === 'string' || input instanceof String) {
+        return input;
+    }
+    return JSON.stringify(input);
+}
+exports.toCommandValue = toCommandValue;
 function escapeData(s) {
-    return utils_1.toCommandValue(s)
+    return toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A');
 }
 function escapeProperty(s) {
-    return utils_1.toCommandValue(s)
+    return toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A')
@@ -690,7 +703,7 @@ function escapeProperty(s) {
 
 /***/ }),
 
-/***/ 186:
+/***/ 764:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -712,9 +725,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const command_1 = __webpack_require__(351);
-const file_command_1 = __webpack_require__(717);
-const utils_1 = __webpack_require__(278);
+const command_1 = __webpack_require__(793);
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 /**
@@ -741,17 +752,9 @@ var ExitCode;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function exportVariable(name, val) {
-    const convertedVal = utils_1.toCommandValue(val);
+    const convertedVal = command_1.toCommandValue(val);
     process.env[name] = convertedVal;
-    const filePath = process.env['GITHUB_ENV'] || '';
-    if (filePath) {
-        const delimiter = '_GitHubActionsFileCommandDelimeter_';
-        const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        file_command_1.issueCommand('ENV', commandValue);
-    }
-    else {
-        command_1.issueCommand('set-env', { name }, convertedVal);
-    }
+    command_1.issueCommand('set-env', { name }, convertedVal);
 }
 exports.exportVariable = exportVariable;
 /**
@@ -767,13 +770,7 @@ exports.setSecret = setSecret;
  * @param inputPath
  */
 function addPath(inputPath) {
-    const filePath = process.env['GITHUB_PATH'] || '';
-    if (filePath) {
-        file_command_1.issueCommand('PATH', inputPath);
-    }
-    else {
-        command_1.issueCommand('add-path', {}, inputPath);
-    }
+    command_1.issueCommand('add-path', {}, inputPath);
     process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
 }
 exports.addPath = addPath;
@@ -935,69 +932,7 @@ exports.getState = getState;
 
 /***/ }),
 
-/***/ 717:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-// For internal use, subject to change.
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-// We use any as a valid input type
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(__webpack_require__(747));
-const os = __importStar(__webpack_require__(87));
-const utils_1 = __webpack_require__(278);
-function issueCommand(command, message) {
-    const filePath = process.env[`GITHUB_${command}`];
-    if (!filePath) {
-        throw new Error(`Unable to find environment variable for file command ${command}`);
-    }
-    if (!fs.existsSync(filePath)) {
-        throw new Error(`Missing file at path: ${filePath}`);
-    }
-    fs.appendFileSync(filePath, `${utils_1.toCommandValue(message)}${os.EOL}`, {
-        encoding: 'utf8'
-    });
-}
-exports.issueCommand = issueCommand;
-//# sourceMappingURL=file-command.js.map
-
-/***/ }),
-
-/***/ 278:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-// We use any as a valid input type
-/* eslint-disable @typescript-eslint/no-explicit-any */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-/**
- * Sanitizes an input into a string so it can be passed into issueCommand safely
- * @param input input to sanitize into a string
- */
-function toCommandValue(input) {
-    if (input === null || input === undefined) {
-        return '';
-    }
-    else if (typeof input === 'string' || input instanceof String) {
-        return input;
-    }
-    return JSON.stringify(input);
-}
-exports.toCommandValue = toCommandValue;
-//# sourceMappingURL=utils.js.map
-
-/***/ }),
-
-/***/ 514:
+/***/ 940:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -1019,7 +954,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const tr = __importStar(__webpack_require__(159));
+const tr = __importStar(__webpack_require__(109));
 /**
  * Exec a command.
  * Output will be streamed to the live console.
@@ -1048,7 +983,7 @@ exports.exec = exec;
 
 /***/ }),
 
-/***/ 159:
+/***/ 109:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -1074,8 +1009,8 @@ const os = __importStar(__webpack_require__(87));
 const events = __importStar(__webpack_require__(614));
 const child = __importStar(__webpack_require__(129));
 const path = __importStar(__webpack_require__(622));
-const io = __importStar(__webpack_require__(436));
-const ioUtil = __importStar(__webpack_require__(962));
+const io = __importStar(__webpack_require__(934));
+const ioUtil = __importStar(__webpack_require__(769));
 /* eslint-disable @typescript-eslint/unbound-method */
 const IS_WINDOWS = process.platform === 'win32';
 /*
@@ -1655,7 +1590,7 @@ class ExecState extends events.EventEmitter {
 
 /***/ }),
 
-/***/ 925:
+/***/ 771:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1664,7 +1599,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const url = __webpack_require__(835);
 const http = __webpack_require__(605);
 const https = __webpack_require__(211);
-const pm = __webpack_require__(443);
+const pm = __webpack_require__(719);
 let tunnel;
 var HttpCodes;
 (function (HttpCodes) {
@@ -2074,7 +2009,7 @@ class HttpClient {
         if (useProxy) {
             // If using proxy, need tunnel
             if (!tunnel) {
-                tunnel = __webpack_require__(294);
+                tunnel = __webpack_require__(828);
             }
             const agentOptions = {
                 maxSockets: maxSockets,
@@ -2194,7 +2129,7 @@ exports.HttpClient = HttpClient;
 
 /***/ }),
 
-/***/ 443:
+/***/ 719:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -2260,7 +2195,7 @@ exports.checkBypass = checkBypass;
 
 /***/ }),
 
-/***/ 962:
+/***/ 769:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -2462,7 +2397,7 @@ function isUnixExecutable(stats) {
 
 /***/ }),
 
-/***/ 436:
+/***/ 934:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -2480,7 +2415,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const childProcess = __webpack_require__(129);
 const path = __webpack_require__(622);
 const util_1 = __webpack_require__(669);
-const ioUtil = __webpack_require__(962);
+const ioUtil = __webpack_require__(769);
 const exec = util_1.promisify(childProcess.exec);
 /**
  * Copies a file or folder.
@@ -2759,7 +2694,7 @@ function copyFile(srcFile, destFile, force) {
 
 /***/ }),
 
-/***/ 473:
+/***/ 968:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2781,8 +2716,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const semver = __importStar(__webpack_require__(911));
-const core_1 = __webpack_require__(186);
+const semver = __importStar(__webpack_require__(206));
+const core_1 = __webpack_require__(764);
 // needs to be require for core node modules to be mocked
 /* eslint @typescript-eslint/no-require-imports: 0 */
 const os = __webpack_require__(87);
@@ -2872,7 +2807,7 @@ exports._readLinuxVersionFile = _readLinuxVersionFile;
 
 /***/ }),
 
-/***/ 279:
+/***/ 580:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -2894,7 +2829,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__webpack_require__(186));
+const core = __importStar(__webpack_require__(764));
 /**
  * Internal class for retries
  */
@@ -2949,7 +2884,7 @@ exports.RetryHelper = RetryHelper;
 
 /***/ }),
 
-/***/ 784:
+/***/ 418:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -2974,20 +2909,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__webpack_require__(186));
-const io = __importStar(__webpack_require__(436));
+const core = __importStar(__webpack_require__(764));
+const io = __importStar(__webpack_require__(934));
 const fs = __importStar(__webpack_require__(747));
-const mm = __importStar(__webpack_require__(473));
+const mm = __importStar(__webpack_require__(968));
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
-const httpm = __importStar(__webpack_require__(925));
-const semver = __importStar(__webpack_require__(911));
+const httpm = __importStar(__webpack_require__(771));
+const semver = __importStar(__webpack_require__(206));
 const stream = __importStar(__webpack_require__(413));
 const util = __importStar(__webpack_require__(669));
-const v4_1 = __importDefault(__webpack_require__(824));
-const exec_1 = __webpack_require__(514);
+const v4_1 = __importDefault(__webpack_require__(689));
+const exec_1 = __webpack_require__(940);
 const assert_1 = __webpack_require__(357);
-const retry_helper_1 = __webpack_require__(279);
+const retry_helper_1 = __webpack_require__(580);
 class HTTPError extends Error {
     constructor(httpStatusCode) {
         super(`Unexpected HTTP response: ${httpStatusCode}`);
@@ -2997,7 +2932,6 @@ class HTTPError extends Error {
 }
 exports.HTTPError = HTTPError;
 const IS_WINDOWS = process.platform === 'win32';
-const IS_MAC = process.platform === 'darwin';
 const userAgent = 'actions/tool-cache';
 /**
  * Download a tool from an url and stream it into a file
@@ -3213,36 +3147,6 @@ function extractTar(file, dest, flags = 'xz') {
     });
 }
 exports.extractTar = extractTar;
-/**
- * Extract a xar compatible archive
- *
- * @param file     path to the archive
- * @param dest     destination directory. Optional.
- * @param flags    flags for the xar. Optional.
- * @returns        path to the destination directory
- */
-function extractXar(file, dest, flags = []) {
-    return __awaiter(this, void 0, void 0, function* () {
-        assert_1.ok(IS_MAC, 'extractXar() not supported on current OS');
-        assert_1.ok(file, 'parameter "file" is required');
-        dest = yield _createExtractFolder(dest);
-        let args;
-        if (flags instanceof Array) {
-            args = flags;
-        }
-        else {
-            args = [flags];
-        }
-        args.push('-x', '-C', dest, '-f', file);
-        if (core.isDebug()) {
-            args.push('-v');
-        }
-        const xarPath = yield io.which('xar', true);
-        yield exec_1.exec(`"${xarPath}"`, _unique(args));
-        return dest;
-    });
-}
-exports.extractXar = extractXar;
 /**
  * Extract a zip
  *
@@ -3551,18 +3455,11 @@ function _getGlobal(key, defaultValue) {
     /* eslint-enable @typescript-eslint/no-explicit-any */
     return value !== undefined ? value : defaultValue;
 }
-/**
- * Returns an array of unique values.
- * @param values Values to make unique.
- */
-function _unique(values) {
-    return Array.from(new Set(values));
-}
 //# sourceMappingURL=tool-cache.js.map
 
 /***/ }),
 
-/***/ 911:
+/***/ 206:
 /***/ ((module, exports) => {
 
 exports = module.exports = SemVer
@@ -5165,15 +5062,15 @@ function coerce (version, options) {
 
 /***/ }),
 
-/***/ 294:
+/***/ 828:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(219);
+module.exports = __webpack_require__(901);
 
 
 /***/ }),
 
-/***/ 219:
+/***/ 901:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5445,7 +5342,7 @@ exports.debug = debug; // for test
 
 /***/ }),
 
-/***/ 707:
+/***/ 898:
 /***/ ((module) => {
 
 /**
@@ -5493,11 +5390,11 @@ module.exports = function nodeRNG() {
 
 /***/ }),
 
-/***/ 824:
+/***/ 689:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var rng = __webpack_require__(859);
-var bytesToUuid = __webpack_require__(707);
+var bytesToUuid = __webpack_require__(898);
 
 function v4(options, buf, offset) {
   var i = buf && offset || 0;
@@ -5679,6 +5576,6 @@ module.exports = require("util");
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(932);
+/******/ 	return __webpack_require__(14);
 /******/ })()
 ;
