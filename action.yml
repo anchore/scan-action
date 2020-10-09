@@ -1,5 +1,5 @@
-name: 'Anchore Container Scan'
-description: 'Scan docker containers with Grype for vulnerabilities'
+name: 'Anchore Vulnerabilities Scan'
+description: 'Scan for vulnerabilities in containers or filesystems with Grype'
 branding:
   color: blue
   icon: check-circle
