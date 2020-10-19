@@ -8,7 +8,7 @@ const grypeVersion = '0.1.0'
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
-  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the 
+  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the
   // severity from the vulnerability will be capitalized, so this must be capitalized again to calculate
   // using the same object
   let param = severity_cutoff_param[0].toUpperCase() + severity_cutoff_param.substring(1)
@@ -92,7 +92,7 @@ function textMessage(v) {
   } else {
     prefix = "The container image contains software with a vulnerability: ";
   }
-  return prefix + "(" + v.package + " type=" + v.package_type + ")";
+  return prefix + "(" + v.artifact.name + " type=" + v.artifact.type + ")";
 }
 
 
@@ -248,7 +248,7 @@ function grype_render_rules(vulnerabilities) {
                 }
               }
           );
-          
+
         }
         return result;
       }, []);
