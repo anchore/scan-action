@@ -99,6 +99,7 @@ The only required key is `image`; all the other keys are optional. These are all
 | Output Name | Description | Type |
 |-----------------|-------------|----------|
 | vulnerabilities | Path to a JSON file with the list of vulnerabilities found in image | string |
+| sarif | Path to a SARIF report file | string |
 
 As a result of the action, you'll get a JSON file in the `anchore-reports` directory in the workspace:
 
@@ -142,20 +143,21 @@ jobs:
     - name: Build the Container image
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest
     - uses: anchore/scan-action@v2
+      id: scan
       with:
         image: "localbuild/testimage:latest"
         acs-report-enable: true
     - name: upload Anchore scan SARIF report
       uses: github/codeql-action/upload-sarif@v1
       with:
-        sarif_file: results.sarif
+        sarif_file: ${{ steps.scan.outputs.sarif }}
 ```
 
 Optionally, you can add a step to inspect the SARIF report produced:
 
 ```yaml
     - name: Inspect action SARIF report
-      run: cat results.sarif
+      run: cat ${{ steps.scan.outputs.sarif }}
 ```
 
 ## Contributing

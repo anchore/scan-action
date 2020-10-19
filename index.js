@@ -581,8 +581,10 @@ async function run() {
 
 function sarifGrypeGeneration(severity_cutoff_param, version){
     // sarif generate section
+    const SARIF_FILE = "./results.sarif";
     let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
-    fs.writeFileSync("./results.sarif", JSON.stringify(sarifOutput, null, 2));
+    fs.writeFileSync(SARIF_FILE, JSON.stringify(sarifOutput, null, 2));
+    core.setOutput('sarif', SARIF_FILE);
     // end sarif generate section
 }
 
