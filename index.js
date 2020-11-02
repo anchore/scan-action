@@ -221,6 +221,12 @@ function grype_render_rules(vulnerabilities) {
         let ruleID = "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version;
         if (!ruleIDs.includes(ruleID)) {
           ruleIDs.push(ruleID);
+          // Entirely possible to not have any links whatsoever
+          let link = v.vulnerability.id;
+          if ("links" in v.vulnerability) {
+            link = `[${v.vulnerability.id}](${v.vulnerability.links[0]})`;
+          }
+
           result.push(
             {
                 "id": ruleID,
@@ -240,11 +246,11 @@ function grype_render_rules(vulnerabilities) {
                     "Location: "+v.artifact.locations[0].path+"\n"+
                     //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
                     "Data Namespace: "+ "unknown" + "\n"+
-                    "Link: ["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")",
+                    `Link: ${link}`,
                     "markdown": "**Vulnerability "+v.vulnerability.id+"**\n"+
                     "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
                     "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
-                    "|"+v.vulnerability.severity+"|"+v.artifact.name+"|"+v.artifact.version+"|"+"unknown"+"|"+v.artifact.type+"|"+v.artifact.locations[0].path+"|"+"unknown"+"|["+v.vulnerability.id+"]("+v.vulnerability.links[0]+")|\n"
+                    "|"+v.vulnerability.severity+"|"+v.artifact.name+"|"+v.artifact.version+"|"+"unknown"+"|"+v.artifact.type+"|"+v.artifact.locations[0].path+"|"+"unknown"+"|"+link+"|\n"
                 }
               }
           );
