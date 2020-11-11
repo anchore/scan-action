@@ -1,5 +1,9 @@
 # Release Notes
 
+## Version 2.0.2 - 2020-11-11
+
+* Update `actions/core` to use version `1.2.6` [(Issue #71)](https://github.com/anchore/scan-action/issues/71)
+
 ## Version 2.0.1 - 2020-02-11
 
 Fixes:
@@ -11,7 +15,7 @@ Fixes:
 
 ## Version 2.0.0 - 2020-30-09
 
-2.0.0 is a new major version of scan action based on the new [Grype](https://github.com/anchore/grype) tool from Anchore. 
+2.0.0 is a new major version of scan action based on the new [Grype](https://github.com/anchore/grype) tool from Anchore.
 It is much faster for scanning compared to v1.x of the action and adds some new capabilities, including directory scanning as well as container image scanning,
 and also has more metadata about the vulnerability matches than previous versions for more transparency on the matching process.
 
