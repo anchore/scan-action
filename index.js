@@ -21,7 +21,7 @@ function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
     if (severityLevels[input_severity] < severityLevels[severity_cutoff_param]) {
     ret = "warning"
     }
-    
+
     return(ret)
 }
 
@@ -43,7 +43,7 @@ function render_rules(vulnerabilities) {
                           "Severity: "+v.severity+"\n"+
                           "Package: "+v.package_name+"\n"+
                           "Version: "+v.package_version+"\n"+
-                          "Fix Version: "+v.fix+"\n"+                                             
+                          "Fix Version: "+v.fix+"\n"+
                           "Type: "+v.package_type+"\n"+
                           "Location: "+v.package_path+"\n"+
                           "Data Namespace: "+v.feed + ", "+v.feed_group+"\n"+
@@ -53,7 +53,7 @@ function render_rules(vulnerabilities) {
                           "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
                           "|"+v.severity+"|"+v.package_name+"|"+v.package_version+"|"+v.fix+"|"+v.package_type+"|"+v.package_path+"|"+v.feed_group+"|["+v.vuln+"]("+v.url+")|\n"
                       }
-                      
+
                       }
                   }
                  );
@@ -112,7 +112,7 @@ function render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_
                                        "baselineState": "unchanged"
                                    }
                                    }
-                                  ) 
+                                  )
     }
     return(ret);
 }
@@ -144,12 +144,12 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "kind": "namespace"
                     }
         ],
-        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param), 
+        "results": render_results(vulnerabilities, severity_cutoff_param, dockerfile_path_param),
         "columnKind": "utf16CodeUnits"
             }
     ]
     }
-    
+
     return(sarifOutput)
 }
 
@@ -204,12 +204,15 @@ async function installInlineScan(version) {
         scanScriptPath = await downloadInlineScan(version);
     }
 
-    // Add tool to path for this and future actions to use 
+    // Add tool to path for this and future actions to use
     core.addPath(scanScriptPath);
 }
 
 async function run() {
     try {
+        core.warning(`This version of scan-action (v1) is deprecated \n` +
+		`Please upgrade to the latest tag (v2)`)
+
         core.debug((new Date()).toTimeString());
 
         const requiredOption = {required: true};
@@ -308,8 +311,8 @@ async function run() {
         core.debug('Fail Build: ' + failBuild);
         core.debug('Include App Packages: ' + includePackages);
         core.debug('Custom Policy Path: ' + customPolicyPath);
-        core.debug('ACS Enable: ' + acsReportEnable);	
-        core.debug('ACS Severity Cutoff: ' + acsSevCutoff);	
+        core.debug('ACS Enable: ' + acsReportEnable);
+        core.debug('ACS Severity Cutoff: ' + acsSevCutoff);
 
         core.debug('Policy path for evaluation: ' + policyBundlePath);
         core.debug('Policy name for evaluation: ' + policyBundleName);
@@ -345,7 +348,7 @@ async function run() {
         core.setOutput('billofmaterials', billOfMaterialsPath);
         core.setOutput('vulnerabilities', './anchore-reports/vulnerabilities.json');
         core.setOutput('policycheck', policyStatus);
-        
+
         if (failBuild === true && policyStatus === "fail") {
             core.setFailed("Image failed Anchore policy evaluation");
         }
