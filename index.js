@@ -444,13 +444,11 @@ function sourceInput() {
   var path = core.getInput("path");
 
   if (image && path) {
-    core.setFailed("Cannot use both 'image' and 'path' as sources");
+    throw new Error("Cannot use both 'image' and 'path' as sources");
   }
 
   if (!(image || path)) {
-    core.setFailed(
-      "At least one source for scanning needs to be provided. Available options are: image, and path"
-    );
+    throw new Error("At least one source for scanning needs to be provided. Available options are: image, and path");
   }
 
   if (image != "") {
