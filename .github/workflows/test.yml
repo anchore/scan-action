@@ -10,3 +10,9 @@ jobs:
     - run: npm ci
     - run: npm audit --production
     - run: npm test -- --testPathIgnorePatterns action.test.js
+
+  functional:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: make check
