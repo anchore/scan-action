@@ -1,3 +1,6 @@
+# tests
+tests/functional/output
+
 # Logs
 logs
 *.log
