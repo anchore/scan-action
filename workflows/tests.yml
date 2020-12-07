@@ -7,93 +7,120 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
-    # Always testing the main branch
-    - uses: anchore/scan-action@main
       with:
-        image: "python:3.8"
-        debug: true
+        path: "scan-action"
 
-  image-fail-build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    # Always testing the main branch
-    - uses: anchore/scan-action@main
-      with:
-        image: "python:3.8"
-        debug: true
-        fail-build: true
-
-  image-severity:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    # Do not fail because `fail-build` is unset (defaults to false)
-    - uses: anchore/scan-action@main
-      with:
-        image: "python:3.8"
-        debug: true
-        severity-cutoff: Medium
-
-  image-severity-fail-build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    # Always testing the main branch
     - uses: ./
       with:
         image: "python:3.8"
         debug: true
-        fail-build: true
-        severity-cutoff: Medium
 
-  test-directory:
+  no-sources:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: "scan-action"
+
     - uses: ./
       with:
-        path: "tests/python"
         debug: true
-        severity-cutoff: "Negligible"
 
-  directory-fail-build:
+  invalid-input:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
-    # Always testing the main branch
-    - uses: anchore/scan-action@main
       with:
-        path: "tests/python"
-        debug: true
-        fail-build: true
+        path: "scan-action"
 
-  directory-severity:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    # Do not fail because `fail-build` is unset (defaults to false)
-    - uses: anchore/scan-action@main
+    - uses: ./
       with:
-        path: "tests/python"
+        image: "python:3.8"
+        path: "/some/path"
         debug: true
-        severity-cutoff: Medium
 
-  directory-severity-fail-build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    # Always testing the main branch
-    - uses: anchore/scan-action@v3
-      with:
-        path: "tests/python"
-        debug: true
-        fail-build: true
-        severity-cutoff: Medium
+# XXX Port these to get verified with tests
+#  image-fail-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        path: "scan-action"
+#
+#    - uses: ./
+#      with:
+#        image: "python:3.8"
+#        debug: true
+#        fail-build: true
+#
+#  image-severity:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: ./
+#      with:
+#        path: "scan-action"
+#
+#    # Do not fail because `fail-build` is unset (defaults to false)
+#    - uses: anchore/scan-action@main
+#      with:
+#        image: "python:3.8"
+#        debug: true
+#        severity-cutoff: Medium
+#
+#  image-severity-fail-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#
+#    # Always testing the main branch
+#    - uses: anchore/scan-action@main
+#      with:
+#        image: "python:3.8"
+#        debug: true
+#        fail-build: true
+#        severity-cutoff: Medium
+#
+#  test-directory:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: ./
+#      with:
+#        path: "tests/python"
+#        debug: true
+#        severity-cutoff: "Negligible"
+#
+#  directory-fail-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#
+#    - uses: ./
+#      with:
+#        path: "tests/python"
+#        debug: true
+#        fail-build: true
+#
+#  directory-severity:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#
+#    # Do not fail because `fail-build` is unset (defaults to false)
+#    - uses: anchore/scan-action@main
+#      with:
+#        path: "tests/python"
+#        debug: true
+#        severity-cutoff: Medium
+#
+#  directory-severity-fail-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#
+#    # Always testing the main branch
+#    - uses: anchore/scan-action@main
+#      with:
+#        path: "tests/python"
+#        debug: true
+#        fail-build: true
+#        severity-cutoff: Medium
