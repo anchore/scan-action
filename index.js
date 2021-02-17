@@ -473,11 +473,15 @@ async function run() {
       var version = core.getInput("grype-version");
       const billOfMaterialsPath = "./anchore-reports/content.json";
       const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
+      let cmdArgs = [];
       console.log(billOfMaterialsPath);
       if (debug.toLowerCase() === "true") {
         debug = "true";
+        cmdArgs = [`-vv`, `-o`, `json`];
+
       } else {
         debug = "false";
+        cmdArgs = [`-o`, `json`];
       }
 
       if (failBuild.toLowerCase() === "true") {
@@ -521,7 +525,6 @@ async function run() {
       // Run the grype analyzer
       let cmdOutput = "";
       let cmd = `${grypeBinary}`;
-      let cmdArgs = [`-vv`, `-o`, `json`];
       if (severityCutoff != "") {
         cmdArgs.push("--fail-on");
         cmdArgs.push(severityCutoff.toLowerCase());
