@@ -11,6 +11,7 @@ jobs:
       with:
         image: "alpine:latest"
         debug: true
+        fail-build: false
 
   test-directory:
     runs-on: ubuntu-latest
@@ -21,3 +22,4 @@ jobs:
         path: "tests/python"
         debug: true
         severity-cutoff: "negligible"
+        fail-build: false
