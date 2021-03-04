@@ -36,7 +36,7 @@ Supported packages and libraries:
 
 ## Container scanning
 
-The simplest workflow for scanning a `localbuild/testimage` container, that does not fail the build:
+The simplest workflow for scanning a `localbuild/testimage` container:
 
 ```yaml
  - name: Scan image
@@ -59,15 +59,7 @@ To scan a directory, add the following step:
 The `path` key allows any valid path for the current project. The root of the path (`"."` in this example) is the repository root.
 
 ## Failing a build on vulnerability severity
-To have the build step fail in cases where there are vulnerabilities with a specific severity level, then set the `fail-build` to `true`. By default, the severity level is `medium`, but this can be adjusted using the `severity-cutoff` field.
-
-```yaml
- - name: Scan image
-   uses: anchore/scan-action@v2
-   with:
-     image: "localbuild/testimage:latest"
-     fail-build: true
-```
+By default, if any vulnerability at `medium` or higher is seen, the build fails. To have the build step fail in cases where there are vulnerabilities with a severity level different than the default, set the `severity-cutoff` field to one of `low`, `high`, or `critical`:
 
 With a different severity level:
 
@@ -78,6 +70,16 @@ With a different severity level:
      image: "localbuild/testimage:latest"
      fail-build: true
      severity-cutoff: critical
+```
+
+Optionally, change the `fail-build` field to `false` to avoid failing the build regardless of severity:
+
+```yaml
+ - name: Scan image
+   uses: anchore/scan-action@v2
+   with:
+     image: "localbuild/testimage:latest"
+     fail-build: false
 ```
 
 
