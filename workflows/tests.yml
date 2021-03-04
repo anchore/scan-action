@@ -14,6 +14,7 @@ jobs:
       with:
         image: "python:3.8"
         debug: true
+        fail-build: false
 
   no-sources:
     runs-on: ubuntu-latest
@@ -25,6 +26,7 @@ jobs:
     - uses: ./
       with:
         debug: true
+        fail-build: false
 
   invalid-input:
     runs-on: ubuntu-latest
@@ -38,6 +40,7 @@ jobs:
         image: "python:3.8"
         path: "/some/path"
         debug: true
+        fail-build: false
 
 # XXX Port these to get verified with tests
 #  image-fail-build:
