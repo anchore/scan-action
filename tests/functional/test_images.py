@@ -14,7 +14,8 @@ class TestSmoke:
     # basic validation
     def test_zero_exit_status(self, image_output):
         lines = image_output.split()
-        assert lines[-1] == '0'
+        fail_context = '\n'.join(image_output.split('\n')[-20:])
+        assert lines[-1] == '0', fail_context
 
     def test_found_vulnerabilities(self, image_output):
         assert "Failed minimum severity level. Found vulnerabilities with level medium or higher" in image_output
