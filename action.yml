@@ -15,9 +15,9 @@ inputs:
     required: false
     default: 'false'
   fail-build:
-    description: 'Set to any value to cause build to fail upon failed anchore policy evaluation'
+    description: 'Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)'
     required: false
-    default: 'false'
+    default: 'true'
   grype-version:
     description: 'Optionally, specify the Grype version (e.g. 0.1.0) to use instead of the default version'
     required: false
