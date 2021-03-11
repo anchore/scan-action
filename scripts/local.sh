@@ -7,7 +7,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied, this command requires a Github Action step tag to run, like:"
-    for job in $(egrep "\w+:$$" workflows/tests.yml | grep -v 'with:\|jobs:\|steps:' | cut -d ' ' -f 3 | cut -d ':' -f 1); do \
+    for job in $(egrep "\w+:$$" workflows/*.yml | grep -v 'with:\|jobs:\|steps:' | cut -d ' ' -f 3 | cut -d ':' -f 1); do \
 	echo "- $job"
     done
     exit 1
