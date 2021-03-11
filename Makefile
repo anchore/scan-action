@@ -20,13 +20,13 @@ all: build
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(BOLD)$(CYAN)%-35s$(RESET)%s\n", $$1, $$2}'
-	@for job in $(shell egrep "\w+:$$" workflows/tests.yml | grep -v 'with:\|jobs:\|steps:' | cut -d ' ' -f 3 | cut -d ':' -f 1); do \
+	@for job in $(shell egrep "\w+:$$" workflows/*.yml | grep -v 'with:\|jobs:\|steps:' | cut -d ' ' -f 3 | cut -d ':' -f 1); do \
 		printf "$(BOLD)$(CYAN)%-35s$(RESET)Run %s action with act\n" $$job $$job; \
 	done
 
 .PHONY: run
 run: ## Run all Github Action steps as defined in the workflows directory
-	@for job in $(shell egrep "\w+:$$" workflows/tests.yml | grep -v 'with:\|jobs:\|steps:' | cut -d ' ' -f 3 | cut -d ':' -f 1); do \
+	@for job in $(shell egrep "\w+:$$" workflows/*.yml | grep -v 'with:\|jobs:\|steps:' | cut -d ' ' -f 3 | cut -d ':' -f 1); do \
 		printf "$(BOLD)$(CYAN)Running Step: %-35s$(RESET)\n" $$job; \
     	./act -v -W workflows -j $$job > tests/functional/output/$$job.output 2>&1; \
         echo $$? >> tests/functional/output/$$job.output; \
