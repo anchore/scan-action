@@ -39,6 +39,16 @@ Supported packages and libraries:
 The simplest workflow for scanning a `localbuild/testimage` container:
 
 ```yaml
+- name: Set up Docker Buildx
+  uses: docker/setup-buildx-action@v1
+
+- name: build local container
+  uses: docker/build-push-action@v2
+  with:
+    tags: localbuild/testimage:latest
+    push: false
+    load: true
+
  - name: Scan image
    uses: anchore/scan-action@v2
    with:
