@@ -212,6 +212,20 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
 }
 
 
+function make_subtitle(v) {
+  let subtitle = `${v.vulnerability.description}`
+  if (subtitle != "undefined") {
+    return subtitle
+  }
+
+  if (v.vulnerability.fixedInVersion) {
+    return `Version ${v.artifact.version} is affected with an available fix in version ${v.vulnerability.fixedInVersion}`
+  }
+
+  return `Version ${v.artifact.version} is affected with no fixes reported yet.` 
+}
+
+
 function grype_render_rules(vulnerabilities) {
     var ret = {}
     if (vulnerabilities) {
@@ -238,7 +252,7 @@ function grype_render_rules(vulnerabilities) {
                 // Subtitle of the SARIF report
                 "fullDescription": {
                     //"text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
-                  "text": `${v.vulnerability.description}`
+                  "text": make_subtitle(v)
                 },
                 "help": {
                     "text": "Vulnerability "+v.vulnerability.id+"\n"+
