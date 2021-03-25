@@ -237,11 +237,15 @@ function grype_render_rules(vulnerabilities) {
           result.push(
             {
                 "id": ruleID,
+                // Title of the SARIF report
                 "shortDescription": {
-                    "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                  "text": `${v.vulnerability.id} ${v.vulnerability.severity} vulnerability for ${v.artifact.name} package`
+                    //"text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
                 },
+                // Subtitle of the SARIF report
                 "fullDescription": {
-                    "text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                    //"text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
+                  "text": `${v.vulnerability.description}`
                 },
                 "help": {
                     "text": "Vulnerability "+v.vulnerability.id+"\n"+
