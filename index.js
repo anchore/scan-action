@@ -82,17 +82,15 @@ function getLocation(v) {
 }
 
 function textMessage(v) {
+  let path = getLocation(v);
   var scheme = sourceScheme();
-  var prefix;
+  let prefix = `The path ${path} reports ${v.artifact.name} at version ${v.package_version} `;
+
   if (["dir", "tar"].includes(scheme)) {
-    prefix =
-      "The path " +
-      getLocation(v) +
-      " would result in an installed vulnerability: ";
+    return prefix + ` which would result in a vulnerable (${v.artifact.type}) package installed`;
   } else {
-    prefix = "The container image contains software with a vulnerability: ";
+    return prefix + `which is a vulnerable (${v.artifact.type}) package installed in the container`;
   }
-  return prefix + "(" + v.artifact.name + " type=" + v.artifact.type + ")";
 }
 
 
@@ -247,11 +245,9 @@ function grype_render_rules(vulnerabilities) {
                 // Title of the SARIF report
                 "shortDescription": {
                   "text": `${v.vulnerability.id} ${v.vulnerability.severity} vulnerability for ${v.artifact.name} package`
-                    //"text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
                 },
                 // Subtitle of the SARIF report
                 "fullDescription": {
-                    //"text": v.vulnerability.id + " Severity=" + v.vulnerability.severity + " Package=" + v.artifact.name + " Version=" + v.artifact.version
                   "text": make_subtitle(v)
                 },
                 "help": {
