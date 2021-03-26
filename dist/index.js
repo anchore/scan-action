@@ -210,20 +210,18 @@ function grype_render_rules(vulnerabilities) {
     return(ret);
 }
 
-function grype_render_results(vulnerabilities, severity_cutoff_param) {
+function grype_render_results(vulnerabilities, severity_cutoff_param, source) {
   var ret = {};
+  let scheme = sourceScheme();
   if (vulnerabilities) {
     ret = vulnerabilities.map((v) => {
+      let ruleid = `ANCHOREVULN_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`
+      if (scheme == "docker") {
+        // include the container as part of the rule id so that users can sort by that
+          ruleid = `ANCHOREVULN_${source}_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`
+      }
       return {
-        ruleId:
-          "ANCHOREVULN_" +
-          v.vulnerability.id +
-          "_" +
-          v.artifact.type +
-          "_" +
-          v.artifact.name +
-          "_" +
-          v.artifact.version,
+        ruleId: ruleid,
         ruleIndex: 0,
         level: convert_severity_to_acs_level(
           v.vulnerability.severity,
@@ -276,7 +274,7 @@ function grype_render_results(vulnerabilities, severity_cutoff_param) {
 }
 
 
-function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
+function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version, source) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let parsed = JSON.parse(rawdata);
     let vulnerabilities = parsed.matches;
@@ -500,7 +498,7 @@ async function run() {
 
       if (acsReportEnable) {
         try {
-          sarifGrypeGeneration(severityCutoff.toLowerCase(), version);
+          sarifGrypeGeneration(severityCutoff.toLowerCase(), version, source);
         } catch (err) {
           throw new Error(err);
         }
@@ -534,10 +532,10 @@ async function run() {
     }
 }
 
-function sarifGrypeGeneration(severity_cutoff_param, version){
+function sarifGrypeGeneration(severity_cutoff_param, version, source){
     // sarif generate section
     const SARIF_FILE = "./results.sarif";
-    let sarifOutput = vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
+    let sarifOutput = vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version, source);
     fs.writeFileSync(SARIF_FILE, JSON.stringify(sarifOutput, null, 2));
     core.setOutput('sarif', SARIF_FILE);
     // end sarif generate section
