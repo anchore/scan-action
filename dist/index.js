@@ -91,59 +91,6 @@ function dottedQuadFileVersion(version) {
 }
 
 
-function render_results(vulnerabilities, severity_cutoff_param) {
-  var ret = {};
-
-  if (vulnerabilities) {
-    ret = vulnerabilities.map((v) => {
-      return {
-        ruleId:
-          "ANCHOREVULN_" + v.vuln + "_" + v.package_type + "_" + v.package,
-        ruleIndex: 0,
-        level: convert_severity_to_acs_level(v.severity, severity_cutoff_param),
-        message: {
-          text: textMessage(v),
-          id: "default",
-        },
-        analysisTarget: {
-          uri: getLocation(v),
-          index: 0,
-        },
-        locations: [
-          {
-            physicalLocation: {
-              artifactLocation: {
-                uri: getLocation(v),
-              },
-              region: {
-                startLine: 1,
-                startColumn: 1,
-                endLine: 1,
-                endColumn: 1,
-                byteOffset: 1,
-                byteLength: 1,
-              },
-            },
-            logicalLocations: [
-              {
-                fullyQualifiedName: "dockerfile",
-              },
-            ],
-          },
-        ],
-        suppressions: [
-          {
-            kind: "external",
-          },
-        ],
-        baselineState: "unchanged",
-      };
-    });
-  }
-  return ret;
-}
-
-
 function make_subtitle(v) {
   let subtitle = `${v.vulnerability.description}`
   if (subtitle != "undefined") {
@@ -158,13 +105,19 @@ function make_subtitle(v) {
 }
 
 
-function grype_render_rules(vulnerabilities) {
+function grype_render_rules(vulnerabilities, source) {
     var ret = {}
+    let scheme = sourceScheme();
     if (vulnerabilities) {
     let ruleIDs = [];
     // This uses .reduce() because there can be duplicate vulnerabilities which the SARIF schema complains about.
     ret = vulnerabilities.reduce(function(result, v) {
-        let ruleID = "ANCHOREVULN_"+v.vulnerability.id+"_"+v.artifact.type+"_"+v.artifact.name+"_"+v.artifact.version;
+        let ruleID = `ANCHOREVULN_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`
+        if (scheme == "docker") {
+          // include the container as part of the rule id so that users can sort by that
+            ruleID = `ANCHOREVULN_${source}_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`
+        }
+
         if (!ruleIDs.includes(ruleID)) {
           ruleIDs.push(ruleID);
           // Entirely possible to not have any links whatsoever
@@ -291,7 +244,7 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "version": version,
             "semanticVersion": version,
             "dottedQuadFileVersion": dottedQuadFileVersion(version),
-            "rules": grype_render_rules(vulnerabilities)
+            "rules": grype_render_rules(vulnerabilities, source)
             }
         },
         "logicalLocations": [
