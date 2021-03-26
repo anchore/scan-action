@@ -254,7 +254,7 @@ function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, 
             "kind": "namespace"
                     }
         ],
-        "results": grype_render_results(vulnerabilities, severity_cutoff_param),
+        "results": grype_render_results(vulnerabilities, severity_cutoff_param, source),
         "columnKind": "utf16CodeUnits"
             }
     ]
