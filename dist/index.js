@@ -36,42 +36,6 @@ function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
   return ret;
 }
 
-function render_rules(vulnerabilities) {
-    var ret = {}
-    if (vulnerabilities) {
-    ret = vulnerabilities.map(v =>
-                  {
-                      return {
-                      "id": "ANCHOREVULN_"+v.vuln+"_"+v.package_type+"_"+v.package,
-                      "shortDescription": {
-                          "text": v.vuln + " Severity=" + v.severity + " Package=" + v.package
-                      },
-                      "fullDescription": {
-                          "text": v.vuln + " Severity=" + v.severity + " Package=" + v.package
-                      },
-                      "help": {
-                          "text": "Vulnerability "+v.vuln+"\n"+
-                          "Severity: "+v.severity+"\n"+
-                          "Package: "+v.package_name+"\n"+
-                          "Version: "+v.package_version+"\n"+
-                          "Fix Version: "+v.fix+"\n"+
-                          "Type: "+v.package_type+"\n"+
-                          "Location: "+v.package_path+"\n"+
-                          "Data Namespace: "+v.feed + ", "+v.feed_group+"\n"+
-                          "Link: ["+v.vuln+"]("+v.url+")",
-                          "markdown": "**Vulnerability "+v.vuln+"**\n"+
-                          "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n"+
-                          "| --- | --- | --- | --- | --- | --- | --- | --- |\n"+
-                          "|"+v.severity+"|"+v.package_name+"|"+v.package_version+"|"+v.fix+"|"+v.package_type+"|"+v.package_path+"|"+v.feed_group+"|["+v.vuln+"]("+v.url+")|\n"
-                      }
-
-                      }
-                  }
-                 );
-    }
-    return(ret);
-}
-
 function getLocation(v) {
   if (v.artifact.locations.length) {
     // If the scan was against a directory, the location will be a string
@@ -91,7 +55,7 @@ function getLocation(v) {
 function textMessage(v) {
   let path = getLocation(v);
   var scheme = sourceScheme();
-  let prefix = `The path ${path} reports ${v.artifact.name} at version ${v.package_version} `;
+  let prefix = `The path ${path} reports ${v.artifact.name} at version ${v.artifact.version} `;
 
   if (["dir", "tar"].includes(scheme)) {
     return prefix + ` which would result in a vulnerable (${v.artifact.type}) package installed`;
@@ -180,43 +144,6 @@ function render_results(vulnerabilities, severity_cutoff_param) {
 }
 
 
-function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
-    let rawdata = fs.readFileSync(input_vulnerabilities);
-    let vulnerabilities_raw = JSON.parse(rawdata);
-    let vulnerabilities = vulnerabilities_raw.vulnerabilities;
-
-    const sarifOutput = {
-    "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
-    "version": "2.1.0",
-    "runs": [
-            {
-        "tool": {
-            "driver": {
-            "name": "Anchore Container Vulnerability Report",
-            "fullName": "Anchore Container Vulnerability Report",
-            "version": version,
-            "semanticVersion": version,
-            "dottedQuadFileVersion": dottedQuadFileVersion(version),
-            "rules": render_rules(vulnerabilities)
-            }
-        },
-        "logicalLocations": [
-                    {
-            "name": "dockerfile",
-            "fullyQualifiedName": "dockerfile",
-            "kind": "namespace"
-                    }
-        ],
-        "results": render_results(vulnerabilities, severity_cutoff_param),
-        "columnKind": "utf16CodeUnits"
-            }
-    ]
-    }
-
-    return(sarifOutput)
-}
-
-
 function make_subtitle(v) {
   let subtitle = `${v.vulnerability.description}`
   if (subtitle != "undefined") {
@@ -227,7 +154,7 @@ function make_subtitle(v) {
     return `Version ${v.artifact.version} is affected with an available fix in version ${v.vulnerability.fixedInVersion}`
   }
 
-  return `Version ${v.artifact.version} is affected with no fixes reported yet.` 
+  return `Version ${v.artifact.version} is affected with no fixes reported yet.`
 }
 
 
@@ -349,7 +276,7 @@ function grype_render_results(vulnerabilities, severity_cutoff_param) {
 }
 
 
-function grype_vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
+function vulnerabilities_to_sarif(input_vulnerabilities, severity_cutoff_param, version) {
     let rawdata = fs.readFileSync(input_vulnerabilities);
     let parsed = JSON.parse(rawdata);
     let vulnerabilities = parsed.matches;
@@ -610,7 +537,7 @@ async function run() {
 function sarifGrypeGeneration(severity_cutoff_param, version){
     // sarif generate section
     const SARIF_FILE = "./results.sarif";
-    let sarifOutput = grype_vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
+    let sarifOutput = vulnerabilities_to_sarif("./vulnerabilities.json", severity_cutoff_param, version);
     fs.writeFileSync(SARIF_FILE, JSON.stringify(sarifOutput, null, 2));
     core.setOutput('sarif', SARIF_FILE);
     // end sarif generate section
