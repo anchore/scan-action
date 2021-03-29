@@ -46,14 +46,14 @@ function getLocation(v) {
 }
 
 function textMessage(v) {
-  let path = getLocation(v);
+  const path = getLocation(v);
   var scheme = sourceScheme();
   let prefix = `The path ${path} reports ${v.artifact.name} at version ${v.artifact.version} `;
 
   if (["dir", "tar"].includes(scheme)) {
-    return prefix + ` which would result in a vulnerable (${v.artifact.type}) package installed`;
+    return `${prefix} which would result in a vulnerable (${v.artifact.type}) package installed`;
   } else {
-    return prefix + `which is a vulnerable (${v.artifact.type}) package installed in the container`;
+    return `${prefix} which is a vulnerable (${v.artifact.type}) package installed in the container`;
   }
 }
 
