@@ -112,6 +112,7 @@ The only required key is `image`; all the other keys are optional. These are all
 |-----------------|-------------|----------|
 | vulnerabilities | Path to a JSON file with the list of vulnerabilities found in image | string |
 | sarif | Path to a SARIF report file | string |
+| exitCode | The process exit code of grype security scan | integer |
 
 As a result of the action, you'll get a JSON file in the `anchore-reports` directory in the workspace:
 

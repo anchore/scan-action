@@ -34,6 +34,8 @@ outputs:
     description: 'The found vulnerabilities for the image'
   sarif:
     description: 'Path to a SARIF report file for the image'
+  exitCode:
+    description: 'The process exit code of grype security scan'  
 runs:
   using: 'node12'
   main: 'dist/index.js'

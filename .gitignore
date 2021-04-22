@@ -108,3 +108,7 @@ typings/
 
 # IDE files/dirs
 .vscode
+
+venv/
+functional/__pycache__/*
+act
