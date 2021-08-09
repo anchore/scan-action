@@ -29,6 +29,10 @@ inputs:
     description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
     required: false
     default: "medium"
+  output-format:
+    description: 'Enables output to "table" or "cyclonedx" formats. Note that ACS reporting will not work with these formats.'
+    required: false
+    default: 'json'
 outputs:
   vulnerabilities:
     description: 'The found vulnerabilities for the image'
