@@ -455,27 +455,22 @@ async function run() {
       core.info("\nAnalyzing: " + source);
       core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
       let exitCode = await exec(cmd, cmdArgs, cmdOpts);
-      let grypeVulnerabilities = JSON.parse(cmdOutput);
       let vulnerabiltiesPath = "";
 
       // handle output
       switch(outputFormat.toLowerCase()) {
         case "json":
           vulnerabiltiesPath = "./vulnerabilities.json";
-          fs.writeFileSync(
-            vulnerabiltiesPath,
-            JSON.stringify(grypeVulnerabilities)
-          );
           break;
         case "table":
-          vulnerabiltiesPath = "./vulnerabilities.txt"
-          fs.writeFileSync(vulnerabiltiesPath, grypeVulnerabilities);
+          vulnerabiltiesPath = "./vulnerabilities.txt";
           break;
         case "cyclonedx":
-          vulnerabiltiesPath = "./vulnerabilities.xml"
-          fs.writeFileSync(vulnerabiltiesPath, grypeVulnerabilities);
+          vulnerabiltiesPath = "./vulnerabilities.xml";
           break;
       }
+
+      fs.writeFileSync(vulnerabiltiesPath, cmdOutput);
 
       if (acsReportEnable) {
         try {
