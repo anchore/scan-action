@@ -363,17 +363,31 @@ async function run() {
       var acsReportEnable = core.getInput("acs-report-enable");
       var severityCutoff = core.getInput("severity-cutoff");
       var version = core.getInput("grype-version");
+      var outputFormat = core.getInput("output-format");
+
       const billOfMaterialsPath = "./anchore-reports/content.json";
       const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
+      const OUTPUT_FORMAT_LIST = ["json", "table", "cyclonedx"]
       let cmdArgs = [];
       console.log(billOfMaterialsPath);
+
       if (debug.toLowerCase() === "true") {
         debug = "true";
-        cmdArgs = [`-vv`, `-o`, `json`];
-
+        cmdArgs.push(`-vv`);
       } else {
         debug = "false";
-        cmdArgs = [`-o`, `json`];
+      }
+
+      if (outputFormat.toLowerCase() === "") {
+        outputFormat = "json";
+        cmdArgs.push("-o", "json");
+      } else {
+        if (!OUTPUT_FORMAT_LIST.some(
+          (item) => typeof outputFormat.toLowerCase() === "string" && item === outputFormat.toLowerCase()
+          )) {
+            throw new Error(`Invalid output-format is set to ${outputFormat} - please ensure you use json, table or cyclonedx`);
+          }
+        cmdArgs.push("-o", outputFormat.toLowerCase());
       }
 
       if (failBuild.toLowerCase() === "true") {
@@ -435,12 +449,26 @@ async function run() {
       core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
       let exitCode = await exec(cmd, cmdArgs, cmdOpts);
       let grypeVulnerabilities = JSON.parse(cmdOutput);
+      let vulnerabiltiesPath = "";
 
       // handle output
-      fs.writeFileSync(
-        "./vulnerabilities.json",
-        JSON.stringify(grypeVulnerabilities)
-      );
+      switch(outputFormat.toLowerCase()) {
+        case "json":
+          vulnerabiltiesPath = "./vulnerabilities.json";
+          fs.writeFileSync(
+            vulnerabiltiesPath,
+            JSON.stringify(grypeVulnerabilities)
+          );
+          break;
+        case "table":
+          vulnerabiltiesPath = "./vulnerabilities.txt"
+          fs.writeFileSync(vulnerabiltiesPath, grypeVulnerabilities);
+          break;
+        case "cyclonedx":
+          vulnerabiltiesPath = "./vulnerabilities.xml"
+          fs.writeFileSync(vulnerabiltiesPath, grypeVulnerabilities);
+          break;
+      }
 
       if (acsReportEnable) {
         try {
@@ -456,7 +484,7 @@ async function run() {
         );
       }
 
-      core.setOutput('vulnerabilities', './vulnerabilities.json');
+      core.setOutput('vulnerabilities', vulnerabiltiesPath);
 
       // If there is a non-zero exit status code there are a couple of potential reporting paths
       if (failBuild === false && exitCode > 0) {

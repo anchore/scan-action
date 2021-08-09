@@ -105,17 +105,20 @@ The only required key is `image`; all the other keys are optional. These are all
 | `grype-version` | An optional parameter to specify a specific version of `grype` to use for the scan. Default is the version locked to the scan-action release | `0.1.0` |
 | `acs-report-enable` | Optionally, enable the feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. | `false` |
 | `severity-cutoff` | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium". | `"medium"` |
+| `output-format` | Enables output to "table" or "cyclonedx" formats. Note that ACS reporting will not work with these formats. | `"json"` |
 
 ### Action Outputs
 
 | Output Name | Description | Type |
 |-----------------|-------------|----------|
-| vulnerabilities | Path to a JSON file with the list of vulnerabilities found in image | string |
+| vulnerabilities | Path to a file with the list of vulnerabilities found in image | string |
 | sarif | Path to a SARIF report file | string |
 
-As a result of the action, you'll get a JSON file in the `anchore-reports` directory in the workspace:
+As a result of the action, you'll get a file in the `anchore-reports` directory in the workspace:
 
-* `vulnerabilities.json` - Vulnerabilities found in the image
+* `vulnerabilities.json` - Vulnerabilities found in the image (json)
+* `vulnerabilities.txt` - Vulnerabilities found in the image (table)
+* `vulnerabilities.xml` - Vulnerabilities found in the image (cyclonedx)
 
 
 ### Example Workflows
