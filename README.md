@@ -102,7 +102,7 @@ The only required key is `image`; all the other keys are optional. These are all
 | `image` | The image to scan | N/A |
 | `debug` | Verbose logging output | `false` |
 | `fail-build` | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.  | `false` |
-| `grype-version` | An optional parameter to specify a specific version of `grype` to use for the scan. Default is the version locked to the scan-action release | `0.1.0` |
+| `grype-version` | An optional parameter to specify a specific version of `grype` to use for the scan. Default is the version locked to the scan-action release | `0.15.0` |
 | `acs-report-enable` | Optionally, enable the feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report. | `false` |
 | `severity-cutoff` | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium". | `"medium"` |
 
