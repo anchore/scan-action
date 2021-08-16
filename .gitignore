@@ -108,3 +108,8 @@ typings/
 
 # IDE files/dirs
 .vscode
+
+# Exclude python test artifacts
+/act
+/venv/*
+/tests/functional/__pycache__/*
