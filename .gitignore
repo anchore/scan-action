@@ -106,5 +106,11 @@ typings/
 # TernJS port file
 .tern-port
 
+# Python test stuff
+/venv
+/act
+/tests/functional/__pycache__
+
 # IDE files/dirs
 .vscode
+.idea
