@@ -6,13 +6,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: npm ci
-    - run: npm audit --production
-    - run: npm test -- --testPathIgnorePatterns action.test.js
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm audit --production
+      - run: npm test -- --testPathIgnorePatterns action.test.js
 
   functional:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: make check
+      - uses: actions/checkout@v2
+      - run: make check
+      - uses: actions/upload-artifact@v2
+        with:
+          name: functional-test-output
+          path: test/functional/output/*
