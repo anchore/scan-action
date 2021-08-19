@@ -8,13 +8,16 @@ jest.spyOn(githubActionsToolCache, "find").mockImplementation(() => {
 });
 
 const spyExec = jest.spyOn(githubActionsExec, "exec").mockImplementation(() => {
-  return Promise.resolve();
+  return Promise.resolve("{}");
 });
 
-const { runScan } = require("../index");
-
 const mockExec = async (args) => {
-  await runScan(args);
+  try {
+    const { runScan } = require("../index");
+    await runScan(args);
+  } catch (e) {
+    // ignore: this happens trying to parse command output, which we don't care about
+  }
   const [cmd, params] = spyExec.mock.calls[spyExec.mock.calls.length - 1];
   return `${cmd} ${params.join(" ")}`;
 };

@@ -12,6 +12,18 @@ jobs:
           - 5000:5000
     steps:
       - uses: actions/checkout@v2
+      - run: echo $(uname -a)
+      - name: Check for npm (so make test works)
+        run: |
+          if ! [ -x "$(command -v npm)" ]; then
+            sudo apt update
+            sudo apt -y upgrade
+            sudo apt update
+            sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt -y install nodejs
+            sudo apt -y  install gcc g++ make
+          fi
       - name: Build images
         run: |
           for distro in alpine centos debian; do
@@ -26,7 +38,7 @@ jobs:
           done
       - run: npm ci
       - run: npm audit --production
-      - run: npm test -- --testPathIgnorePatterns action.test.js
+      - run: npm test
 
   functional:
     runs-on: ubuntu-latest

@@ -42,21 +42,24 @@ check: bootstrap run ## Run all Github Action steps and then verify them with te
 bootstrap: ## Download and install all go dependencies (+ prep tooling in the ./tmp dir)
 	$(call title,Boostrapping dependencies)
 	@pwd
-	# start a local registry
-	docker run -d -p 5000:5000 --name registry registry:2 | echo
 	# Install `act` to run the actions
 	curl https://raw.githubusercontent.com/nektos/act/master/install.sh |  sh -s -- -b . v0.2.17
 	# prep temp dirs
 	mkdir -p tests/functional/output
 
+.PHONY: run-docker-registry
+run-docker-registry: bootstrap
+	# start a local registry
+	docker run -d -p 5000:5000 --name registry registry:2 | echo
+
 .PHONY: test
-test: bootstrap
+test: run-docker-registry bootstrap
 	npm run build
 	./act -v -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:js-latest -j test
 
 .PHONY: wipe-docker
 wipe-docker:
-	docker kill $(shell docker ps -a -q --filter="name=act-*") | echo
+	docker kill $(shell docker ps -a -q) | echo
 	docker image prune -af
 	docker container prune -f
 	docker volume prune -f

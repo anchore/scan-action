@@ -262,9 +262,7 @@ function vulnerabilities_to_sarif(
 
   const sarifOutput = {
     $schema:
-      // "http://json-schema.org/draft-07/schema#",
-      // "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
-      "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+      "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
     version: "2.1.0",
     runs: [
       {
@@ -394,26 +392,30 @@ function sourceInput() {
 }
 
 async function run() {
-  core.debug(new Date().toTimeString());
-  // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
-  // a check must happen to ensure one is selected at least, and then return it
-  const source = sourceInput();
-  const debug = core.getInput("debug");
-  const failBuild = core.getInput("fail-build");
-  const acsReportEnable = core.getInput("acs-report-enable");
-  const severityCutoff = core.getInput("severity-cutoff");
-  const version = core.getInput("grype-version");
-  const out = await runScan({
-    source,
-    debug,
-    failBuild,
-    acsReportEnable,
-    severityCutoff,
-    version,
-  });
-  Object.keys(out).map((key) => {
-    core.setOutput(key, out[key]);
-  });
+  try {
+    core.debug(new Date().toTimeString());
+    // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
+    // a check must happen to ensure one is selected at least, and then return it
+    const source = sourceInput();
+    const debug = core.getInput("debug");
+    const failBuild = core.getInput("fail-build");
+    const acsReportEnable = core.getInput("acs-report-enable");
+    const severityCutoff = core.getInput("severity-cutoff");
+    const version = core.getInput("grype-version");
+    const out = await runScan({
+      source,
+      debug,
+      failBuild,
+      acsReportEnable,
+      severityCutoff,
+      version,
+    });
+    Object.keys(out).map((key) => {
+      core.setOutput(key, out[key]);
+    });
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 }
 
 async function runScan({
@@ -425,125 +427,123 @@ async function runScan({
   version = "",
 }) {
   const out = {};
-  try {
-    const billOfMaterialsPath = "./anchore-reports/content.json";
-    const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
-    let cmdArgs = [];
-    console.log(billOfMaterialsPath);
-    if (debug.toLowerCase() === "true") {
-      debug = "true";
-      cmdArgs = [`-vv`, `-o`, `json`];
-    } else {
-      debug = "false";
-      cmdArgs = [`-o`, `json`];
-    }
 
-    if (failBuild.toLowerCase() === "true") {
-      failBuild = true;
-    } else {
-      failBuild = false;
-    }
+  const billOfMaterialsPath = "./anchore-reports/content.json";
+  const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
+  let cmdArgs = [];
+  console.log(billOfMaterialsPath);
+  if (debug.toLowerCase() === "true") {
+    debug = "true";
+    cmdArgs = [`-vv`, `-o`, `json`];
+  } else {
+    debug = "false";
+    cmdArgs = [`-o`, `json`];
+  }
 
-    if (acsReportEnable.toLowerCase() === "true") {
-      acsReportEnable = true;
-    } else {
-      acsReportEnable = false;
-    }
+  if (failBuild.toLowerCase() === "true") {
+    failBuild = true;
+  } else {
+    failBuild = false;
+  }
 
-    if (
-      !SEVERITY_LIST.some(
-        (item) =>
-          typeof severityCutoff.toLowerCase() === "string" &&
-          item === severityCutoff.toLowerCase()
-      )
-    ) {
-      throw new Error(
-        `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
-      );
-    }
+  if (acsReportEnable.toLowerCase() === "true") {
+    acsReportEnable = true;
+  } else {
+    acsReportEnable = false;
+  }
 
-    if (!version) {
-      version = `${grypeVersion}`;
-    }
-
-    core.debug(`Installing grype version ${version}`);
-    await installGrype(version);
-
-    core.debug("Image: " + source);
-    core.debug("Debug Output: " + debug);
-    core.debug("Fail Build: " + failBuild);
-    core.debug("Severity Cutoff: " + severityCutoff);
-    core.debug("ACS Enable: " + acsReportEnable);
-
-    core.debug("Creating options for GRYPE analyzer");
-
-    // Run the grype analyzer
-    let cmdOutput = "";
-    let cmd = `${grypeBinary}`;
-    if (severityCutoff != "") {
-      cmdArgs.push("--fail-on");
-      cmdArgs.push(severityCutoff.toLowerCase());
-    }
-    cmdArgs.push(source);
-    const cmdOpts = {};
-    cmdOpts.listeners = {
-      stdout: (data = Buffer) => {
-        cmdOutput += data.toString();
-      },
-    };
-
-    cmdOpts.ignoreReturnCode = true;
-
-    core.info("\nAnalyzing: " + source);
-    core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
-    let exitCode = await exec(cmd, cmdArgs, cmdOpts);
-    let grypeVulnerabilities = JSON.parse(cmdOutput);
-
-    // handle output
-    fs.writeFileSync(
-      "./vulnerabilities.json",
-      JSON.stringify(grypeVulnerabilities)
+  if (
+    !SEVERITY_LIST.some(
+      (item) =>
+        typeof severityCutoff.toLowerCase() === "string" &&
+        item === severityCutoff.toLowerCase()
+    )
+  ) {
+    throw new Error(
+      `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
     );
+  }
 
-    if (acsReportEnable) {
-      try {
-        const serifOut = sarifGrypeGeneration(
-          severityCutoff.toLowerCase(),
-          version,
-          source
-        );
-        Object.assign(out, serifOut);
-      } catch (err) {
-        throw new Error(err);
-      }
+  if (!version) {
+    version = `${grypeVersion}`;
+  }
+
+  core.debug(`Installing grype version ${version}`);
+  await installGrype(version);
+
+  core.debug("Image: " + source);
+  core.debug("Debug Output: " + debug);
+  core.debug("Fail Build: " + failBuild);
+  core.debug("Severity Cutoff: " + severityCutoff);
+  core.debug("ACS Enable: " + acsReportEnable);
+
+  core.debug("Creating options for GRYPE analyzer");
+
+  // Run the grype analyzer
+  let cmdOutput = "";
+  let cmd = `${grypeBinary}`;
+  if (severityCutoff != "") {
+    cmdArgs.push("--fail-on");
+    cmdArgs.push(severityCutoff.toLowerCase());
+  }
+  cmdArgs.push(source);
+  const cmdOpts = {};
+  cmdOpts.listeners = {
+    stdout: (data = Buffer) => {
+      cmdOutput += data.toString();
+    },
+  };
+
+  cmdOpts.ignoreReturnCode = true;
+
+  core.info("\nAnalyzing: " + source);
+  core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
+  let exitCode = await exec(cmd, cmdArgs, cmdOpts);
+  let grypeVulnerabilities = JSON.parse(cmdOutput);
+
+  // handle output
+  fs.writeFileSync(
+    "./vulnerabilities.json",
+    JSON.stringify(grypeVulnerabilities)
+  );
+
+  if (acsReportEnable) {
+    try {
+      const serifOut = sarifGrypeGeneration(
+        severityCutoff.toLowerCase(),
+        version,
+        source
+      );
+      Object.assign(out, serifOut);
+    } catch (err) {
+      throw new Error(err);
     }
+  }
 
-    if (failBuild === true && exitCode > 0) {
-      core.setFailed(
+  if (failBuild === true && exitCode > 0) {
+    core.setFailed(
+      `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
+    );
+  }
+
+  out.vulnerabilities = "./vulnerabilities.json";
+
+  // If there is a non-zero exit status code there are a couple of potential reporting paths
+  if (failBuild === false && exitCode > 0) {
+    // There was a non-zero exit status but it wasn't because of failing severity, this must be
+    // a grype problem
+    if (!severityCutoff) {
+      core.warning("grype had a non-zero exit status when running");
+    } else {
+      // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
+      // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
+      // Actions UI
+      core.warning(
         `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
       );
     }
-
-    out.vulnerabilities = "./vulnerabilities.json";
-
-    // If there is a non-zero exit status code there are a couple of potential reporting paths
-    if (failBuild === false && exitCode > 0) {
-      // There was a non-zero exit status but it wasn't because of failing severity, this must be
-      // a grype problem
-      if (!severityCutoff) {
-        core.warning("grype had a non-zero exit status when running");
-      } else {
-        // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
-        // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
-        // Actions UI
-        core.warning(
-          `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
-        );
-      }
-    }
-  } catch (error) {
-    core.setFailed(error.message);
   }
+
   return out;
 }
 
