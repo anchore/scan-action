@@ -5,14 +5,47 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
-    - uses: actions/checkout@v2
-    - run: npm ci
-    - run: npm audit --production
-    - run: npm test -- --testPathIgnorePatterns action.test.js
+      - uses: actions/checkout@v2
+      - run: echo $(uname -a)
+      - name: Check for npm (so make test works)
+        run: |
+          if ! [ -x "$(command -v npm)" ]; then
+            sudo apt update
+            sudo apt -y upgrade
+            sudo apt update
+            sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt -y install nodejs
+            sudo apt -y  install gcc g++ make
+          fi
+      - name: Build images
+        run: |
+          for distro in alpine centos debian; do
+            docker build -t localhost:5000/match-coverage/$distro ./tests/fixtures/image-$distro-match-coverage
+            docker push localhost:5000/match-coverage/$distro:latest
+          done
+      - name: Inspect
+        run: |
+          docker images -a
+          for distro in alpine centos debian; do
+            docker buildx imagetools inspect localhost:5000/match-coverage/$distro:latest
+          done
+      - run: npm ci
+      - run: npm audit --production
+      - run: npm test
 
   functional:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: make check
+      - uses: actions/checkout@v2
+      - run: make check
+      - uses: actions/upload-artifact@v2
+        with:
+          name: functional-test-output
+          path: tests/functional/output/*

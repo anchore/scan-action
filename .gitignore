@@ -108,8 +108,13 @@ typings/
 
 # IDE files/dirs
 .vscode
+.idea
 
 # Exclude python test artifacts
 /act
 /venv/*
 /tests/functional/__pycache__/*
+
+# Action temporary files
+results.sarif
+vulnerabilities.json

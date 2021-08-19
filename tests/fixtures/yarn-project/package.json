@@ -1,0 +1,12 @@
+{
+  "name": "yarn-project",
+  "version": "2.5.34",
+  "description": "Basic Yarn-based project",
+  "main": "index.js",
+  "author": "test@test",
+  "license": "MIT",
+  "dependencies": {
+    "react": "16",
+    "trim": "0.0.2"
+  }
+}
