@@ -114,3 +114,7 @@ typings/
 /act
 /venv/*
 /tests/functional/__pycache__/*
+
+# Action temporary files
+results.sarif
+vulnerabilities.json

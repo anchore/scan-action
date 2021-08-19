@@ -5,8 +5,25 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - uses: actions/checkout@v2
+      - name: Build images
+        run: |
+          for distro in alpine centos debian; do
+            docker build -t localhost:5000/match-coverage/$distro ./tests/fixtures/image-$distro-match-coverage
+            docker push localhost:5000/match-coverage/$distro:latest
+          done
+      - name: Inspect
+        run: |
+          docker images -a
+          for distro in alpine centos debian; do
+            docker buildx imagetools inspect localhost:5000/match-coverage/$distro:latest
+          done
       - run: npm ci
       - run: npm audit --production
       - run: npm test -- --testPathIgnorePatterns action.test.js

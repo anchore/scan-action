@@ -11,7 +11,7 @@ const { exec } = __webpack_require__(514);
 const fs = __webpack_require__(747);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.15.0";
+const grypeVersion = "0.16.0";
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
@@ -269,7 +269,9 @@ function vulnerabilities_to_sarif(
 
   const sarifOutput = {
     $schema:
-      "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+      // "http://json-schema.org/draft-07/schema#",
+      // "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+      "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
     version: "2.1.0",
     runs: [
       {
@@ -399,17 +401,38 @@ function sourceInput() {
 }
 
 async function run() {
-  try {
-    core.debug(new Date().toTimeString());
-    // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
-    // a check must happen to ensure one is selected at least, and then return it
-    const source = sourceInput();
+  core.debug(new Date().toTimeString());
+  // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
+  // a check must happen to ensure one is selected at least, and then return it
+  const source = sourceInput();
+  const debug = core.getInput("debug");
+  const failBuild = core.getInput("fail-build");
+  const acsReportEnable = core.getInput("acs-report-enable");
+  const severityCutoff = core.getInput("severity-cutoff");
+  const version = core.getInput("grype-version");
+  const out = await runScan({
+    source,
+    debug,
+    failBuild,
+    acsReportEnable,
+    severityCutoff,
+    version,
+  });
+  Object.keys(out).map((key) => {
+    core.setOutput(key, out[key]);
+  });
+}
 
-    var debug = core.getInput("debug");
-    var failBuild = core.getInput("fail-build");
-    var acsReportEnable = core.getInput("acs-report-enable");
-    var severityCutoff = core.getInput("severity-cutoff");
-    var version = core.getInput("grype-version");
+async function runScan({
+  source,
+  debug = "false",
+  failBuild = "true",
+  acsReportEnable = "false",
+  severityCutoff = "medium",
+  version = "",
+}) {
+  const out = {};
+  try {
     const billOfMaterialsPath = "./anchore-reports/content.json";
     const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
     let cmdArgs = [];
@@ -491,7 +514,12 @@ async function run() {
 
     if (acsReportEnable) {
       try {
-        sarifGrypeGeneration(severityCutoff.toLowerCase(), version, source);
+        const serifOut = sarifGrypeGeneration(
+          severityCutoff.toLowerCase(),
+          version,
+          source
+        );
+        Object.assign(out, serifOut);
       } catch (err) {
         throw new Error(err);
       }
@@ -503,7 +531,7 @@ async function run() {
       );
     }
 
-    core.setOutput("vulnerabilities", "./vulnerabilities.json");
+    out.vulnerabilities = "./vulnerabilities.json";
 
     // If there is a non-zero exit status code there are a couple of potential reporting paths
     if (failBuild === false && exitCode > 0) {
@@ -523,6 +551,7 @@ async function run() {
   } catch (error) {
     core.setFailed(error.message);
   }
+  return out;
 }
 
 function sarifGrypeGeneration(severity_cutoff_param, version, source) {
@@ -535,12 +564,16 @@ function sarifGrypeGeneration(severity_cutoff_param, version, source) {
     source
   );
   fs.writeFileSync(SARIF_FILE, JSON.stringify(sarifOutput, null, 2));
-  core.setOutput("sarif", SARIF_FILE);
+  return {
+    sarif: SARIF_FILE,
+  };
   // end sarif generate section
 }
 
 module.exports = {
   run,
+  runScan,
+  installGrype,
   mergeResults,
   findContent,
   loadContent,

@@ -1,0 +1,12 @@
+{
+  "name": "npm-project",
+  "version": "0.12.1",
+  "description": "Basic NPM-based project",
+  "main": "index.js",
+  "author": "test@test",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.14.0",
+    "tar": "^6.1.0"
+  }
+}
