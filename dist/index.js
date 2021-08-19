@@ -11,7 +11,7 @@ const { exec } = __webpack_require__(514);
 const fs = __webpack_require__(747);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.16.0";
+const grypeVersion = "0.15.0";
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {

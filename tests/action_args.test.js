@@ -1,6 +1,8 @@
 const { run } = require("../index");
 const core = require("@actions/core");
 
+jest.setTimeout(30000);
+
 describe("Github action args", () => {
   it("runs without sarif report", async () => {
     const inputs = {
