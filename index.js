@@ -86,6 +86,7 @@ function dottedQuadFileVersion(version) {
 function get_fix_versions(v) {
   if (
     v.vulnerability.fix &&
+    v.vulnerability.fix.state === "fixed" &&
     v.vulnerability.fix.versions &&
     v.vulnerability.fix.versions.length > 0
   ) {
