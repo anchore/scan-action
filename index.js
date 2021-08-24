@@ -504,9 +504,9 @@ async function runScan({
   cmdOpts.ignoreReturnCode = true;
 
   core.info("\nAnalyzing: " + source);
-  core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
 
   const exitCode = await core.group("Grype Output", () => {
+    core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
     return exec(cmd, cmdArgs, cmdOpts);
   });
 
