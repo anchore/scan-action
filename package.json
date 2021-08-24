@@ -9,7 +9,7 @@
   },
   "scripts": {
     "lint": "eslint index.js",
-    "test": "eslint index.js && jest",
+    "test": "eslint index.js && jest --coverage --no-color 2>jest.txt ; cat jest.txt",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
     "prettier": "prettier -w index.js"
