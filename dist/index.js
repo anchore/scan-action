@@ -513,7 +513,7 @@ async function runScan({
   core.info("\nAnalyzing: " + source);
 
   const exitCode = await core.group("Grype Output", () => {
-    core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
+    core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
     return exec(cmd, cmdArgs, cmdOpts);
   });
 
