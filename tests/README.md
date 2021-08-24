@@ -10,8 +10,8 @@ and run something like:
 docker run -d -p 5000:5000 --name registry registry:2
 ```
 
-... or if you run `make bootstrap`, this is automatically handled for you. After
-which time, you can just run:
+... or if you run `make test`, this is automatically handled for you. After
+which time, you can just run `npm` directly:
 
 ```
 npm test

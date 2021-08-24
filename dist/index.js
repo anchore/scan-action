@@ -90,14 +90,26 @@ function dottedQuadFileVersion(version) {
   return version;
 }
 
+function get_fix_versions(v) {
+  if (
+    v.vulnerability.fix &&
+    v.vulnerability.fix.versions &&
+    v.vulnerability.fix.versions.length > 0
+  ) {
+    return v.vulnerability.fix.versions.join(",");
+  }
+  return "";
+}
+
 function make_subtitle(v) {
   let subtitle = `${v.vulnerability.description}`;
   if (subtitle != "undefined") {
     return subtitle;
   }
 
-  if (v.vulnerability.fixedInVersion) {
-    return `Version ${v.artifact.version} is affected with an available fix in version ${v.vulnerability.fixedInVersion}`;
+  const fixVersions = get_fix_versions(v);
+  if (fixVersions) {
+    return `Version ${v.artifact.version} is affected with an available fix in versions ${fixVersions}`;
   }
 
   return `Version ${v.artifact.version} is affected with no fixes reported yet.`;
@@ -120,8 +132,13 @@ function grype_render_rules(vulnerabilities, source) {
         ruleIDs.push(ruleID);
         // Entirely possible to not have any links whatsoever
         let link = v.vulnerability.id;
-        if ("links" in v.vulnerability) {
-          link = `[${v.vulnerability.id}](${v.vulnerability.links[0]})`;
+        if ("dataSource" in v.vulnerability) {
+          link = `[${v.vulnerability.id}](${v.vulnerability.dataSource})`;
+        } else if (
+          "urls" in v.vulnerability &&
+          v.vulnerability.urls.length > 0
+        ) {
+          link = `[${v.vulnerability.id}](${v.vulnerability.urls[0]})`;
         }
 
         result.push({
@@ -149,7 +166,7 @@ function grype_render_rules(vulnerabilities, source) {
               v.artifact.version +
               "\n" +
               "Fix Version: " +
-              "unknown" +
+              (get_fix_versions(v) || "none") +
               "\n" +
               "Type: " +
               v.artifact.type +
@@ -175,7 +192,7 @@ function grype_render_rules(vulnerabilities, source) {
               "|" +
               v.artifact.version +
               "|" +
-              "unknown" +
+              (get_fix_versions(v) || "none") +
               "|" +
               v.artifact.type +
               "|" +
