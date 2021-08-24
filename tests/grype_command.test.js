@@ -8,7 +8,7 @@ jest.spyOn(githubActionsToolCache, "find").mockImplementation(() => {
 });
 
 const spyExec = jest.spyOn(githubActionsExec, "exec").mockImplementation(() => {
-  return Promise.resolve("{}");
+  return Promise.resolve(0);
 });
 
 const mockExec = async (args) => {

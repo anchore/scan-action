@@ -15,6 +15,7 @@ const testSource = async (source, vulnerabilities) => {
 
   const out = await runScan({
     source,
+    failBuild: "false",
     acsReportEnable: "true",
   });
 

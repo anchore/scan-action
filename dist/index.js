@@ -447,10 +447,9 @@ async function runScan({
 }) {
   const out = {};
 
-  const billOfMaterialsPath = "./anchore-reports/content.json";
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
   let cmdArgs = [];
-  console.log(billOfMaterialsPath);
+
   if (debug.toLowerCase() === "true") {
     debug = "true";
     cmdArgs = [`-vv`, `-o`, `json`];
@@ -514,9 +513,9 @@ async function runScan({
   core.info("\nAnalyzing: " + source);
   core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
 
-  core.startGroup("Grype Output");
-  let exitCode = await exec(cmd, cmdArgs, cmdOpts);
-  core.endGroup();
+  const exitCode = await core.group("Grype Output", () => {
+    return exec(cmd, cmdArgs, cmdOpts);
+  });
 
   let grypeVulnerabilities = JSON.parse(cmdOutput);
 
