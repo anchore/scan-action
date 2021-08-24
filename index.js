@@ -506,7 +506,11 @@ async function runScan({
 
   core.info("\nAnalyzing: " + source);
   core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
+
+  core.startGroup("Grype Output");
   let exitCode = await exec(cmd, cmdArgs, cmdOpts);
+  core.endGroup();
+
   let grypeVulnerabilities = JSON.parse(cmdOutput);
 
   if (acsReportEnable) {
