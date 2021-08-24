@@ -275,14 +275,12 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, source) {
 }
 
 function vulnerabilities_to_sarif(
-  input_vulnerabilities,
+  grypeVulnerabilities,
   severity_cutoff_param,
   version,
   source
 ) {
-  let rawdata = fs.readFileSync(input_vulnerabilities);
-  let parsed = JSON.parse(rawdata);
-  let vulnerabilities = parsed.matches;
+  let vulnerabilities = grypeVulnerabilities.matches;
 
   const sarifOutput = {
     $schema:
@@ -425,14 +423,12 @@ async function run() {
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
     const severityCutoff = core.getInput("severity-cutoff");
-    const version = core.getInput("grype-version");
     const out = await runScan({
       source,
       debug,
       failBuild,
       acsReportEnable,
       severityCutoff,
-      version,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -446,9 +442,8 @@ async function runScan({
   source,
   debug = "false",
   failBuild = "true",
-  acsReportEnable = "false",
+  acsReportEnable = "true",
   severityCutoff = "medium",
-  version = "",
 }) {
   const out = {};
 
@@ -488,12 +483,8 @@ async function runScan({
     );
   }
 
-  if (!version) {
-    version = `${grypeVersion}`;
-  }
-
-  core.debug(`Installing grype version ${version}`);
-  await installGrype(version);
+  core.debug(`Installing grype version ${grypeVersion}`);
+  await installGrype(grypeVersion);
 
   core.debug("Image: " + source);
   core.debug("Debug Output: " + debug);
@@ -525,17 +516,12 @@ async function runScan({
   let exitCode = await exec(cmd, cmdArgs, cmdOpts);
   let grypeVulnerabilities = JSON.parse(cmdOutput);
 
-  // handle output
-  fs.writeFileSync(
-    "./vulnerabilities.json",
-    JSON.stringify(grypeVulnerabilities)
-  );
-
   if (acsReportEnable) {
     try {
       const serifOut = sarifGrypeGeneration(
+        grypeVulnerabilities,
         severityCutoff.toLowerCase(),
-        version,
+        grypeVersion,
         source
       );
       Object.assign(out, serifOut);
@@ -549,8 +535,6 @@ async function runScan({
       `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
     );
   }
-
-  out.vulnerabilities = "./vulnerabilities.json";
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
   if (failBuild === false && exitCode > 0) {
@@ -571,11 +555,16 @@ async function runScan({
   return out;
 }
 
-function sarifGrypeGeneration(severity_cutoff_param, version, source) {
+function sarifGrypeGeneration(
+  grypeVulnerabilities,
+  severity_cutoff_param,
+  version,
+  source
+) {
   // sarif generate section
   const SARIF_FILE = "./results.sarif";
   let sarifOutput = vulnerabilities_to_sarif(
-    "./vulnerabilities.json",
+    grypeVulnerabilities,
     severity_cutoff_param,
     version,
     source
