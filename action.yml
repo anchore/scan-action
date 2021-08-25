@@ -19,7 +19,7 @@ inputs:
     required: false
     default: "true"
   acs-report-enable:
-    description: "Optionally, disable the feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report."
+    description: "Generate a SARIF report and set the `sarif` output parameter after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report."
     required: false
     default: "true"
   severity-cutoff:
