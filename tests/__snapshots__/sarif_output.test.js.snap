@@ -1,0 +1,1949 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SARIF alpine 1`] = `
+Object {
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+  "runs": Array [
+    Object {
+      "columnKind": "utf16CodeUnits",
+      "logicalLocations": Array [
+        Object {
+          "fullyQualifiedName": "dockerfile",
+          "kind": "namespace",
+          "name": "dockerfile",
+        },
+      ],
+      "results": Array [
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2014-6051_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2014-6052_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2014-6053_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2014-6054_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2014-6055_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2016-9941_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2016-9942_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2018-7225_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2019-15681_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2019-20839_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2019-20840_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14397_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14399_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14400_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14401_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14402_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14403_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14404_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-14405_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/lib/apk/db/installed",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/lib/apk/db/installed",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /lib/apk/db/installed reports libvncserver at version 0.9.9  which would result in a vulnerable (apk) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-25708_apk_libvncserver_0.9.9",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+      ],
+      "tool": Object {
+        "driver": Object {
+          "dottedQuadFileVersion": "0.16.0.0",
+          "fullName": "Anchore Container Vulnerability Report (T0)",
+          "name": "Anchore Container Vulnerability Report (T0)",
+          "rules": Array [
+            Object {
+              "fullDescription": Object {
+                "text": "Integer overflow in the MallocFrameBuffer function in vncviewer.c in LibVNCServer 0.9.9 and earlier allows remote VNC servers to cause a denial of service (crash) and possibly execute arbitrary code via an advertisement for a large screen size, which triggers a heap-based buffer overflow.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2014-6051**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|libvncserver|0.9.9|none|apk|/lib/apk/db/installed|unknown|[CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)|
+",
+                "text": "Vulnerability CVE-2014-6051
+Severity: High
+Package: libvncserver
+Version: 0.9.9
+Fix Version: none
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)",
+              },
+              "id": "ANCHOREVULN_CVE-2014-6051_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2014-6051 High vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The HandleRFBServerMessage function in libvncclient/rfbproto.c in LibVNCServer 0.9.9 and earlier does not check certain malloc return values, which allows remote VNC servers to cause a denial of service (application crash) or possibly execute arbitrary code by specifying a large screen size in a (1) FramebufferUpdate, (2) ResizeFrameBuffer, or (3) PalmVNCReSizeFrameBuffer message.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2014-6052**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|libvncserver|0.9.9|none|apk|/lib/apk/db/installed|unknown|[CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)|
+",
+                "text": "Vulnerability CVE-2014-6052
+Severity: High
+Package: libvncserver
+Version: 0.9.9
+Fix Version: none
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)",
+              },
+              "id": "ANCHOREVULN_CVE-2014-6052_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2014-6052 High vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The rfbProcessClientNormalMessage function in libvncserver/rfbserver.c in LibVNCServer 0.9.9 and earlier does not properly handle attempts to send a large amount of ClientCutText data, which allows remote attackers to cause a denial of service (memory consumption or daemon crash) via a crafted message that is processed by using a single unchecked malloc.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2014-6053**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|none|apk|/lib/apk/db/installed|unknown|[CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)|
+",
+                "text": "Vulnerability CVE-2014-6053
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: none
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)",
+              },
+              "id": "ANCHOREVULN_CVE-2014-6053_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2014-6053 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The rfbProcessClientNormalMessage function in libvncserver/rfbserver.c in LibVNCServer 0.9.9 and earlier allows remote attackers to cause a denial of service (divide-by-zero error and server crash) via a zero value in the scaling factor in a (1) PalmVNCSetScaleFactor or (2) SetScale message.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2014-6054**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|none|apk|/lib/apk/db/installed|unknown|[CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)|
+",
+                "text": "Vulnerability CVE-2014-6054
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: none
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)",
+              },
+              "id": "ANCHOREVULN_CVE-2014-6054_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2014-6054 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Multiple stack-based buffer overflows in the File Transfer feature in rfbserver.c in LibVNCServer 0.9.9 and earlier allow remote authenticated users to cause a denial of service (crash) and possibly execute arbitrary code via a (1) long file or (2) directory name or the (3) FileTime attribute in a rfbFileTransferOffer message.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2014-6055**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|none|apk|/lib/apk/db/installed|unknown|[CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)|
+",
+                "text": "Vulnerability CVE-2014-6055
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: none
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)",
+              },
+              "id": "ANCHOREVULN_CVE-2014-6055_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2014-6055 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.11-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2016-9941**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|libvncserver|0.9.9|0.9.11-r0|apk|/lib/apk/db/installed|unknown|[CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)|
+",
+                "text": "Vulnerability CVE-2016-9941
+Severity: High
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.11-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)",
+              },
+              "id": "ANCHOREVULN_CVE-2016-9941_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2016-9941 High vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.11-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2016-9942**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|libvncserver|0.9.9|0.9.11-r0|apk|/lib/apk/db/installed|unknown|[CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)|
+",
+                "text": "Vulnerability CVE-2016-9942
+Severity: High
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.11-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)",
+              },
+              "id": "ANCHOREVULN_CVE-2016-9942_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2016-9942 High vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.11-r2",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2018-7225**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|libvncserver|0.9.9|0.9.11-r2|apk|/lib/apk/db/installed|unknown|[CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)|
+",
+                "text": "Vulnerability CVE-2018-7225
+Severity: High
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.11-r2
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)",
+              },
+              "id": "ANCHOREVULN_CVE-2018-7225_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2018-7225 High vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.12-r1",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2019-15681**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.12-r1|apk|/lib/apk/db/installed|unknown|[CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)|
+",
+                "text": "Vulnerability CVE-2019-15681
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.12-r1
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)",
+              },
+              "id": "ANCHOREVULN_CVE-2019-15681_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2019-15681 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2019-20839**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)|
+",
+                "text": "Vulnerability CVE-2019-20839
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)",
+              },
+              "id": "ANCHOREVULN_CVE-2019-20839_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2019-20839 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2019-20840**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)|
+",
+                "text": "Vulnerability CVE-2019-20840
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)",
+              },
+              "id": "ANCHOREVULN_CVE-2019-20840_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2019-20840 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14397**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)|
+",
+                "text": "Vulnerability CVE-2020-14397
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14397_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14397 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14399**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)|
+",
+                "text": "Vulnerability CVE-2020-14399
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14399_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14399 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14400**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)|
+",
+                "text": "Vulnerability CVE-2020-14400
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14400_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14400 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14401**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14401)|
+",
+                "text": "Vulnerability CVE-2020-14401
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14401)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14401_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14401 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14402**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14402)|
+",
+                "text": "Vulnerability CVE-2020-14402
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14402)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14402_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14402 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14403**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14403)|
+",
+                "text": "Vulnerability CVE-2020-14403
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14403)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14403_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14403 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14404**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14404)|
+",
+                "text": "Vulnerability CVE-2020-14404
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14404)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14404_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14404 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-14405**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14405)|
+",
+                "text": "Vulnerability CVE-2020-14405
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14405)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-14405_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-14405 Medium vulnerability for libvncserver package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Version 0.9.9 is affected with an available fix in versions 0.9.13-r0",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-25708**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)|
+",
+                "text": "Vulnerability CVE-2020-25708
+Severity: Medium
+Package: libvncserver
+Version: 0.9.9
+Fix Version: 0.9.13-r0
+Type: apk
+Location: /lib/apk/db/installed
+Data Namespace: unknown
+Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-25708_apk_libvncserver_0.9.9",
+              "shortDescription": Object {
+                "text": "CVE-2020-25708 Medium vulnerability for libvncserver package",
+              },
+            },
+          ],
+          "semanticVersion": "0.16.0",
+          "version": "0.16.0",
+        },
+      },
+    },
+  ],
+  "version": "2.1.0",
+}
+`;
+
+exports[`SARIF debian 1`] = `
+Object {
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+  "runs": Array [
+    Object {
+      "columnKind": "utf16CodeUnits",
+      "logicalLocations": Array [
+        Object {
+          "fullyQualifiedName": "dockerfile",
+          "kind": "namespace",
+          "name": "dockerfile",
+        },
+      ],
+      "results": Array [
+        Object {
+          "analysisTarget": Object {
+            "uri": "/var/lib/dpkg/status",
+          },
+          "baselineState": "unchanged",
+          "level": "warning",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/var/lib/dpkg/status",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /var/lib/dpkg/status reports apt at version 1.8.2  which would result in a vulnerable (deb) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2011-3374_deb_apt_1.8.2",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/ruby/specifications/bundler.gemspec",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/ruby/specifications/bundler.gemspec",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /ruby/specifications/bundler.gemspec reports bundler at version 2.1.4  which would result in a vulnerable (gem) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2020-36327_gem_bundler_2.1.4",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/python/dist-info/METADATA",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/python/dist-info/METADATA",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /python/dist-info/METADATA reports Pygments at version 2.6.1  which would result in a vulnerable (python) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-9w8r-397f-prfh_python_Pygments_2.6.1",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/ruby/specifications/bundler.gemspec",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/ruby/specifications/bundler.gemspec",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /ruby/specifications/bundler.gemspec reports bundler at version 2.1.4  which would result in a vulnerable (gem) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-fp4w-jxhp-m23p_gem_bundler_2.1.4",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "/python/dist-info/METADATA",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "/python/dist-info/METADATA",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path /python/dist-info/METADATA reports Pygments at version 2.6.1  which would result in a vulnerable (python) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-pq64-v7f5-gqh8_python_Pygments_2.6.1",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+      ],
+      "tool": Object {
+        "driver": Object {
+          "dottedQuadFileVersion": "0.16.0.0",
+          "fullName": "Anchore Container Vulnerability Report (T0)",
+          "name": "Anchore Container Vulnerability Report (T0)",
+          "rules": Array [
+            Object {
+              "fullDescription": Object {
+                "text": "Version 1.8.2 is affected with no fixes reported yet.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2011-3374**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Negligible|apt|1.8.2|none|deb|/var/lib/dpkg/status|unknown|[CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)|
+",
+                "text": "Vulnerability CVE-2011-3374
+Severity: Negligible
+Package: apt
+Version: 1.8.2
+Fix Version: none
+Type: deb
+Location: /var/lib/dpkg/status
+Data Namespace: unknown
+Link: [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)",
+              },
+              "id": "ANCHOREVULN_CVE-2011-3374_deb_apt_1.8.2",
+              "shortDescription": Object {
+                "text": "CVE-2011-3374 Negligible vulnerability for apt package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Bundler 1.16.0 through 2.2.9 and 2.2.11 through 2.2.16 sometimes chooses a dependency source based on the highest gem version number, which means that a rogue gem found at a public source may be chosen, even if the intended choice was a private gem that is a dependency of another private gem that is explicitly depended on by the application. NOTE: it is not correct to use CVE-2021-24105 for every \\"Dependency Confusion\\" issue in every product.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-36327**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|bundler|2.1.4|none|gem|/ruby/specifications/bundler.gemspec|unknown|[CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)|
+",
+                "text": "Vulnerability CVE-2020-36327
+Severity: High
+Package: bundler
+Version: 2.1.4
+Fix Version: none
+Type: gem
+Location: /ruby/specifications/bundler.gemspec
+Data Namespace: unknown
+Link: [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-36327_gem_bundler_2.1.4",
+              "shortDescription": Object {
+                "text": "CVE-2020-36327 High vulnerability for bundler package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Infinite Loop in Pygments",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-9w8r-397f-prfh**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|Pygments|2.6.1|2.7.4|python|/python/dist-info/METADATA|unknown|[GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)|
+",
+                "text": "Vulnerability GHSA-9w8r-397f-prfh
+Severity: High
+Package: Pygments
+Version: 2.6.1
+Fix Version: 2.7.4
+Type: python
+Location: /python/dist-info/METADATA
+Data Namespace: unknown
+Link: [GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)",
+              },
+              "id": "ANCHOREVULN_GHSA-9w8r-397f-prfh_python_Pygments_2.6.1",
+              "shortDescription": Object {
+                "text": "GHSA-9w8r-397f-prfh High vulnerability for Pygments package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Dependency Confusion in Bundler",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-fp4w-jxhp-m23p**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|bundler|2.1.4|2.2.10|gem|/ruby/specifications/bundler.gemspec|unknown|[GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)|
+",
+                "text": "Vulnerability GHSA-fp4w-jxhp-m23p
+Severity: High
+Package: bundler
+Version: 2.1.4
+Fix Version: 2.2.10
+Type: gem
+Location: /ruby/specifications/bundler.gemspec
+Data Namespace: unknown
+Link: [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)",
+              },
+              "id": "ANCHOREVULN_GHSA-fp4w-jxhp-m23p_gem_bundler_2.1.4",
+              "shortDescription": Object {
+                "text": "GHSA-fp4w-jxhp-m23p High vulnerability for bundler package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Regular Expression Denial of Service (ReDoS) in Pygments",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-pq64-v7f5-gqh8**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|Medium|Pygments|2.6.1|2.7.4|python|/python/dist-info/METADATA|unknown|[GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)|
+",
+                "text": "Vulnerability GHSA-pq64-v7f5-gqh8
+Severity: Medium
+Package: Pygments
+Version: 2.6.1
+Fix Version: 2.7.4
+Type: python
+Location: /python/dist-info/METADATA
+Data Namespace: unknown
+Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
+              },
+              "id": "ANCHOREVULN_GHSA-pq64-v7f5-gqh8_python_Pygments_2.6.1",
+              "shortDescription": Object {
+                "text": "GHSA-pq64-v7f5-gqh8 Medium vulnerability for Pygments package",
+              },
+            },
+          ],
+          "semanticVersion": "0.16.0",
+          "version": "0.16.0",
+        },
+      },
+    },
+  ],
+  "version": "2.1.0",
+}
+`;
+
+exports[`SARIF npm 1`] = `
+Object {
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+  "runs": Array [
+    Object {
+      "columnKind": "utf16CodeUnits",
+      "logicalLocations": Array [
+        Object {
+          "fullyQualifiedName": "dockerfile",
+          "kind": "namespace",
+          "name": "dockerfile",
+        },
+      ],
+      "results": Array [
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-3jfq-g458-7qm9_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-r628-mhmh-qjhw_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+      ],
+      "tool": Object {
+        "driver": Object {
+          "dottedQuadFileVersion": "0.16.0.0",
+          "fullName": "Anchore Container Vulnerability Report (T0)",
+          "name": "Anchore Container Vulnerability Report (T0)",
+          "rules": Array [
+            Object {
+              "fullDescription": Object {
+                "text": "Arbitrary File Creation/Overwrite due to insufficient absolute path sanitization",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-3jfq-g458-7qm9**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|6.1.1|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)|
+",
+                "text": "Vulnerability GHSA-3jfq-g458-7qm9
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: 6.1.1
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
+              },
+              "id": "ANCHOREVULN_GHSA-3jfq-g458-7qm9_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "GHSA-3jfq-g458-7qm9 High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Arbitrary File Creation/Overwrite via insufficient symlink protection due to directory cache poisoning",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-r628-mhmh-qjhw**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|6.1.2|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)|
+",
+                "text": "Vulnerability GHSA-r628-mhmh-qjhw
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: 6.1.2
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
+              },
+              "id": "ANCHOREVULN_GHSA-r628-mhmh-qjhw_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "GHSA-r628-mhmh-qjhw High vulnerability for tar package",
+              },
+            },
+          ],
+          "semanticVersion": "0.16.0",
+          "version": "0.16.0",
+        },
+      },
+    },
+  ],
+  "version": "2.1.0",
+}
+`;
+
+exports[`SARIF yarn 1`] = `
+Object {
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
+  "runs": Array [
+    Object {
+      "columnKind": "utf16CodeUnits",
+      "logicalLocations": Array [
+        Object {
+          "fullyQualifiedName": "dockerfile",
+          "kind": "namespace",
+          "name": "dockerfile",
+        },
+      ],
+      "results": Array [
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/yarn-project/yarn.lock",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/yarn-project/yarn.lock",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-w5p7-h5w8-2hfq_npm_trim_0.0.2",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+      ],
+      "tool": Object {
+        "driver": Object {
+          "dottedQuadFileVersion": "0.16.0.0",
+          "fullName": "Anchore Container Vulnerability Report (T0)",
+          "name": "Anchore Container Vulnerability Report (T0)",
+          "rules": Array [
+            Object {
+              "fullDescription": Object {
+                "text": "Regular Expression Denial of Service in trim",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-w5p7-h5w8-2hfq**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|trim|0.0.2|0.0.3|npm|tests/fixtures/yarn-project/yarn.lock|unknown|[GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)|
+",
+                "text": "Vulnerability GHSA-w5p7-h5w8-2hfq
+Severity: High
+Package: trim
+Version: 0.0.2
+Fix Version: 0.0.3
+Type: npm
+Location: tests/fixtures/yarn-project/yarn.lock
+Data Namespace: unknown
+Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
+              },
+              "id": "ANCHOREVULN_GHSA-w5p7-h5w8-2hfq_npm_trim_0.0.2",
+              "shortDescription": Object {
+                "text": "GHSA-w5p7-h5w8-2hfq High vulnerability for trim package",
+              },
+            },
+          ],
+          "semanticVersion": "0.16.0",
+          "version": "0.16.0",
+        },
+      },
+    },
+  ],
+  "version": "2.1.0",
+}
+`;

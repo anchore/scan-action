@@ -1,5 +1,5 @@
-name: 'Anchore Container Scan'
-description: 'Scan docker containers with Grype for vulnerabilities'
+name: "Anchore Container Scan"
+description: "Scan docker containers with Grype for vulnerabilities"
 branding:
   color: blue
   icon: check-circle
@@ -11,29 +11,24 @@ inputs:
     description: 'The path to scan. This option is mutually exclusive with "image".'
     required: false
   debug:
-    description: 'Set this to any value to enable verbose debug output'
+    description: "Set this to any value to enable verbose debug output"
     required: false
-    default: 'false'
+    default: "false"
   fail-build:
-    description: 'Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)'
+    description: "Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)"
     required: false
-    default: 'true'
-  grype-version:
-    description: 'Optionally, specify the Grype version (e.g. 0.1.0) to use instead of the default version'
-    required: false
+    default: "true"
   acs-report-enable:
-    description: 'Optionally, enable feature that causes a result.sarif report to be generated after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.'
+    description: "Generate a SARIF report and set the `sarif` output parameter after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report."
     required: false
-    default: 'false'
+    default: "true"
   severity-cutoff:
     description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
     required: false
     default: "medium"
 outputs:
-  vulnerabilities:
-    description: 'The found vulnerabilities for the image'
   sarif:
-    description: 'Path to a SARIF report file for the image'
+    description: "Path to a SARIF report file for the image"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"

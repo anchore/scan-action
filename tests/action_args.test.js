@@ -12,7 +12,6 @@ describe("Github action args", () => {
       "fail-build": "true",
       "acs-report-enable": "false",
       "severity-cutoff": "medium",
-      "grype-version": "",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
@@ -35,7 +34,6 @@ describe("Github action args", () => {
       expect(inputs[name]).toBe(true);
     });
 
-    expect(outputs["vulnerabilities"]).toBe("./vulnerabilities.json");
     expect(outputs["sarif"]).toBeFalsy();
 
     spyInput.mockRestore();
@@ -50,7 +48,6 @@ describe("Github action args", () => {
       "fail-build": "true",
       "acs-report-enable": "true",
       "severity-cutoff": "medium",
-      "grype-version": "",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
@@ -73,7 +70,6 @@ describe("Github action args", () => {
       expect(inputs[name]).toBe(true);
     });
 
-    expect(outputs["vulnerabilities"]).toBe("./vulnerabilities.json");
     expect(outputs["sarif"]).toBe("./results.sarif");
 
     spyInput.mockRestore();

@@ -83,14 +83,27 @@ function dottedQuadFileVersion(version) {
   return version;
 }
 
+function get_fix_versions(v) {
+  if (
+    v.vulnerability.fix &&
+    v.vulnerability.fix.state === "fixed" &&
+    v.vulnerability.fix.versions &&
+    v.vulnerability.fix.versions.length > 0
+  ) {
+    return v.vulnerability.fix.versions.join(",");
+  }
+  return "";
+}
+
 function make_subtitle(v) {
   let subtitle = `${v.vulnerability.description}`;
   if (subtitle != "undefined") {
     return subtitle;
   }
 
-  if (v.vulnerability.fixedInVersion) {
-    return `Version ${v.artifact.version} is affected with an available fix in version ${v.vulnerability.fixedInVersion}`;
+  const fixVersions = get_fix_versions(v);
+  if (fixVersions) {
+    return `Version ${v.artifact.version} is affected with an available fix in versions ${fixVersions}`;
   }
 
   return `Version ${v.artifact.version} is affected with no fixes reported yet.`;
@@ -113,8 +126,13 @@ function grype_render_rules(vulnerabilities, source) {
         ruleIDs.push(ruleID);
         // Entirely possible to not have any links whatsoever
         let link = v.vulnerability.id;
-        if ("links" in v.vulnerability) {
-          link = `[${v.vulnerability.id}](${v.vulnerability.links[0]})`;
+        if ("dataSource" in v.vulnerability) {
+          link = `[${v.vulnerability.id}](${v.vulnerability.dataSource})`;
+        } else if (
+          "urls" in v.vulnerability &&
+          v.vulnerability.urls.length > 0
+        ) {
+          link = `[${v.vulnerability.id}](${v.vulnerability.urls[0]})`;
         }
 
         result.push({
@@ -142,7 +160,7 @@ function grype_render_rules(vulnerabilities, source) {
               v.artifact.version +
               "\n" +
               "Fix Version: " +
-              "unknown" +
+              (get_fix_versions(v) || "none") +
               "\n" +
               "Type: " +
               v.artifact.type +
@@ -168,7 +186,7 @@ function grype_render_rules(vulnerabilities, source) {
               "|" +
               v.artifact.version +
               "|" +
-              "unknown" +
+              (get_fix_versions(v) || "none") +
               "|" +
               v.artifact.type +
               "|" +
@@ -251,14 +269,12 @@ function grype_render_results(vulnerabilities, severity_cutoff_param, source) {
 }
 
 function vulnerabilities_to_sarif(
-  input_vulnerabilities,
+  grypeVulnerabilities,
   severity_cutoff_param,
   version,
   source
 ) {
-  let rawdata = fs.readFileSync(input_vulnerabilities);
-  let parsed = JSON.parse(rawdata);
-  let vulnerabilities = parsed.matches;
+  let vulnerabilities = grypeVulnerabilities.matches;
 
   const sarifOutput = {
     $schema:
@@ -401,14 +417,12 @@ async function run() {
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
     const severityCutoff = core.getInput("severity-cutoff");
-    const version = core.getInput("grype-version");
     const out = await runScan({
       source,
       debug,
       failBuild,
       acsReportEnable,
       severityCutoff,
-      version,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -422,16 +436,14 @@ async function runScan({
   source,
   debug = "false",
   failBuild = "true",
-  acsReportEnable = "false",
+  acsReportEnable = "true",
   severityCutoff = "medium",
-  version = "",
 }) {
   const out = {};
 
-  const billOfMaterialsPath = "./anchore-reports/content.json";
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
   let cmdArgs = [];
-  console.log(billOfMaterialsPath);
+
   if (debug.toLowerCase() === "true") {
     debug = "true";
     cmdArgs = [`-vv`, `-o`, `json`];
@@ -464,12 +476,8 @@ async function runScan({
     );
   }
 
-  if (!version) {
-    version = `${grypeVersion}`;
-  }
-
-  core.debug(`Installing grype version ${version}`);
-  await installGrype(version);
+  core.debug(`Installing grype version ${grypeVersion}`);
+  await installGrype(grypeVersion);
 
   core.debug("Image: " + source);
   core.debug("Debug Output: " + debug);
@@ -497,21 +505,20 @@ async function runScan({
   cmdOpts.ignoreReturnCode = true;
 
   core.info("\nAnalyzing: " + source);
-  core.debug(`Running cmd: ${cmd} ` + cmdArgs.join(" "));
-  let exitCode = await exec(cmd, cmdArgs, cmdOpts);
-  let grypeVulnerabilities = JSON.parse(cmdOutput);
 
-  // handle output
-  fs.writeFileSync(
-    "./vulnerabilities.json",
-    JSON.stringify(grypeVulnerabilities)
-  );
+  const exitCode = await core.group("Grype Output", () => {
+    core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
+    return exec(cmd, cmdArgs, cmdOpts);
+  });
+
+  let grypeVulnerabilities = JSON.parse(cmdOutput);
 
   if (acsReportEnable) {
     try {
       const serifOut = sarifGrypeGeneration(
+        grypeVulnerabilities,
         severityCutoff.toLowerCase(),
-        version,
+        grypeVersion,
         source
       );
       Object.assign(out, serifOut);
@@ -525,8 +532,6 @@ async function runScan({
       `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
     );
   }
-
-  out.vulnerabilities = "./vulnerabilities.json";
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
   if (failBuild === false && exitCode > 0) {
@@ -547,11 +552,16 @@ async function runScan({
   return out;
 }
 
-function sarifGrypeGeneration(severity_cutoff_param, version, source) {
+function sarifGrypeGeneration(
+  grypeVulnerabilities,
+  severity_cutoff_param,
+  version,
+  source
+) {
   // sarif generate section
   const SARIF_FILE = "./results.sarif";
   let sarifOutput = vulnerabilities_to_sarif(
-    "./vulnerabilities.json",
+    grypeVulnerabilities,
     severity_cutoff_param,
     version,
     source

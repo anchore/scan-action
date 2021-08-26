@@ -96,27 +96,22 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ### Action Inputs
 
-The only required key is `image`; all the other keys are optional. These are all the available keys to configure this action, along with its defaults:
+The only required key is `image` or `path`; all the other keys are optional. These are all the available keys to configure this action, along with its defaults:
 
 | Input Name          | Description                                                                                                                                                                                                                                                                                                    | Default Value |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `image`             | The image to scan                                                                                                                                                                                                                                                                                              | N/A           |
+| `image`             | The image to scan, this is mutually exclusive to `path`                                                                                                                                                                                                                                                        | N/A           |
+| `path`              | The file path to scan, this is mutually exclusive to `image`                                                                                                                                                                                                                                                   | N/A           |
 | `debug`             | Verbose logging output                                                                                                                                                                                                                                                                                         | `false`       |
-| `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `false`       |
-| `grype-version`     | An optional parameter to specify a specific version of `grype` to use for the scan. Default is the version locked to the scan-action release                                                                                                                                                                   | `0.16.0`      |
-| `acs-report-enable` | Optionally, enable the feature that causes a result.sarif report to be generated after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                | `false`       |
+| `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`        |
+| `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                                    | `true`        |
 | `severity-cutoff`   | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`    |
 
 ### Action Outputs
 
-| Output Name     | Description                                                         | Type   |
-| --------------- | ------------------------------------------------------------------- | ------ |
-| vulnerabilities | Path to a JSON file with the list of vulnerabilities found in image | string |
-| sarif           | Path to a SARIF report file                                         | string |
-
-As a result of the action, you'll get a JSON file in the `anchore-reports` directory in the workspace:
-
-- `vulnerabilities.json` - Vulnerabilities found in the image
+| Output Name | Description                   | Type   |
+| ----------- | ----------------------------- | ------ |
+| sarif       | Path to the SARIF report file | string |
 
 ### Example Workflows
 
@@ -136,8 +131,6 @@ jobs:
         with:
           image: "localbuild/testimage:latest"
           fail-build: true
-      - name: grype scan JSON results
-        run: for j in `ls ./anchore-reports/*.json`; do echo "---- ${j} ----"; cat ${j}; echo; done
 ```
 
 Same example as above, but with Automated Code Scanning (ACS) feature enabled - with this example, the action will generate a SARIF report, which can be uploaded and then displayed as a Code Scanning Report in the GitHub UI.
@@ -184,8 +177,8 @@ For documentation on Grype itself, including other output capabilities, see the 
 
 Connect with the community directly on [slack](https://anchore.com/slack). These channels from Anchore's toolbox project are ideal for engaging development of help-related discussions:
 
-- toolbox-dev
-- toolbox-help
+- grype-dev
+- grype-help
 
 [test]: https://github.com/anchore/scan-action
 [test-img]: https://github.com/anchore/scan-action/workflows/Tests/badge.svg
