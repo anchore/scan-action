@@ -51,7 +51,7 @@ The simplest workflow for scanning a `localbuild/testimage` container:
     load: true
 
  - name: Scan image
-   uses: anchore/scan-action@v2
+   uses: anchore/scan-action@v3
    with:
      image: "localbuild/testimage:latest"
 ```
@@ -62,7 +62,7 @@ To scan a directory, add the following step:
 
 ```yaml
 - name: Scan current project
-  uses: anchore/scan-action@v2
+  uses: anchore/scan-action@v3
   with:
     path: "."
 ```
@@ -77,7 +77,7 @@ With a different severity level:
 
 ```yaml
 - name: Scan image
-  uses: anchore/scan-action@v2
+  uses: anchore/scan-action@v3
   with:
     image: "localbuild/testimage:latest"
     fail-build: true
@@ -88,7 +88,7 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ```yaml
 - name: Scan image
-  uses: anchore/scan-action@v2
+  uses: anchore/scan-action@v3
   with:
     image: "localbuild/testimage:latest"
     fail-build: false
@@ -127,7 +127,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build the container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-      - uses: anchore/scan-action@v2
+      - uses: anchore/scan-action@v3
         with:
           image: "localbuild/testimage:latest"
           fail-build: true
@@ -147,7 +147,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build the Container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-      - uses: anchore/scan-action@v2
+      - uses: anchore/scan-action@v3
         id: scan
         with:
           image: "localbuild/testimage:latest"
