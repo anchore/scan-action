@@ -954,10 +954,10 @@ Link: [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)",
                 "markdown": "**Vulnerability CVE-2016-9941**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|libvncserver|0.9.9|0.9.11-r0|apk|/lib/apk/db/installed|unknown|[CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)|
+|Critical|libvncserver|0.9.9|0.9.11-r0|apk|/lib/apk/db/installed|unknown|[CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)|
 ",
                 "text": "Vulnerability CVE-2016-9941
-Severity: High
+Severity: Critical
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.11-r0
@@ -968,7 +968,7 @@ Link: [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
               },
               "id": "ANCHOREVULN_CVE-2016-9941_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2016-9941 High vulnerability for libvncserver package",
+                "text": "CVE-2016-9941 Critical vulnerability for libvncserver package",
               },
             },
             Object {
@@ -979,10 +979,10 @@ Link: [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
                 "markdown": "**Vulnerability CVE-2016-9942**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|libvncserver|0.9.9|0.9.11-r0|apk|/lib/apk/db/installed|unknown|[CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)|
+|Critical|libvncserver|0.9.9|0.9.11-r0|apk|/lib/apk/db/installed|unknown|[CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)|
 ",
                 "text": "Vulnerability CVE-2016-9942
-Severity: High
+Severity: Critical
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.11-r0
@@ -993,7 +993,7 @@ Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
               },
               "id": "ANCHOREVULN_CVE-2016-9942_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2016-9942 High vulnerability for libvncserver package",
+                "text": "CVE-2016-9942 Critical vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1004,10 +1004,10 @@ Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
                 "markdown": "**Vulnerability CVE-2018-7225**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|libvncserver|0.9.9|0.9.11-r2|apk|/lib/apk/db/installed|unknown|[CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)|
+|Critical|libvncserver|0.9.9|0.9.11-r2|apk|/lib/apk/db/installed|unknown|[CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)|
 ",
                 "text": "Vulnerability CVE-2018-7225
-Severity: High
+Severity: Critical
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.11-r2
@@ -1018,7 +1018,7 @@ Link: [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-722
               },
               "id": "ANCHOREVULN_CVE-2018-7225_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2018-7225 High vulnerability for libvncserver package",
+                "text": "CVE-2018-7225 Critical vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1029,10 +1029,10 @@ Link: [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-722
                 "markdown": "**Vulnerability CVE-2019-15681**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.12-r1|apk|/lib/apk/db/installed|unknown|[CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)|
+|High|libvncserver|0.9.9|0.9.12-r1|apk|/lib/apk/db/installed|unknown|[CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)|
 ",
                 "text": "Vulnerability CVE-2019-15681
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.12-r1
@@ -1043,7 +1043,7 @@ Link: [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15
               },
               "id": "ANCHOREVULN_CVE-2019-15681_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2019-15681 Medium vulnerability for libvncserver package",
+                "text": "CVE-2019-15681 High vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1054,10 +1054,10 @@ Link: [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15
                 "markdown": "**Vulnerability CVE-2019-20839**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)|
+|High|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)|
 ",
                 "text": "Vulnerability CVE-2019-20839
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.13-r0
@@ -1068,7 +1068,7 @@ Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
               },
               "id": "ANCHOREVULN_CVE-2019-20839_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2019-20839 Medium vulnerability for libvncserver package",
+                "text": "CVE-2019-20839 High vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1079,10 +1079,10 @@ Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
                 "markdown": "**Vulnerability CVE-2019-20840**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)|
+|High|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)|
 ",
                 "text": "Vulnerability CVE-2019-20840
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.13-r0
@@ -1093,7 +1093,7 @@ Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
               },
               "id": "ANCHOREVULN_CVE-2019-20840_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2019-20840 Medium vulnerability for libvncserver package",
+                "text": "CVE-2019-20840 High vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1104,10 +1104,10 @@ Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
                 "markdown": "**Vulnerability CVE-2020-14397**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)|
+|High|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)|
 ",
                 "text": "Vulnerability CVE-2020-14397
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.13-r0
@@ -1118,7 +1118,7 @@ Link: [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "id": "ANCHOREVULN_CVE-2020-14397_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2020-14397 Medium vulnerability for libvncserver package",
+                "text": "CVE-2020-14397 High vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1129,10 +1129,10 @@ Link: [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14399**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)|
+|High|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)|
 ",
                 "text": "Vulnerability CVE-2020-14399
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.13-r0
@@ -1143,7 +1143,7 @@ Link: [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "id": "ANCHOREVULN_CVE-2020-14399_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2020-14399 Medium vulnerability for libvncserver package",
+                "text": "CVE-2020-14399 High vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1154,10 +1154,10 @@ Link: [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14400**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)|
+|High|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)|
 ",
                 "text": "Vulnerability CVE-2020-14400
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.13-r0
@@ -1168,7 +1168,7 @@ Link: [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "id": "ANCHOREVULN_CVE-2020-14400_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2020-14400 Medium vulnerability for libvncserver package",
+                "text": "CVE-2020-14400 High vulnerability for libvncserver package",
               },
             },
             Object {
@@ -1304,10 +1304,10 @@ Link: [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-25708**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|Medium|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)|
+|High|libvncserver|0.9.9|0.9.13-r0|apk|/lib/apk/db/installed|unknown|[CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)|
 ",
                 "text": "Vulnerability CVE-2020-25708
-Severity: Medium
+Severity: High
 Package: libvncserver
 Version: 0.9.9
 Fix Version: 0.9.13-r0
@@ -1318,7 +1318,7 @@ Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25
               },
               "id": "ANCHOREVULN_CVE-2020-25708_apk_libvncserver_0.9.9",
               "shortDescription": Object {
-                "text": "CVE-2020-25708 Medium vulnerability for libvncserver package",
+                "text": "CVE-2020-25708 High vulnerability for libvncserver package",
               },
             },
           ],
@@ -1775,6 +1775,126 @@ Object {
             "id": "default",
             "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
+          "ruleId": "ANCHOREVULN_GHSA-5955-9wpr-37jh_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-9r2w-394v-53qc_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_GHSA-qq89-hq3f-393p_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
           "ruleId": "ANCHOREVULN_GHSA-r628-mhmh-qjhw_npm_tar_6.1.0",
           "ruleIndex": 0,
           "suppressions": Array [
@@ -1813,6 +1933,81 @@ Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
               "id": "ANCHOREVULN_GHSA-3jfq-g458-7qm9_npm_tar_6.1.0",
               "shortDescription": Object {
                 "text": "GHSA-3jfq-g458-7qm9 High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Arbitrary File Creation/Overwrite on Windows via insufficient relative path sanitization",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-5955-9wpr-37jh**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|6.1.9|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)|
+",
+                "text": "Vulnerability GHSA-5955-9wpr-37jh
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: 6.1.9
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
+              },
+              "id": "ANCHOREVULN_GHSA-5955-9wpr-37jh_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "GHSA-5955-9wpr-37jh High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Arbitrary File Creation/Overwrite via insufficient symlink protection due to directory cache poisoning using symbolic links",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-9r2w-394v-53qc**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|6.1.7|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)|
+",
+                "text": "Vulnerability GHSA-9r2w-394v-53qc
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: 6.1.7
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
+              },
+              "id": "ANCHOREVULN_GHSA-9r2w-394v-53qc_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "GHSA-9r2w-394v-53qc High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "Arbitrary File Creation/Overwrite via insufficient symlink protection due to directory cache poisoning using symbolic links",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability GHSA-qq89-hq3f-393p**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|6.1.9|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)|
+",
+                "text": "Vulnerability GHSA-qq89-hq3f-393p
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: 6.1.9
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
+              },
+              "id": "ANCHOREVULN_GHSA-qq89-hq3f-393p_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "GHSA-qq89-hq3f-393p High vulnerability for tar package",
               },
             },
             Object {

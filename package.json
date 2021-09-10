@@ -10,6 +10,7 @@
   "scripts": {
     "lint": "eslint index.js",
     "test": "eslint index.js && jest",
+    "update-snapshots": "eslint index.js && jest --updateSnapshot",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
     "prettier": "prettier -w index.js"
