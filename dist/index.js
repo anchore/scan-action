@@ -513,7 +513,16 @@ async function runScan({
     },
   });
 
-  const cmdOpts = {
+  core.info("\nAnalyzing: " + source);
+
+  core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
+
+  const exitCode = await exec(cmd, cmdArgs, {
+    env: {
+      GRYPE_CHECK_FOR_APP_UPDATE: "false",
+      GRYPE_DB_AUTO_UPDATE: process.env.GRYPE_DB_AUTO_UPDATE,
+      GRYPE_DB_CACHE_DIR: process.env.GRYPE_DB_CACHE_DIR,
+    },
     ignoreReturnCode: true,
     outStream,
     listeners: {
@@ -521,13 +530,7 @@ async function runScan({
         cmdOutput += data.toString();
       },
     },
-  };
-
-  core.info("\nAnalyzing: " + source);
-
-  core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
-
-  const exitCode = await exec(cmd, cmdArgs, cmdOpts);
+  });
 
   if (core.isDebug()) {
     core.debug("Grype output:");

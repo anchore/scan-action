@@ -36,6 +36,10 @@ jobs:
           for distro in alpine centos debian; do
             docker buildx imagetools inspect localhost:5000/match-coverage/$distro:latest
           done
+      - run: |
+          echo Downloading a pinned Grype DB for testing...
+          mkdir -p grype-db/3
+          curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2021-09-10T08:18:17Z.tar.gz | tar zxf - -C grype-db/3
       - run: npm ci
       - run: npm audit --production
       - run: npm test
