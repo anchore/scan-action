@@ -504,8 +504,8 @@ async function runScan({
   }
   cmdArgs.push(source);
 
-  // This /dev/null writable stream is required so the entire contents
-  // of the SBOM is not written to the GitHub action log. the listener below
+  // This /dev/null writable stream is required so the entire Grype output
+  // is not written to the GitHub action log. the listener below
   // will actually capture the output
   const outStream = new stream.Writable({
     write(buffer, encoding, next) {
