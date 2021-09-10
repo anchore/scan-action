@@ -522,6 +522,11 @@ async function runScan({
 
   const exitCode = await exec(cmd, cmdArgs, cmdOpts);
 
+  if (core.isDebug()) {
+    core.debug("Grype output:");
+    core.debug(cmdOutput);
+  }
+
   let grypeVulnerabilities = JSON.parse(cmdOutput);
 
   if (acsReportEnable) {
