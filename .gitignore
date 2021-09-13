@@ -115,6 +115,9 @@ typings/
 /venv/*
 /tests/functional/__pycache__/*
 
+# grype db for tests
+/grype-db
+
 # Action temporary files
 results.sarif
 vulnerabilities.json

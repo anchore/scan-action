@@ -9,6 +9,7 @@ const cache = __webpack_require__(784);
 const core = __webpack_require__(186);
 const { exec } = __webpack_require__(514);
 const fs = __webpack_require__(747);
+const stream = __webpack_require__(413);
 
 const grypeBinary = "grype";
 const grypeVersion = "0.17.0";
@@ -502,21 +503,36 @@ async function runScan({
     cmdArgs.push(severityCutoff.toLowerCase());
   }
   cmdArgs.push(source);
-  const cmdOpts = {};
-  cmdOpts.listeners = {
-    stdout: (data = Buffer) => {
-      cmdOutput += data.toString();
+
+  // This /dev/null writable stream is required so the entire Grype output
+  // is not written to the GitHub action log. the listener below
+  // will actually capture the output
+  const outStream = new stream.Writable({
+    write(buffer, encoding, next) {
+      next();
+    },
+  });
+
+  const cmdOpts = {
+    ignoreReturnCode: true,
+    outStream,
+    listeners: {
+      stdout: (data = Buffer) => {
+        cmdOutput += data.toString();
+      },
     },
   };
 
-  cmdOpts.ignoreReturnCode = true;
-
   core.info("\nAnalyzing: " + source);
 
-  const exitCode = await core.group("Grype Output", () => {
-    core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
-    return exec(cmd, cmdArgs, cmdOpts);
-  });
+  core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
+
+  const exitCode = await exec(cmd, cmdArgs, cmdOpts);
+
+  if (core.isDebug()) {
+    core.debug("Grype output:");
+    core.debug(cmdOutput);
+  }
 
   let grypeVulnerabilities = JSON.parse(cmdOutput);
 

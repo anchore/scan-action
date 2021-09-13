@@ -10,6 +10,7 @@
   "scripts": {
     "lint": "eslint index.js",
     "test": "eslint index.js && jest",
+    "update-snapshots": "eslint index.js && jest --updateSnapshot",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
     "prettier": "prettier -w index.js"
@@ -40,7 +41,6 @@
     "eslint": "^6.8.0",
     "husky": "^3.1.0",
     "jest": "^25.5.4",
-    "jest-summary-reporter": "0.0.2",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1"
   }
