@@ -817,7 +817,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.17.0.0",
+          "dottedQuadFileVersion": "0.19.0.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1322,8 +1322,8 @@ Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25
               },
             },
           ],
-          "semanticVersion": "0.17.0",
-          "version": "0.17.0",
+          "semanticVersion": "0.19.0",
+          "version": "0.19.0",
         },
       },
     },
@@ -1549,7 +1549,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.17.0.0",
+          "dottedQuadFileVersion": "0.19.0.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1679,8 +1679,8 @@ Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
               },
             },
           ],
-          "semanticVersion": "0.17.0",
-          "version": "0.17.0",
+          "semanticVersion": "0.19.0",
+          "version": "0.19.0",
         },
       },
     },
@@ -1703,6 +1703,206 @@ Object {
         },
       ],
       "results": Array [
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2021-32803_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2021-32804_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2021-37701_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2021-37712_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/npm-project/package-lock.json",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+          },
+          "ruleId": "ANCHOREVULN_CVE-2021-37713_npm_tar_6.1.0",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
         Object {
           "analysisTarget": Object {
             "uri": "tests/fixtures/npm-project/package-lock.json",
@@ -1906,10 +2106,135 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.17.0.0",
+          "dottedQuadFileVersion": "0.19.0.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
+            Object {
+              "fullDescription": Object {
+                "text": "The npm package \\"tar\\" (aka node-tar) before versions 6.1.2, 5.0.7, 4.4.15, and 3.2.3 has an arbitrary File Creation/Overwrite vulnerability via insufficient symlink protection. \`node-tar\` aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary \`stat\` calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory. This order of operations resulted in the directory being created and added to the \`node-tar\` directory cache. When a directory is present in the directory cache, subsequent calls to mkdir for that directory are skipped. However, this is also where \`node-tar\` checks for symlinks occur. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass \`node-tar\` symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.3, 4.4.15, 5.0.7 and 6.1.2.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-32803**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)|
+",
+                "text": "Vulnerability CVE-2021-32803
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: none
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
+              },
+              "id": "ANCHOREVULN_CVE-2021-32803_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "CVE-2021-32803 High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The npm package \\"tar\\" (aka node-tar) before versions 6.1.1, 5.0.6, 4.4.14, and 3.3.2 has a arbitrary File Creation/Overwrite vulnerability due to insufficient absolute path sanitization. node-tar aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the \`preservePaths\` flag is not set to \`true\`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example \`/home/user/.bashrc\` would turn into \`home/user/.bashrc\`. This logic was insufficient when file paths contained repeated path roots such as \`////home/user/.bashrc\`. \`node-tar\` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. \`///home/user/.bashrc\`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.2, 4.4.14, 5.0.6 and 6.1.1. Users may work around this vulnerability without upgrading by creating a custom \`onentry\` method which sanitizes the \`entry.path\` or a \`filter\` method which removes entries with absolute paths. See referenced GitHub Advisory for details. Be aware of CVE-2021-32803 which fixes a similar bug in later versions of tar.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-32804**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-32804](https://nvd.nist.gov/vuln/detail/CVE-2021-32804)|
+",
+                "text": "Vulnerability CVE-2021-32804
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: none
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [CVE-2021-32804](https://nvd.nist.gov/vuln/detail/CVE-2021-32804)",
+              },
+              "id": "ANCHOREVULN_CVE-2021-32804_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "CVE-2021-32804 High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The npm package \\"tar\\" (aka node-tar) before versions 4.4.16, 5.0.8, and 6.1.7 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory, where the symlink and directory names in the archive entry used backslashes as a path separator on posix systems. The cache checking logic used both \`\\\\\` and \`/\` characters as path separators, however \`\\\\\` is a valid filename character on posix systems. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. Additionally, a similar confusion could arise on case-insensitive filesystems. If a tar archive contained a directory at \`FOO\`, followed by a symbolic link named \`foo\`, then on case-insensitive file systems, the creation of the symbolic link would remove the directory from the filesystem, but _not_ from the internal directory cache, as it would not be treated as a cache hit. A subsequent file entry within the \`FOO\` directory would then be placed in the target of the symbolic link, thinking that the directory had already been created. These issues were addressed in releases 4.4.16, 5.0.8 and 6.1.7. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. If this is not possible, a workaround is available in the referenced GHSA-9r2w-394v-53qc.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-37701**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)|
+",
+                "text": "Vulnerability CVE-2021-37701
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: none
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)",
+              },
+              "id": "ANCHOREVULN_CVE-2021-37701_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "CVE-2021-37701 High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The npm package \\"tar\\" (aka node-tar) before versions 4.4.18, 5.0.10, and 6.1.9 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with names containing unicode values that normalized to the same value. Additionally, on Windows systems, long path portions would resolve to the same file system entities as their 8.3 \\"short path\\" counterparts. A specially crafted tar archive could thus include a directory with one form of the path, followed by a symbolic link with a different string that resolves to the same file system entity, followed by a file using the first form. By first creating a directory, and then replacing that directory with a symlink that had a different apparent name that resolved to the same entry in the filesystem, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. These issues were addressed in releases 4.4.18, 5.0.10 and 6.1.9. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. If this is not possible, a workaround is available in the referenced GHSA-qq89-hq3f-393p.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-37712**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)|
+",
+                "text": "Vulnerability CVE-2021-37712
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: none
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)",
+              },
+              "id": "ANCHOREVULN_CVE-2021-37712_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "CVE-2021-37712 High vulnerability for tar package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "The npm package \\"tar\\" (aka node-tar) before versions 4.4.18, 5.0.10, and 6.1.9 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be outside of the extraction target directory is not extracted. This is, in part, accomplished by sanitizing absolute paths of entries within the archive, skipping archive entries that contain \`..\` path portions, and resolving the sanitized paths against the extraction target directory. This logic was insufficient on Windows systems when extracting tar files that contained a path that was not an absolute path, but specified a drive letter different from the extraction target, such as \`C:some\\\\path\`. If the drive letter does not match the extraction target, for example \`D:\\\\extraction\\\\dir\`, then the result of \`path.resolve(extractionDirectory, entryPath)\` would resolve against the current working directory on the \`C:\` drive, rather than the extraction target directory. Additionally, a \`..\` portion of the path could occur immediately after the drive letter, such as \`C:../foo\`, and was not properly sanitized by the logic that checked for \`..\` within the normalized and split portions of the path. This only affects users of \`node-tar\` on Windows systems. These issues were addressed in releases 4.4.18, 5.0.10 and 6.1.9. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. There is no reasonable way to work around this issue without performing the same path normalization procedures that node-tar now does. Users are encouraged to upgrade to the latest patched versions of node-tar, rather than attempt to sanitize paths themselves.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-37713**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)|
+",
+                "text": "Vulnerability CVE-2021-37713
+Severity: High
+Package: tar
+Version: 6.1.0
+Fix Version: none
+Type: npm
+Location: tests/fixtures/npm-project/package-lock.json
+Data Namespace: unknown
+Link: [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)",
+              },
+              "id": "ANCHOREVULN_CVE-2021-37713_npm_tar_6.1.0",
+              "shortDescription": Object {
+                "text": "CVE-2021-37713 High vulnerability for tar package",
+              },
+            },
             Object {
               "fullDescription": Object {
                 "text": "Arbitrary File Creation/Overwrite due to insufficient absolute path sanitization",
@@ -2036,8 +2361,8 @@ Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
             },
           ],
-          "semanticVersion": "0.17.0",
-          "version": "0.17.0",
+          "semanticVersion": "0.19.0",
+          "version": "0.19.0",
         },
       },
     },
@@ -2092,6 +2417,46 @@ Object {
             "id": "default",
             "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
+          "ruleId": "ANCHOREVULN_CVE-2020-7753_npm_trim_0.0.2",
+          "ruleIndex": 0,
+          "suppressions": Array [
+            Object {
+              "kind": "external",
+            },
+          ],
+        },
+        Object {
+          "analysisTarget": Object {
+            "uri": "tests/fixtures/yarn-project/yarn.lock",
+          },
+          "baselineState": "unchanged",
+          "level": "error",
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "dockerfile",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "tests/fixtures/yarn-project/yarn.lock",
+                },
+                "region": Object {
+                  "byteLength": 1,
+                  "byteOffset": 1,
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "id": "default",
+            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+          },
           "ruleId": "ANCHOREVULN_GHSA-w5p7-h5w8-2hfq_npm_trim_0.0.2",
           "ruleIndex": 0,
           "suppressions": Array [
@@ -2103,10 +2468,35 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.17.0.0",
+          "dottedQuadFileVersion": "0.19.0.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
+            Object {
+              "fullDescription": Object {
+                "text": "All versions of package trim are vulnerable to Regular Expression Denial of Service (ReDoS) via trim().",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2020-7753**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|High|trim|0.0.2|none|npm|tests/fixtures/yarn-project/yarn.lock|unknown|[CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)|
+",
+                "text": "Vulnerability CVE-2020-7753
+Severity: High
+Package: trim
+Version: 0.0.2
+Fix Version: none
+Type: npm
+Location: tests/fixtures/yarn-project/yarn.lock
+Data Namespace: unknown
+Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
+              },
+              "id": "ANCHOREVULN_CVE-2020-7753_npm_trim_0.0.2",
+              "shortDescription": Object {
+                "text": "CVE-2020-7753 High vulnerability for trim package",
+              },
+            },
             Object {
               "fullDescription": Object {
                 "text": "Regular Expression Denial of Service in trim",
@@ -2133,8 +2523,8 @@ Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
             },
           ],
-          "semanticVersion": "0.17.0",
-          "version": "0.17.0",
+          "semanticVersion": "0.19.0",
+          "version": "0.19.0",
         },
       },
     },
