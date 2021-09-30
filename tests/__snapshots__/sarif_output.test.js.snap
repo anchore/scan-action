@@ -1775,46 +1775,6 @@ Object {
             "id": "default",
             "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
-          "ruleId": "ANCHOREVULN_CVE-2021-32804_npm_tar_6.1.0",
-          "ruleIndex": 0,
-          "suppressions": Array [
-            Object {
-              "kind": "external",
-            },
-          ],
-        },
-        Object {
-          "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
-          },
-          "baselineState": "unchanged",
-          "level": "error",
-          "locations": Array [
-            Object {
-              "logicalLocations": Array [
-                Object {
-                  "fullyQualifiedName": "dockerfile",
-                },
-              ],
-              "physicalLocation": Object {
-                "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
-                },
-                "region": Object {
-                  "byteLength": 1,
-                  "byteOffset": 1,
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": Object {
-            "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
-          },
           "ruleId": "ANCHOREVULN_GHSA-3jfq-g458-7qm9_npm_tar_6.1.0",
           "ruleIndex": 0,
           "suppressions": Array [
@@ -2013,31 +1973,6 @@ Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
               "id": "ANCHOREVULN_CVE-2021-32803_npm_tar_6.1.0",
               "shortDescription": Object {
                 "text": "CVE-2021-32803 High vulnerability for tar package",
-              },
-            },
-            Object {
-              "fullDescription": Object {
-                "text": "The npm package \\"tar\\" (aka node-tar) before versions 6.1.1, 5.0.6, 4.4.14, and 3.3.2 has a arbitrary File Creation/Overwrite vulnerability due to insufficient absolute path sanitization. node-tar aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the \`preservePaths\` flag is not set to \`true\`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example \`/home/user/.bashrc\` would turn into \`home/user/.bashrc\`. This logic was insufficient when file paths contained repeated path roots such as \`////home/user/.bashrc\`. \`node-tar\` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. \`///home/user/.bashrc\`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.2, 4.4.14, 5.0.6 and 6.1.1. Users may work around this vulnerability without upgrading by creating a custom \`onentry\` method which sanitizes the \`entry.path\` or a \`filter\` method which removes entries with absolute paths. See referenced GitHub Advisory for details. Be aware of CVE-2021-32803 which fixes a similar bug in later versions of tar.",
-              },
-              "help": Object {
-                "markdown": "**Vulnerability CVE-2021-32804**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-32804](https://nvd.nist.gov/vuln/detail/CVE-2021-32804)|
-",
-                "text": "Vulnerability CVE-2021-32804
-Severity: High
-Package: tar
-Version: 6.1.0
-Fix Version: none
-Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: unknown
-Link: [CVE-2021-32804](https://nvd.nist.gov/vuln/detail/CVE-2021-32804)",
-              },
-              "id": "ANCHOREVULN_CVE-2021-32804_npm_tar_6.1.0",
-              "shortDescription": Object {
-                "text": "CVE-2021-32804 High vulnerability for tar package",
               },
             },
             Object {
