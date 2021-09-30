@@ -5,7 +5,7 @@ const fs = require("fs");
 const stream = require("stream");
 
 const grypeBinary = "grype";
-const grypeVersion = "0.17.0";
+const grypeVersion = "0.22.0";
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
@@ -527,8 +527,13 @@ async function runScan({
     core.debug(cmdOutput);
   }
 
-  let grypeVulnerabilities = JSON.parse(cmdOutput);
-
+  let grypeVulnerabilities;
+  try {
+    grypeVulnerabilities = JSON.parse(cmdOutput);
+  } catch (e) {
+    core.error(`Unable to parse grype output: ${e}`);
+    core.error(cmdOutput);
+  }
   if (acsReportEnable) {
     try {
       const serifOut = sarifGrypeGeneration(

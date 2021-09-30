@@ -4,7 +4,7 @@
 
 :zap: _Find threats in files or containers at lightning speed_ :zap:
 
-This is a GitHub Action for invoking the [grype](https://github.com/anchore/grype) scanner and returning the vulnerabilities found,
+This is a GitHub Action for invoking the [Grype](https://github.com/anchore/grype) scanner and returning the vulnerabilities found,
 and optionally fail if a vulnerability is found with a configurable severity level.
 
 Use this in your workflows to quickly verify files or containers' content after a build and before pushing, allowing PRs, or deploying updates.
@@ -111,7 +111,7 @@ The only required key is `image` or `path`; all the other keys are optional. The
 
 | Output Name | Description                   | Type   |
 | ----------- | ----------------------------- | ------ |
-| sarif       | Path to the SARIF report file | string |
+| `sarif`     | Path to the SARIF report file | string |
 
 ### Example Workflows
 
@@ -165,6 +165,12 @@ Optionally, you can add a step to inspect the SARIF report produced:
   run: cat ${{ steps.scan.outputs.sarif }}
 ```
 
+## Additional configuration
+
+You may add a `.grype.yaml` file at your repository root
+for more [Grype configuration](https://github.com/anchore/grype#configuration)
+such as [ignoring certain matches](https://github.com/anchore/grype#specifying-matches-to-ignore).
+
 ## Contributing
 
 We love contributions, feedback, and bug reports. For issues with the invocation of this action, file [issues](https://github.com/anchore/scan-action/issues) in this repository.
@@ -175,10 +181,7 @@ For contributing, see [Contributing](CONTRIBUTING.rst).
 
 For documentation on Grype itself, including other output capabilities, see the [grype project](https://github.com/anchore/grype)
 
-Connect with the community directly on [slack](https://anchore.com/slack). These channels from Anchore's toolbox project are ideal for engaging development of help-related discussions:
-
-- grype-dev
-- grype-help
+Connect with the community directly on [slack](https://anchore.com/slack).
 
 [test]: https://github.com/anchore/scan-action
 [test-img]: https://github.com/anchore/scan-action/workflows/Tests/badge.svg

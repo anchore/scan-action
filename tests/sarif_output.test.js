@@ -7,10 +7,10 @@ jest.setTimeout(30000);
 
 const testSource = async (source, vulnerabilities) => {
   if (fs.existsSync("./vulnerabilities.json")) {
-    fs.rmSync("./vulnerabilities.json");
+    fs.unlinkSync("./vulnerabilities.json");
   }
   if (fs.existsSync("./results.sarif")) {
-    fs.rmSync("./results.sarif");
+    fs.unlinkSync("./results.sarif");
   }
 
   const out = await runScan({
