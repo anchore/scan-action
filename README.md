@@ -1,6 +1,9 @@
-[![Test Status][test-img]][test]
+# GitHub Action for Vulnerability Scanning
 
-# GitHub Action for vulnerability Scanning
+[![Test Status][test-img]][test]
+[![GitHub release](https://img.shields.io/github/release/anchore/scan-action.svg)](https://github.com/anchore/scan-action/releases/latest)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/anchore/scan-action/blob/main/LICENSE)
+[![Slack Invite](https://img.shields.io/badge/Slack-Join-blue?logo=slack)](https://anchore.com/slack)
 
 :zap: _Find threats in files or containers at lightning speed_ :zap:
 
