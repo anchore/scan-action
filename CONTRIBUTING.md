@@ -83,18 +83,7 @@ Configuring git to sign your commits is a straightforward process. To get set up
 
 ## Test your changes
 
-This project has a `Makefile` which includes many helpers running both unit and integration tests. Although PRs will have automatic checks for these, it is useful to run them locally, ensuring they pass before submitting changes. Ensure you've bootstrapped once before running tests:
-
-```text
-$ make bootstrap
-```
-
-You only need to bootstrap once. After the bootstrap process, you can run the tests as many times as needed:
-
-```text
-$ make unit
-$ make integration
-```
+Ensure that your changes have passed the test suite. For more information on working with this project's tests, see https://github.com/anchore/scan-action/tree/main/tests#developing-tests.
 
 ## Document your changes
 
