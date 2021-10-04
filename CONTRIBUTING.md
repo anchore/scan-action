@@ -83,7 +83,7 @@ Configuring git to sign your commits is a straightforward process. To get set up
 
 ## Test your changes
 
-Ensure that your changes have passed the test suite. For more information on working with this project's tests, see https://github.com/anchore/scan-action/tree/main/tests#developing-tests.
+Ensure that your changes have passed the test suite. For more information on working with this project's tests, see [Developing Tests](./tests/README.md#developing-tests).
 
 ## Document your changes
 
