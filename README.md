@@ -178,7 +178,7 @@ such as [ignoring certain matches](https://github.com/anchore/grype#specifying-m
 
 We love contributions, feedback, and bug reports. For issues with the invocation of this action, file [issues](https://github.com/anchore/scan-action/issues) in this repository.
 
-For contributing, see [Contributing](CONTRIBUTING.rst).
+For contributing, see [Contributing](CONTRIBUTING.md).
 
 ## More Information
 
