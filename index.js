@@ -414,7 +414,7 @@ async function run() {
     // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
-    const config = core.getInput("config");
+    const configFile = core.getInput("config-file");
     const debug = core.getInput("debug");
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
