@@ -536,9 +536,6 @@ async function runScan({
     core.debug(cmdOutput);
   }
 
-  if (showGrypeOutput) {
-    core.info(cmdOutput);
-  }
   let grypeVulnerabilities;
   try {
     grypeVulnerabilities = JSON.parse(cmdOutput);
@@ -569,6 +566,9 @@ async function runScan({
     }
 
     if (failBuild === true) {
+      if (showGrypeOutput) {
+        core.info(cmdOutput);
+      }
       core.setFailed(
         `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
       );
