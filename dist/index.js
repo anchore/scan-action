@@ -555,18 +555,27 @@ async function runScan({
     }
   }
 
-  if (failBuild === true && exitCode > 0) {
-    core.setFailed(
-      `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
-    );
-  }
-
   // If there is a non-zero exit status code there are a couple of potential reporting paths
-  if (failBuild === false && exitCode > 0) {
+  if (exitCode > 0) {
     // There was a non-zero exit status but it wasn't because of failing severity, this must be
     // a grype problem
     if (!severityCutoff) {
       core.warning("grype had a non-zero exit status when running");
+    }
+
+    if (failBuild === true) {
+      // Generate Sarif file before failing action if it exists
+      if (acsReportEnable) {
+        try {
+          // Reference it directly by key, in case there are other outputs in the future
+          core.setOutput("sarif", out["serifOut"]);
+        } catch (error) {
+          core.warning(`Failed to output Sarif file`);
+        }
+      }
+      core.setFailed(
+        `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
+      );
     } else {
       // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
       // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
