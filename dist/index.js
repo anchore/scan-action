@@ -425,12 +425,14 @@ async function run() {
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
     const severityCutoff = core.getInput("severity-cutoff");
+    const showGrypeOutput = core.getInput("show-grype-output");
     const out = await runScan({
       source,
       debug,
       failBuild,
       acsReportEnable,
       severityCutoff,
+      showGrypeOutput,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -446,6 +448,7 @@ async function runScan({
   failBuild = "true",
   acsReportEnable = "true",
   severityCutoff = "medium",
+  showGrypeOutput = "false",
 }) {
   const out = {};
 
@@ -470,6 +473,12 @@ async function runScan({
     acsReportEnable = true;
   } else {
     acsReportEnable = false;
+  }
+
+  if (showGrypeOutput.toLowerCase() === "true") {
+    showGrypeOutput = true;
+  } else {
+    showGrypeOutput = false;
   }
 
   if (
@@ -534,6 +543,9 @@ async function runScan({
     core.debug(cmdOutput);
   }
 
+  if (showGrypeOutput) {
+    core.info(cmdOutput);
+  }
   let grypeVulnerabilities;
   try {
     grypeVulnerabilities = JSON.parse(cmdOutput);
@@ -564,12 +576,6 @@ async function runScan({
     }
 
     if (failBuild === true) {
-      // Generate Sarif file before failing action if it exists
-      if (acsReportEnable) {
-        core.info("Outputing Sarif file");
-        // Reference it directly by key, in case there are other outputs in the future
-        core.setOutput("sarif", out["sarif"]);
-      }
       core.setFailed(
         `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
       );
