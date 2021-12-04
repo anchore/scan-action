@@ -561,7 +561,7 @@ async function runScan({
       if (acsReportEnable) {
         try {
           // Reference it directly by key, in case there are other outputs in the future
-          core.setOutput("sarif", out["serifOut"]);
+          core.setOutput("sarif", out["sarif"]);
         } catch (error) {
           core.warning(`Failed to output Sarif file`);
         }
