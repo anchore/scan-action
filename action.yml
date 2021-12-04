@@ -26,6 +26,10 @@ inputs:
     description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
     required: false
     default: "medium"
+  show-grype-output:
+    description: "Print the results of the Grype vulnerability scan to console."
+    required: false
+    default: "false"
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
