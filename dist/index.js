@@ -425,12 +425,14 @@ async function run() {
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
     const severityCutoff = core.getInput("severity-cutoff");
+    const showGrypeOutput = core.getInput("show-grype-output");
     const out = await runScan({
       source,
       debug,
       failBuild,
       acsReportEnable,
       severityCutoff,
+      showGrypeOutput,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -446,6 +448,7 @@ async function runScan({
   failBuild = "true",
   acsReportEnable = "true",
   severityCutoff = "medium",
+  showGrypeOutput = "false",
 }) {
   const out = {};
 
@@ -470,6 +473,12 @@ async function runScan({
     acsReportEnable = true;
   } else {
     acsReportEnable = false;
+  }
+
+  if (showGrypeOutput.toLowerCase() === "true") {
+    showGrypeOutput = true;
+  } else {
+    showGrypeOutput = false;
   }
 
   if (
@@ -555,18 +564,21 @@ async function runScan({
     }
   }
 
-  if (failBuild === true && exitCode > 0) {
-    core.setFailed(
-      `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
-    );
-  }
-
   // If there is a non-zero exit status code there are a couple of potential reporting paths
-  if (failBuild === false && exitCode > 0) {
+  if (exitCode > 0) {
     // There was a non-zero exit status but it wasn't because of failing severity, this must be
     // a grype problem
     if (!severityCutoff) {
       core.warning("grype had a non-zero exit status when running");
+    }
+
+    if (failBuild === true) {
+      if (showGrypeOutput) {
+        core.info(cmdOutput);
+      }
+      core.setFailed(
+        `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
+      );
     } else {
       // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
       // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
