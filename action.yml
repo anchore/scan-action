@@ -27,7 +27,7 @@ inputs:
     required: false
     default: "medium"
   show-grype-output:
-    description: "Print the results of the Grype vulnerability scan to console."
+    description: "Print the results of the Grype vulnerability scan to console when scan results have failures."
     required: false
     default: "false"
 outputs:
