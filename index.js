@@ -559,12 +559,9 @@ async function runScan({
     if (failBuild === true) {
       // Generate Sarif file before failing action if it exists
       if (acsReportEnable) {
-        try {
-          // Reference it directly by key, in case there are other outputs in the future
-          core.setOutput("sarif", out["sarif"]);
-        } catch (error) {
-          core.warning(`Failed to output Sarif file`);
-        }
+        core.info("Outputing Sarif file");
+        // Reference it directly by key, in case there are other outputs in the future
+        core.setOutput("sarif", out["sarif"]);
       }
       core.setFailed(
         `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
