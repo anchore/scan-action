@@ -513,21 +513,27 @@ async function runScan({
     },
   });
 
-  const cmdOpts = {
-    ignoreReturnCode: true,
-    outStream,
-    listeners: {
-      stdout: (data = Buffer) => {
-        cmdOutput += data.toString();
-      },
-    },
-  };
-
   core.info("\nAnalyzing: " + source);
 
   core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
 
-  const exitCode = await exec(cmd, cmdArgs, cmdOpts);
+  const exitCode = await core.group(`${cmd} output...`, async () =>
+    exec(cmd, cmdArgs, {
+      ignoreReturnCode: true,
+      outStream,
+      listeners: {
+        stdout(buffer) {
+          cmdOutput += buffer.toString();
+        },
+        stderr(buffer) {
+          core.info(buffer.toString());
+        },
+        debug(message) {
+          core.debug(message);
+        },
+      },
+    })
+  );
 
   if (core.isDebug()) {
     core.debug("Grype output:");
