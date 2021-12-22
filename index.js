@@ -5,7 +5,7 @@ const fs = require("fs");
 const stream = require("stream");
 
 const grypeBinary = "grype";
-const grypeVersion = "0.22.0";
+const grypeVersion = "0.27.3";
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
