@@ -414,12 +414,14 @@ async function run() {
     // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
+    const configFile = core.getInput("config-file");
     const debug = core.getInput("debug");
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
     const severityCutoff = core.getInput("severity-cutoff");
     const out = await runScan({
       source,
+      config,
       debug,
       failBuild,
       acsReportEnable,
@@ -435,6 +437,7 @@ async function run() {
 
 async function runScan({
   source,
+  config,
   debug = "false",
   failBuild = "true",
   acsReportEnable = "true",
@@ -445,12 +448,16 @@ async function runScan({
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
   let cmdArgs = [];
 
+  if (config) {
+    cmdArgs.push("-c", config);
+  }
+  
   if (debug.toLowerCase() === "true") {
     debug = "true";
-    cmdArgs = [`-vv`, `-o`, `json`];
+    cmdArgs.push("-vv", "-o json"]);
   } else {
     debug = "false";
-    cmdArgs = [`-o`, `json`];
+    cmdArgs.push("-o json");
   }
 
   if (failBuild.toLowerCase() === "true") {
@@ -481,6 +488,7 @@ async function runScan({
   await installGrype(grypeVersion);
 
   core.debug("Image: " + source);
+  core.debug("Config: " + config);
   core.debug("Debug Output: " + debug);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
@@ -492,8 +500,7 @@ async function runScan({
   let cmdOutput = "";
   let cmd = `${grypeBinary}`;
   if (severityCutoff != "") {
-    cmdArgs.push("--fail-on");
-    cmdArgs.push(severityCutoff.toLowerCase());
+    cmdArgs.push("--fail-on", severityCutoff.toLowerCase());
   }
   cmdArgs.push(source);
 
