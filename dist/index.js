@@ -12,7 +12,7 @@ const fs = __webpack_require__(747);
 const stream = __webpack_require__(413);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.22.0";
+const grypeVersion = "0.27.3";
 
 // sarif code
 function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {

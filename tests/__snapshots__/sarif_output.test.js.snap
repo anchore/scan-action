@@ -817,7 +817,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.22.0.0",
+          "dottedQuadFileVersion": "0.27.3.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1322,8 +1322,8 @@ Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25
               },
             },
           ],
-          "semanticVersion": "0.22.0",
-          "version": "0.22.0",
+          "semanticVersion": "0.27.3",
+          "version": "0.27.3",
         },
       },
     },
@@ -1549,7 +1549,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.22.0.0",
+          "dottedQuadFileVersion": "0.27.3.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1679,8 +1679,8 @@ Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
               },
             },
           ],
-          "semanticVersion": "0.22.0",
-          "version": "0.22.0",
+          "semanticVersion": "0.27.3",
+          "version": "0.27.3",
         },
       },
     },
@@ -1705,7 +1705,7 @@ Object {
       "results": Array [
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
+            "uri": "package-lock.json",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -1718,7 +1718,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "package-lock.json",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -1733,7 +1733,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_CVE-2021-32803_npm_tar_6.1.0",
           "ruleIndex": 0,
@@ -1745,7 +1745,7 @@ Object {
         },
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
+            "uri": "package-lock.json",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -1758,7 +1758,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "package-lock.json",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -1773,7 +1773,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_GHSA-3jfq-g458-7qm9_npm_tar_6.1.0",
           "ruleIndex": 0,
@@ -1785,7 +1785,7 @@ Object {
         },
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
+            "uri": "package-lock.json",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -1798,7 +1798,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "package-lock.json",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -1813,7 +1813,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_GHSA-5955-9wpr-37jh_npm_tar_6.1.0",
           "ruleIndex": 0,
@@ -1825,7 +1825,7 @@ Object {
         },
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
+            "uri": "package-lock.json",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -1838,7 +1838,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "package-lock.json",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -1853,7 +1853,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_GHSA-9r2w-394v-53qc_npm_tar_6.1.0",
           "ruleIndex": 0,
@@ -1865,7 +1865,7 @@ Object {
         },
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
+            "uri": "package-lock.json",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -1878,7 +1878,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "package-lock.json",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -1893,7 +1893,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_GHSA-qq89-hq3f-393p_npm_tar_6.1.0",
           "ruleIndex": 0,
@@ -1905,7 +1905,7 @@ Object {
         },
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/npm-project/package-lock.json",
+            "uri": "package-lock.json",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -1918,7 +1918,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "package-lock.json",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -1933,7 +1933,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_GHSA-r628-mhmh-qjhw_npm_tar_6.1.0",
           "ruleIndex": 0,
@@ -1946,7 +1946,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.22.0.0",
+          "dottedQuadFileVersion": "0.27.3.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1958,7 +1958,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2021-32803**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|none|npm|tests/fixtures/npm-project/package-lock.json|unknown|[CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)|
+|High|tar|6.1.0|none|npm|package-lock.json|unknown|[CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)|
 ",
                 "text": "Vulnerability CVE-2021-32803
 Severity: High
@@ -1966,7 +1966,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: none
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: package-lock.json
 Data Namespace: unknown
 Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
               },
@@ -1983,7 +1983,7 @@ Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
                 "markdown": "**Vulnerability GHSA-3jfq-g458-7qm9**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|6.1.1|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)|
+|High|tar|6.1.0|6.1.1|npm|package-lock.json|unknown|[GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)|
 ",
                 "text": "Vulnerability GHSA-3jfq-g458-7qm9
 Severity: High
@@ -1991,7 +1991,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.1
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: package-lock.json
 Data Namespace: unknown
 Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
               },
@@ -2008,7 +2008,7 @@ Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
                 "markdown": "**Vulnerability GHSA-5955-9wpr-37jh**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|6.1.9|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)|
+|High|tar|6.1.0|6.1.9|npm|package-lock.json|unknown|[GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)|
 ",
                 "text": "Vulnerability GHSA-5955-9wpr-37jh
 Severity: High
@@ -2016,7 +2016,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: package-lock.json
 Data Namespace: unknown
 Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
               },
@@ -2033,7 +2033,7 @@ Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
                 "markdown": "**Vulnerability GHSA-9r2w-394v-53qc**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|6.1.7|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)|
+|High|tar|6.1.0|6.1.7|npm|package-lock.json|unknown|[GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)|
 ",
                 "text": "Vulnerability GHSA-9r2w-394v-53qc
 Severity: High
@@ -2041,7 +2041,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.7
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: package-lock.json
 Data Namespace: unknown
 Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
               },
@@ -2058,7 +2058,7 @@ Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
                 "markdown": "**Vulnerability GHSA-qq89-hq3f-393p**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|6.1.9|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)|
+|High|tar|6.1.0|6.1.9|npm|package-lock.json|unknown|[GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)|
 ",
                 "text": "Vulnerability GHSA-qq89-hq3f-393p
 Severity: High
@@ -2066,7 +2066,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: package-lock.json
 Data Namespace: unknown
 Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
               },
@@ -2083,7 +2083,7 @@ Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
                 "markdown": "**Vulnerability GHSA-r628-mhmh-qjhw**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|tar|6.1.0|6.1.2|npm|tests/fixtures/npm-project/package-lock.json|unknown|[GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)|
+|High|tar|6.1.0|6.1.2|npm|package-lock.json|unknown|[GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)|
 ",
                 "text": "Vulnerability GHSA-r628-mhmh-qjhw
 Severity: High
@@ -2091,7 +2091,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.2
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: package-lock.json
 Data Namespace: unknown
 Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
@@ -2101,8 +2101,8 @@ Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
             },
           ],
-          "semanticVersion": "0.22.0",
-          "version": "0.22.0",
+          "semanticVersion": "0.27.3",
+          "version": "0.27.3",
         },
       },
     },
@@ -2127,7 +2127,7 @@ Object {
       "results": Array [
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/yarn-project/yarn.lock",
+            "uri": "yarn.lock",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -2140,7 +2140,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/yarn-project/yarn.lock",
+                  "uri": "yarn.lock",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -2155,7 +2155,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+            "text": "The path yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_CVE-2020-7753_npm_trim_0.0.2",
           "ruleIndex": 0,
@@ -2167,7 +2167,7 @@ Object {
         },
         Object {
           "analysisTarget": Object {
-            "uri": "tests/fixtures/yarn-project/yarn.lock",
+            "uri": "yarn.lock",
           },
           "baselineState": "unchanged",
           "level": "error",
@@ -2180,7 +2180,7 @@ Object {
               ],
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "tests/fixtures/yarn-project/yarn.lock",
+                  "uri": "yarn.lock",
                 },
                 "region": Object {
                   "byteLength": 1,
@@ -2195,7 +2195,7 @@ Object {
           ],
           "message": Object {
             "id": "default",
-            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+            "text": "The path yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "ANCHOREVULN_GHSA-w5p7-h5w8-2hfq_npm_trim_0.0.2",
           "ruleIndex": 0,
@@ -2208,7 +2208,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.22.0.0",
+          "dottedQuadFileVersion": "0.27.3.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -2220,7 +2220,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2020-7753**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|trim|0.0.2|none|npm|tests/fixtures/yarn-project/yarn.lock|unknown|[CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)|
+|High|trim|0.0.2|none|npm|yarn.lock|unknown|[CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)|
 ",
                 "text": "Vulnerability CVE-2020-7753
 Severity: High
@@ -2228,7 +2228,7 @@ Package: trim
 Version: 0.0.2
 Fix Version: none
 Type: npm
-Location: tests/fixtures/yarn-project/yarn.lock
+Location: yarn.lock
 Data Namespace: unknown
 Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
               },
@@ -2245,7 +2245,7 @@ Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
                 "markdown": "**Vulnerability GHSA-w5p7-h5w8-2hfq**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|High|trim|0.0.2|0.0.3|npm|tests/fixtures/yarn-project/yarn.lock|unknown|[GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)|
+|High|trim|0.0.2|0.0.3|npm|yarn.lock|unknown|[GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)|
 ",
                 "text": "Vulnerability GHSA-w5p7-h5w8-2hfq
 Severity: High
@@ -2253,7 +2253,7 @@ Package: trim
 Version: 0.0.2
 Fix Version: 0.0.3
 Type: npm
-Location: tests/fixtures/yarn-project/yarn.lock
+Location: yarn.lock
 Data Namespace: unknown
 Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
@@ -2263,8 +2263,8 @@ Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
             },
           ],
-          "semanticVersion": "0.22.0",
-          "version": "0.22.0",
+          "semanticVersion": "0.27.3",
+          "version": "0.27.3",
         },
       },
     },
