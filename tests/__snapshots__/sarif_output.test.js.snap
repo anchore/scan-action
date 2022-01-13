@@ -817,7 +817,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.27.3.0",
+          "dottedQuadFileVersion": "0.31.1.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1322,8 +1322,8 @@ Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25
               },
             },
           ],
-          "semanticVersion": "0.27.3",
-          "version": "0.27.3",
+          "semanticVersion": "0.31.1",
+          "version": "0.31.1",
         },
       },
     },
@@ -1549,7 +1549,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.27.3.0",
+          "dottedQuadFileVersion": "0.31.1.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -1679,8 +1679,8 @@ Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
               },
             },
           ],
-          "semanticVersion": "0.27.3",
-          "version": "0.27.3",
+          "semanticVersion": "0.31.1",
+          "version": "0.31.1",
         },
       },
     },
@@ -1946,7 +1946,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.27.3.0",
+          "dottedQuadFileVersion": "0.31.1.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -2101,8 +2101,8 @@ Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
             },
           ],
-          "semanticVersion": "0.27.3",
-          "version": "0.27.3",
+          "semanticVersion": "0.31.1",
+          "version": "0.31.1",
         },
       },
     },
@@ -2208,7 +2208,7 @@ Object {
       ],
       "tool": Object {
         "driver": Object {
-          "dottedQuadFileVersion": "0.27.3.0",
+          "dottedQuadFileVersion": "0.31.1.0",
           "fullName": "Anchore Container Vulnerability Report (T0)",
           "name": "Anchore Container Vulnerability Report (T0)",
           "rules": Array [
@@ -2263,8 +2263,8 @@ Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
             },
           ],
-          "semanticVersion": "0.27.3",
-          "version": "0.27.3",
+          "semanticVersion": "0.31.1",
+          "version": "0.31.1",
         },
       },
     },
