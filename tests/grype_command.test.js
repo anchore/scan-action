@@ -25,12 +25,12 @@ const mockExec = async (args) => {
 describe("Grype command", () => {
   it("is invoked with defaults", async () => {
     let cmd = await mockExec({ source: "python:3.8" });
-    expect(cmd).toBe("grype -o json --fail-on medium python:3.8");
+    expect(cmd).toBe("grype -o sarif --fail-on medium python:3.8");
   });
 
   it("is invoked with dir", async () => {
     let cmd = await mockExec({ source: "dir:.", severityCutoff: "high" });
-    expect(cmd).toBe("grype -o json --fail-on high dir:.");
+    expect(cmd).toBe("grype -o sarif --fail-on high dir:.");
   });
 
   it("is invoked with values", async () => {

@@ -12,313 +12,7 @@ const fs = __webpack_require__(747);
 const stream = __webpack_require__(413);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.27.3";
-
-// sarif code
-function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
-  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the
-  // severity from the vulnerability will be capitalized, so this must be capitalized again to calculate
-  // using the same object
-  let param =
-    severity_cutoff_param[0].toUpperCase() + severity_cutoff_param.substring(1);
-  var ret = "error";
-  const severityLevels = {
-    Unknown: 0,
-    Negligible: 1,
-    Low: 2,
-    Medium: 3,
-    High: 4,
-    Critical: 5,
-  };
-
-  if (severityLevels[input_severity] < severityLevels[param]) {
-    ret = "warning";
-  }
-
-  return ret;
-}
-
-function getLocation(v) {
-  if (v.artifact.locations.length) {
-    // If the scan was against a directory, the location will be a string
-    var location = v.artifact.locations[0];
-    if (typeof location === "string") {
-      return location;
-    }
-    // Otherwise it is an object with "path" and "layer" keys
-    return location["path"];
-  }
-  // XXX there is room for improvement here, trying to mimick previous behavior
-  // If no `dockerfile-path` was provided, and in the improbable situation where there
-  // are no locations for the artifact, return 'Dockerfile'
-  return "Dockerfile";
-}
-
-function textMessage(v) {
-  const path = getLocation(v);
-  var scheme = sourceScheme();
-  let prefix = `The path ${path} reports ${v.artifact.name} at version ${v.artifact.version} `;
-
-  if (["dir", "tar"].includes(scheme)) {
-    return `${prefix} which would result in a vulnerable (${v.artifact.type}) package installed`;
-  } else {
-    return `${prefix} which is a vulnerable (${v.artifact.type}) package installed in the container`;
-  }
-}
-
-function dottedQuadFileVersion(version) {
-  // The dotted quad version requirements of the SARIF schema has some strict requirements. Because
-  // it is tied to the version which can be (optionally) set by the user, it isn't enough to blindly
-  // add a trailing ".0" - This function validates the end result, falling back to a version that would
-  // pass the schema while issuing a warning.
-  const pattern = /[0-9]+(\.[0-9]+){3}/;
-  // grype has some releases with dashes, ensure these are pruned
-  version = version.split("-")[0];
-
-  // None of the Grype versions will ever have version with four parts, add a trailing `.0` here
-  version = version + ".0";
-
-  if (!version.match(pattern)) {
-    // After prunning and adding a trailing .0 we still got a failure. Warn about this, and fallback to
-    // a made-up version guaranteed to work.
-    core.warning(
-      `Unable to produce an acceptable four-part dotted version: ${version} \n` +
-        `SARIF reporting requires pattern matching against "[0-9]+(\\.[0-9]+){3}" \n` +
-        "Will fallback to 0.0.0.0"
-    );
-    return "0.0.0.0";
-  }
-  return version;
-}
-
-function get_fix_versions(v) {
-  if (
-    v.vulnerability.fix &&
-    v.vulnerability.fix.state === "fixed" &&
-    v.vulnerability.fix.versions &&
-    v.vulnerability.fix.versions.length > 0
-  ) {
-    return v.vulnerability.fix.versions.join(",");
-  }
-  return "";
-}
-
-function make_subtitle(v) {
-  let subtitle = `${v.vulnerability.description}`;
-  if (subtitle != "undefined") {
-    return subtitle;
-  }
-
-  const fixVersions = get_fix_versions(v);
-  if (fixVersions) {
-    return `Version ${v.artifact.version} is affected with an available fix in versions ${fixVersions}`;
-  }
-
-  return `Version ${v.artifact.version} is affected with no fixes reported yet.`;
-}
-
-function grype_render_rules(vulnerabilities, source) {
-  var ret = {};
-  let scheme = sourceScheme();
-  if (vulnerabilities) {
-    let ruleIDs = [];
-    // This uses .reduce() because there can be duplicate vulnerabilities which the SARIF schema complains about.
-    ret = vulnerabilities.reduce(function (result, v) {
-      let ruleID = `ANCHOREVULN_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      if (scheme == "docker") {
-        // include the container as part of the rule id so that users can sort by that
-        ruleID = `ANCHOREVULN_${source}_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      }
-
-      if (!ruleIDs.includes(ruleID)) {
-        ruleIDs.push(ruleID);
-        // Entirely possible to not have any links whatsoever
-        let link = v.vulnerability.id;
-        if ("dataSource" in v.vulnerability) {
-          link = `[${v.vulnerability.id}](${v.vulnerability.dataSource})`;
-        } else if (
-          "urls" in v.vulnerability &&
-          v.vulnerability.urls.length > 0
-        ) {
-          link = `[${v.vulnerability.id}](${v.vulnerability.urls[0]})`;
-        }
-
-        result.push({
-          id: ruleID,
-          // Title of the SARIF report
-          shortDescription: {
-            text: `${v.vulnerability.id} ${v.vulnerability.severity} vulnerability for ${v.artifact.name} package`,
-          },
-          // Subtitle of the SARIF report
-          fullDescription: {
-            text: make_subtitle(v),
-          },
-          help: {
-            text:
-              "Vulnerability " +
-              v.vulnerability.id +
-              "\n" +
-              "Severity: " +
-              v.vulnerability.severity +
-              "\n" +
-              "Package: " +
-              v.artifact.name +
-              "\n" +
-              "Version: " +
-              v.artifact.version +
-              "\n" +
-              "Fix Version: " +
-              (get_fix_versions(v) || "none") +
-              "\n" +
-              "Type: " +
-              v.artifact.type +
-              "\n" +
-              "Location: " +
-              v.artifact.locations[0].path +
-              "\n" +
-              //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
-              "Data Namespace: " +
-              "unknown" +
-              "\n" +
-              `Link: ${link}`,
-            markdown:
-              "**Vulnerability " +
-              v.vulnerability.id +
-              "**\n" +
-              "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n" +
-              "| --- | --- | --- | --- | --- | --- | --- | --- |\n" +
-              "|" +
-              v.vulnerability.severity +
-              "|" +
-              v.artifact.name +
-              "|" +
-              v.artifact.version +
-              "|" +
-              (get_fix_versions(v) || "none") +
-              "|" +
-              v.artifact.type +
-              "|" +
-              v.artifact.locations[0].path +
-              "|" +
-              "unknown" +
-              "|" +
-              link +
-              "|\n",
-          },
-        });
-      }
-      return result;
-    }, []);
-  }
-  return ret;
-}
-
-function grype_render_results(vulnerabilities, severity_cutoff_param, source) {
-  var ret = {};
-  let scheme = sourceScheme();
-  if (vulnerabilities) {
-    ret = vulnerabilities.map((v) => {
-      let ruleid = `ANCHOREVULN_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      if (scheme == "docker") {
-        // include the container as part of the rule id so that users can sort by that
-        ruleid = `ANCHOREVULN_${source}_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      }
-      return {
-        ruleId: ruleid,
-        ruleIndex: 0,
-        level: convert_severity_to_acs_level(
-          v.vulnerability.severity,
-          severity_cutoff_param
-        ),
-        message: {
-          text: textMessage(v),
-          id: "default",
-        },
-        analysisTarget: {
-          uri: getLocation(v),
-          // XXX This is possibly a bug. The SARIF schema invalidates this when the index is present because there
-          // aren't any other elements present.
-          //"index": 0
-        },
-        locations: [
-          {
-            physicalLocation: {
-              artifactLocation: {
-                uri: getLocation(v),
-              },
-              // TODO: When grype starts reporting line numbers this will need to get updated
-              region: {
-                startLine: 1,
-                startColumn: 1,
-                endLine: 1,
-                endColumn: 1,
-                byteOffset: 1,
-                byteLength: 1,
-              },
-            },
-            logicalLocations: [
-              {
-                fullyQualifiedName: "dockerfile",
-              },
-            ],
-          },
-        ],
-        suppressions: [
-          {
-            kind: "external",
-          },
-        ],
-        baselineState: "unchanged",
-      };
-    });
-  }
-
-  return ret;
-}
-
-function vulnerabilities_to_sarif(
-  grypeVulnerabilities,
-  severity_cutoff_param,
-  version,
-  source
-) {
-  let vulnerabilities = grypeVulnerabilities.matches;
-
-  const sarifOutput = {
-    $schema:
-      "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
-    version: "2.1.0",
-    runs: [
-      {
-        tool: {
-          driver: {
-            name: "Anchore Container Vulnerability Report (T0)",
-            fullName: "Anchore Container Vulnerability Report (T0)",
-            version: version,
-            semanticVersion: version,
-            dottedQuadFileVersion: dottedQuadFileVersion(version),
-            rules: grype_render_rules(vulnerabilities, source),
-          },
-        },
-        logicalLocations: [
-          {
-            name: "dockerfile",
-            fullyQualifiedName: "dockerfile",
-            kind: "namespace",
-          },
-        ],
-        results: grype_render_results(
-          vulnerabilities,
-          severity_cutoff_param,
-          source
-        ),
-        columnKind: "utf16CodeUnits",
-      },
-    ],
-  };
-
-  return sarifOutput;
-}
+const grypeVersion = "0.34.1";
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
@@ -383,17 +77,6 @@ async function installGrype(version) {
   core.addPath(grypePath);
 }
 
-function sourceScheme() {
-  // This potentially can be removed once grype starts reporting what it used to perform the scan
-  // in the JSON output
-  // Any newer schemes like OCI need to be added here
-  if (core.getInput("image") != "") {
-    return "docker";
-  }
-  // Only two options are currently supported
-  return "dir";
-}
-
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
@@ -408,7 +91,7 @@ function sourceInput() {
     );
   }
 
-  if (image != "") {
+  if (image !== "") {
     return image;
   }
 
@@ -454,22 +137,19 @@ async function runScan({
 
   if (debug.toLowerCase() === "true") {
     debug = "true";
-    cmdArgs = [`-vv`, `-o`, `json`];
+    cmdArgs.push(`-vv`);
   } else {
     debug = "false";
-    cmdArgs = [`-o`, `json`];
   }
 
-  if (failBuild.toLowerCase() === "true") {
-    failBuild = true;
-  } else {
-    failBuild = false;
-  }
+  failBuild = failBuild.toLowerCase() === "true";
 
-  if (acsReportEnable.toLowerCase() === "true") {
-    acsReportEnable = true;
+  acsReportEnable = acsReportEnable.toLowerCase() === "true";
+
+  if (acsReportEnable) {
+    cmdArgs.push("-o", "sarif");
   } else {
-    acsReportEnable = false;
+    cmdArgs.push("-o", "json");
   }
 
   if (
@@ -498,7 +178,7 @@ async function runScan({
   // Run the grype analyzer
   let cmdOutput = "";
   let cmd = `${grypeBinary}`;
-  if (severityCutoff != "") {
+  if (severityCutoff !== "") {
     cmdArgs.push("--fail-on");
     cmdArgs.push(severityCutoff.toLowerCase());
   }
@@ -540,25 +220,10 @@ async function runScan({
     core.debug(cmdOutput);
   }
 
-  let grypeVulnerabilities;
-  try {
-    grypeVulnerabilities = JSON.parse(cmdOutput);
-  } catch (e) {
-    core.error(`Unable to parse grype output: ${e}`);
-    core.error(cmdOutput);
-  }
   if (acsReportEnable) {
-    try {
-      const serifOut = sarifGrypeGeneration(
-        grypeVulnerabilities,
-        severityCutoff.toLowerCase(),
-        grypeVersion,
-        source
-      );
-      Object.assign(out, serifOut);
-    } catch (err) {
-      throw new Error(err);
-    }
+    const SARIF_FILE = "./results.sarif";
+    fs.writeFileSync(SARIF_FILE, cmdOutput);
+    out.sarif = SARIF_FILE;
   }
 
   if (failBuild === true && exitCode > 0) {
@@ -586,27 +251,6 @@ async function runScan({
   return out;
 }
 
-function sarifGrypeGeneration(
-  grypeVulnerabilities,
-  severity_cutoff_param,
-  version,
-  source
-) {
-  // sarif generate section
-  const SARIF_FILE = "./results.sarif";
-  let sarifOutput = vulnerabilities_to_sarif(
-    grypeVulnerabilities,
-    severity_cutoff_param,
-    version,
-    source
-  );
-  fs.writeFileSync(SARIF_FILE, JSON.stringify(sarifOutput, null, 2));
-  return {
-    sarif: SARIF_FILE,
-  };
-  // end sarif generate section
-}
-
 module.exports = {
   run,
   runScan,
@@ -614,8 +258,6 @@ module.exports = {
   mergeResults,
   findContent,
   loadContent,
-  vulnerabilities_to_sarif,
-  convert_severity_to_acs_level,
 };
 
 if (require.main === require.cache[eval('__filename')]) {

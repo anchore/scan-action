@@ -11,7 +11,7 @@
     "lint": "eslint index.js",
     "test": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db jest",
     "update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db jest --updateSnapshot",
-    "download-pinned-grype-db": "mkdir -p grype-db/3 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2021-09-10T08:18:17Z.tar.gz | tar zxf - -C grype-db/3",
+    "download-pinned-grype-db": "mkdir -p grype-db/3 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2022-03-16T08:14:11Z.tar.gz | tar zxf - -C grype-db/3",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
     "prettier": "prettier -w index.js"

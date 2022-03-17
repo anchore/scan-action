@@ -27,6 +27,16 @@ const testSource = async (source, vulnerabilities) => {
   const sarif = JSON.parse(sarifFile);
   expect(sarif).toBeValidSarifLog();
 
+  for (let run of sarif.runs || []) {
+    for (let result of run.results || []) {
+      for (let loc of result.locations || []) {
+        for (let l of loc.logicalLocations || []) {
+          l.fullyQualifiedName = "";
+        }
+      }
+    }
+  }
+
   // expect to find some known error-level vulnerability
   if (vulnerabilities.length === 0) {
     expect(sarif.runs[0].results.length).toBe(0);
@@ -43,7 +53,7 @@ describe("SARIF", () => {
   it("alpine", async () => {
     const sarif = await testSource(
       "localhost:5000/match-coverage/alpine:latest",
-      ["ANCHOREVULN_CVE-2014-6051_apk_libvncserver_0.9.9"]
+      ["CVE-2014-6051-libvncserver"]
     );
     expect(sarif).toMatchSnapshot();
   });
@@ -53,22 +63,19 @@ describe("SARIF", () => {
   it("debian", async () => {
     const sarif = await testSource(
       "localhost:5000/match-coverage/debian:latest",
-      [
-        "ANCHOREVULN_CVE-2020-36327_gem_bundler_2.1.4",
-        "ANCHOREVULN_GHSA-9w8r-397f-prfh_python_Pygments_2.6.1",
-      ]
+      ["CVE-2020-36327-bundler", "GHSA-9w8r-397f-prfh-Pygments"]
     );
     expect(sarif).toMatchSnapshot();
   });
   it("npm", async () => {
     const sarif = await testSource("dir:tests/fixtures/npm-project", [
-      "ANCHOREVULN_GHSA-3jfq-g458-7qm9_npm_tar_6.1.0",
+      "GHSA-3jfq-g458-7qm9-tar",
     ]);
     expect(sarif).toMatchSnapshot();
   });
   it("yarn", async () => {
     const sarif = await testSource("dir:tests/fixtures/yarn-project", [
-      "ANCHOREVULN_GHSA-w5p7-h5w8-2hfq_npm_trim_0.0.2",
+      "GHSA-w5p7-h5w8-2hfq-trim",
     ]);
     expect(sarif).toMatchSnapshot();
   });
