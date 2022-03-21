@@ -12,7 +12,7 @@ const fs = __webpack_require__(747);
 const stream = __webpack_require__(413);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.34.1";
+const grypeVersion = "0.34.4";
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {

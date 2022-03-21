@@ -5,7 +5,7 @@ const fs = require("fs");
 const stream = require("stream");
 
 const grypeBinary = "grype";
-const grypeVersion = "0.34.1";
+const grypeVersion = "0.34.4";
 
 // Find all 'content-*.json' files in the directory. dirname should include the full path
 function findContent(searchDir) {
