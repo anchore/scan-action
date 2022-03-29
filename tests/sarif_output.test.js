@@ -27,6 +27,10 @@ const testSource = async (source, vulnerabilities) => {
   const sarif = JSON.parse(sarifFile);
   expect(sarif).toBeValidSarifLog();
 
+  if (sarif.runs && sarif.runs.length > 0) {
+    sarif.runs[0].tool.driver.version = "";
+  }
+
   for (let run of sarif.runs || []) {
     for (let result of run.results || []) {
       for (let loc of result.locations || []) {
