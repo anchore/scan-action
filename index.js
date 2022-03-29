@@ -3,42 +3,10 @@ const core = require("@actions/core");
 const { exec } = require("@actions/exec");
 const fs = require("fs");
 const stream = require("stream");
+const { GRYPE_VERSION } = require("./GrypeVersion");
 
 const grypeBinary = "grype";
-const grypeVersion = "0.34.1";
-
-// Find all 'content-*.json' files in the directory. dirname should include the full path
-function findContent(searchDir) {
-  let contentFiles = [];
-  let match = /content-.*\.json/;
-  var dirItems = fs.readdirSync(searchDir);
-  if (dirItems) {
-    for (let i = 0; i < dirItems.length; i++) {
-      if (match.test(dirItems[i])) {
-        contentFiles.push(`${searchDir}/${dirItems[i]}`);
-      }
-    }
-  } else {
-    core.debug("no dir content found");
-  }
-
-  core.debug(contentFiles.toString());
-  return contentFiles;
-}
-
-// Load the json content of each file in a list and return them as a list
-function loadContent(files) {
-  let contents = [];
-  if (files) {
-    files.forEach((item) => contents.push(JSON.parse(fs.readFileSync(item))));
-  }
-  return contents;
-}
-
-// Merge the multiple content output types into a single array
-function mergeResults(contentArray) {
-  return contentArray.reduce((merged, n) => merged.concat(n.content), []);
-}
+const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
 async function downloadGrype(version) {
   let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
@@ -68,6 +36,7 @@ async function installGrype(version) {
 
   // Add tool to path for this and future actions to use
   core.addPath(grypePath);
+  return `${grypePath}/${grypeBinary}`;
 }
 
 function sourceInput() {
@@ -248,13 +217,18 @@ module.exports = {
   run,
   runScan,
   installGrype,
-  mergeResults,
-  findContent,
-  loadContent,
 };
 
 if (require.main === module) {
-  run().catch((err) => {
-    throw new Error(err);
-  });
+  const entrypoint = core.getInput("run");
+  switch (entrypoint) {
+    case "install-grype": {
+      const path = installGrype();
+      core.setOutput("cmd", path);
+      break;
+    }
+    default: {
+      run();
+    }
+  }
 }
