@@ -196,7 +196,7 @@ Output parameters:
 Example usage:
 
 ```yaml
-- uses: anchore/scan-action/download-grype
+- uses: anchore/scan-action/download-grype@v3
   id: grype
 - run: ${{steps.grype.outputs.cmd}} dir:.
 ```

@@ -19,7 +19,7 @@ async function downloadGrype(version) {
   // Make sure the tool's executable bit is set
   await exec(`chmod +x ${installPath}`);
 
-  let cmd = `${installPath} -b ${installPath}_grype v${version}`;
+  let cmd = `${installPath} -b ${installPath}_grype ${version}`;
   await exec(cmd);
   let grypePath = `${installPath}_grype/grype`;
 
@@ -223,7 +223,7 @@ if (require.main === module) {
   const entrypoint = core.getInput("run");
   switch (entrypoint) {
     case "download-grype": {
-      const path = installGrype();
+      const path = installGrype(grypeVersion);
       core.setOutput("cmd", path);
       break;
     }
