@@ -239,6 +239,7 @@ if (require.main === require.cache[eval('__filename')]) {
   switch (entrypoint) {
     case "download-grype": {
       const path = installGrype(grypeVersion);
+      core.info(`Downloaded Grype to: ${path}`);
       core.setOutput("cmd", path);
       break;
     }

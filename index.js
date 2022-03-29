@@ -224,6 +224,7 @@ if (require.main === module) {
   switch (entrypoint) {
     case "download-grype": {
       const path = installGrype(grypeVersion);
+      core.info(`Downloaded Grype to: ${path}`);
       core.setOutput("cmd", path);
       break;
     }
