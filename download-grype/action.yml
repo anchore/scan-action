@@ -1,20 +1,20 @@
-name: "Install Grype"
+name: "Download Grype"
 author: "Anchore"
-description: "Install grype"
+description: "Downloads the Grype binary and provides a path to execute it"
 branding:
   color: blue
   icon: check-circle
 inputs:
   grype-version:
-    description: "The version of Grype to install"
+    description: "A specific version of Grype to install"
     required: false
   run:
     description: "Flag to indicate which sub-action to run"
     required: false
-    default: "install-grype"
+    default: "download-grype"
 outputs:
   cmd:
     description: "An absolute path to the Grype executable"
 runs:
   using: "node12"
-  main: "dist/index.js"
+  main: "../dist/index.js"

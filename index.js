@@ -222,7 +222,7 @@ module.exports = {
 if (require.main === module) {
   const entrypoint = core.getInput("run");
   switch (entrypoint) {
-    case "install-grype": {
+    case "download-grype": {
       const path = installGrype();
       core.setOutput("cmd", path);
       break;

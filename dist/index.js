@@ -237,7 +237,7 @@ module.exports = {
 if (require.main === require.cache[eval('__filename')]) {
   const entrypoint = core.getInput("run");
   switch (entrypoint) {
-    case "install-grype": {
+    case "download-grype": {
       const path = installGrype();
       core.setOutput("cmd", path);
       break;

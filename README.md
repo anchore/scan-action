@@ -174,6 +174,33 @@ You may add a `.grype.yaml` file at your repository root
 for more [Grype configuration](https://github.com/anchore/grype#configuration)
 such as [ignoring certain matches](https://github.com/anchore/grype#specifying-matches-to-ignore).
 
+## anchore/scan-action/download-grype
+
+A sub-action to [download Grype](download-grype/action.yml).
+
+Input parameters:
+
+| Parameter       | Description                                                                                                  | Default |
+| --------------- | ------------------------------------------------------------------------------------------------------------ | ------- |
+| `grype-version` | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js). |         |
+
+Output parameters:
+
+| Parameter | Description                                                          |
+| --------- | -------------------------------------------------------------------- |
+| `cmd`     | a reference to the [Grype](https://github.com/anchore/grype) binary. |
+
+`cmd` can be referenced in a workflow like other output parameters:
+`${{ steps.<step-id>.outputs.cmd }}`
+
+Example usage:
+
+```yaml
+- uses: anchore/scan-action/download-grype
+  id: grype
+- run: ${{steps.grype.outputs.cmd}} dir:.
+```
+
 ## Contributing
 
 We love contributions, feedback, and bug reports. For issues with the invocation of this action, file [issues](https://github.com/anchore/scan-action/issues) in this repository.
