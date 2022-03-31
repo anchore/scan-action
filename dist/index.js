@@ -2,6 +2,14 @@ module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 244:
+/***/ ((__unused_webpack_module, exports) => {
+
+exports.GRYPE_VERSION = "v0.34.4";
+
+
+/***/ }),
+
 /***/ 932:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -10,42 +18,10 @@ const core = __webpack_require__(186);
 const { exec } = __webpack_require__(514);
 const fs = __webpack_require__(747);
 const stream = __webpack_require__(413);
+const { GRYPE_VERSION } = __webpack_require__(244);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.34.4";
-
-// Find all 'content-*.json' files in the directory. dirname should include the full path
-function findContent(searchDir) {
-  let contentFiles = [];
-  let match = /content-.*\.json/;
-  var dirItems = fs.readdirSync(searchDir);
-  if (dirItems) {
-    for (let i = 0; i < dirItems.length; i++) {
-      if (match.test(dirItems[i])) {
-        contentFiles.push(`${searchDir}/${dirItems[i]}`);
-      }
-    }
-  } else {
-    core.debug("no dir content found");
-  }
-
-  core.debug(contentFiles.toString());
-  return contentFiles;
-}
-
-// Load the json content of each file in a list and return them as a list
-function loadContent(files) {
-  let contents = [];
-  if (files) {
-    files.forEach((item) => contents.push(JSON.parse(fs.readFileSync(item))));
-  }
-  return contents;
-}
-
-// Merge the multiple content output types into a single array
-function mergeResults(contentArray) {
-  return contentArray.reduce((merged, n) => merged.concat(n.content), []);
-}
+const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
 async function downloadGrype(version) {
   let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
@@ -58,7 +34,7 @@ async function downloadGrype(version) {
   // Make sure the tool's executable bit is set
   await exec(`chmod +x ${installPath}`);
 
-  let cmd = `${installPath} -b ${installPath}_grype v${version}`;
+  let cmd = `${installPath} -b ${installPath}_grype ${version}`;
   await exec(cmd);
   let grypePath = `${installPath}_grype/grype`;
 
@@ -75,6 +51,7 @@ async function installGrype(version) {
 
   // Add tool to path for this and future actions to use
   core.addPath(grypePath);
+  return `${grypePath}/${grypeBinary}`;
 }
 
 function sourceInput() {
@@ -255,15 +232,22 @@ module.exports = {
   run,
   runScan,
   installGrype,
-  mergeResults,
-  findContent,
-  loadContent,
 };
 
 if (require.main === require.cache[eval('__filename')]) {
-  run().catch((err) => {
-    throw new Error(err);
-  });
+  const entrypoint = core.getInput("run");
+  switch (entrypoint) {
+    case "download-grype": {
+      installGrype(grypeVersion).then((path) => {
+        core.info(`Downloaded Grype to: ${path}`);
+        core.setOutput("cmd", path);
+      });
+      break;
+    }
+    default: {
+      run().then();
+    }
+  }
 }
 
 
