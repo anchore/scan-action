@@ -6,55 +6,54 @@ jobs:
   image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: "scan-action"
+      - uses: actions/checkout@v2
+        with:
+          path: "scan-action"
 
-    - uses: ./
-      with:
-        image: "python:3.8"
-        debug: true
-        fail-build: false
+      - uses: ./
+        with:
+          image: "python:3.8"
+          debug: true
+          fail-build: false
 
   sbom:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: "scan-action"
+      - uses: actions/checkout@v2
+        with:
+          path: "scan-action"
 
-    - uses: ./
-      with:
-        raw-source: tests/test_sbom.spdx.json
-        debug: true
-        fail-build: false
+      - uses: ./
+        with:
+          sbom: tests/test_sbom.spdx.json
+          debug: true
+          fail-build: false
 
   no-sources:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: "scan-action"
+      - uses: actions/checkout@v2
+        with:
+          path: "scan-action"
 
-    - uses: ./
-      with:
-        debug: true
-        fail-build: false
+      - uses: ./
+        with:
+          debug: true
+          fail-build: false
 
   invalid-input:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: "scan-action"
+      - uses: actions/checkout@v2
+        with:
+          path: "scan-action"
 
-    - uses: ./
-      with:
-        image: "python:3.8"
-        path: "/some/path"
-        debug: true
-        fail-build: false
-
+      - uses: ./
+        with:
+          image: "python:3.8"
+          path: "/some/path"
+          debug: true
+          fail-build: false
 # XXX Port these to get verified with tests
 #  image-fail-build:
 #    runs-on: ubuntu-latest

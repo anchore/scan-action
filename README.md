@@ -72,9 +72,9 @@ To scan a directory, add the following step:
 
 The `path` key allows any valid path for the current project. The root of the path (`"."` in this example) is the repository root.
 
-## Scanning any Grype supported source
+## Scanning SBOM file
 
-Grype supports reading from several sources, for example a json SBOM:
+Scan a SBOM file:
 
 ```yaml
 - name: Create SBOM
@@ -86,7 +86,7 @@ Grype supports reading from several sources, for example a json SBOM:
 - name: Scan SBOM
   uses: anchore/scan-action@v3
   with:
-    raw-source: "sbom:${{ github.event.repository.name }}-sbom.spdx.json"
+    sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
 ```
 
 ## Failing a build on vulnerability severity

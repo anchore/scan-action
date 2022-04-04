@@ -57,15 +57,17 @@ async function installGrype(version) {
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
-  var raw = core.getInput("raw-source");
+  var sbom = core.getInput("sbom");
 
   if (image && path && raw) {
-    throw new Error("The following options are mutually exclusive: image, path, raw-source");
+    throw new Error(
+      "The following options are mutually exclusive: image, path, sbom"
+    );
   }
 
   if (!(image || path || raw)) {
     throw new Error(
-      "At least one source for scanning needs to be provided. Available options are: image, path and raw-source"
+      "At least one source for scanning needs to be provided. Available options are: image, path and sbom"
     );
   }
 
@@ -73,8 +75,8 @@ function sourceInput() {
     return image;
   }
 
-  if (raw !== "") {
-    return raw;
+  if (sbom !== "") {
+    return "sbom:" + sbom;
   }
 
   return "dir:" + path;
