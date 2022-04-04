@@ -42,19 +42,24 @@ async function installGrype(version) {
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
+  var raw = core.getInput("raw-source");
 
-  if (image && path) {
-    throw new Error("Cannot use both 'image' and 'path' as sources");
+  if (image && path && raw) {
+    throw new Error("The following options are mutually exclusive: image, path, raw-source");
   }
 
-  if (!(image || path)) {
+  if (!(image || path || raw)) {
     throw new Error(
-      "At least one source for scanning needs to be provided. Available options are: image, and path"
+      "At least one source for scanning needs to be provided. Available options are: image, path and raw-source"
     );
   }
 
   if (image !== "") {
     return image;
+  }
+
+  if (raw !== "") {
+    return raw;
   }
 
   return "dir:" + path;
@@ -129,7 +134,7 @@ async function runScan({
   core.debug(`Installing grype version ${grypeVersion}`);
   await installGrype(grypeVersion);
 
-  core.debug("Image: " + source);
+  core.debug("Source: " + source);
   core.debug("Debug Output: " + debug);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);

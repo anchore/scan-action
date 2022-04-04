@@ -16,6 +16,19 @@ jobs:
         debug: true
         fail-build: false
 
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: "scan-action"
+
+    - uses: ./
+      with:
+        raw-source: tests/test_sbom.spdx.json
+        debug: true
+        fail-build: false
+
   no-sources:
     runs-on: ubuntu-latest
     steps:

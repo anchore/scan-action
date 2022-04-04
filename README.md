@@ -72,6 +72,23 @@ To scan a directory, add the following step:
 
 The `path` key allows any valid path for the current project. The root of the path (`"."` in this example) is the repository root.
 
+## Scanning any Grype supported source
+
+Grype supports reading from several sources, for example a json SBOM:
+
+```yaml
+- name: Create SBOM
+  uses: anchore/sbom-action@v0
+  with:
+    format: spdx-json
+    artifact-name: "${{ github.event.repository.name }}-sbom.spdx.json"
+
+- name: Scan SBOM
+  uses: anchore/scan-action@v3
+  with:
+    raw-source: "sbom:${{ github.event.repository.name }}-sbom.spdx.json"
+```
+
 ## Failing a build on vulnerability severity
 
 By default, if any vulnerability at `medium` or higher is seen, the build fails. To have the build step fail in cases where there are vulnerabilities with a severity level different than the default, set the `severity-cutoff` field to one of `low`, `high`, or `critical`:
