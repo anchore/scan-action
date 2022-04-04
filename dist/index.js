@@ -62,11 +62,11 @@ function sourceInput() {
     throw new Error("Cannot use both 'image' and 'path' as sources");
   }
 
-  if (image !== "") {
+  if (image) {
     return image;
   }
 
-  if (!(image || path)) {
+  if (!path) {
     // Default to the CWD
     path = ".";
   }

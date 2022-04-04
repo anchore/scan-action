@@ -8,7 +8,6 @@ describe("Github action args", () => {
     const inputs = {
       image: "",
       path: "tests/fixtures/npm-project",
-      debug: "false",
       "fail-build": "true",
       "acs-report-enable": "false",
       "severity-cutoff": "medium",
@@ -44,7 +43,6 @@ describe("Github action args", () => {
     const inputs = {
       image: "",
       path: "tests/fixtures/npm-project",
-      debug: "false",
       "fail-build": "true",
       "acs-report-enable": "true",
       "severity-cutoff": "medium",
