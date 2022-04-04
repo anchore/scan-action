@@ -47,14 +47,13 @@ function sourceInput() {
     throw new Error("Cannot use both 'image' and 'path' as sources");
   }
 
-  if (!(image || path)) {
-    throw new Error(
-      "At least one source for scanning needs to be provided. Available options are: image, and path"
-    );
-  }
-
   if (image !== "") {
     return image;
+  }
+
+  if (!(image || path)) {
+    // Default to the CWD
+    path = ".";
   }
 
   return "dir:" + path;
@@ -66,13 +65,11 @@ async function run() {
     // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
-    const debug = core.getInput("debug");
     const failBuild = core.getInput("fail-build");
     const acsReportEnable = core.getInput("acs-report-enable");
     const severityCutoff = core.getInput("severity-cutoff");
     const out = await runScan({
       source,
-      debug,
       failBuild,
       acsReportEnable,
       severityCutoff,
@@ -87,21 +84,35 @@ async function run() {
 
 async function runScan({
   source,
-  debug = "false",
   failBuild = "true",
   acsReportEnable = "true",
   severityCutoff = "medium",
 }) {
   const out = {};
 
+  const env = {
+    SYFT_CHECK_FOR_APP_UPDATE: "false",
+  };
+
+  const registryUser = core.getInput("registry-username");
+  const registryPass = core.getInput("registry-password");
+
+  if (registryUser) {
+    env.SYFT_REGISTRY_AUTH_USERNAME = registryUser;
+    if (registryPass) {
+      env.SYFT_REGISTRY_AUTH_PASSWORD = registryPass;
+    } else {
+      core.warning(
+        "WARNING: registry-username specified without registry-password"
+      );
+    }
+  }
+
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
   let cmdArgs = [];
 
-  if (debug.toLowerCase() === "true") {
-    debug = "true";
+  if (core.isDebug()) {
     cmdArgs.push(`-vv`);
-  } else {
-    debug = "false";
   }
 
   failBuild = failBuild.toLowerCase() === "true";
@@ -130,7 +141,6 @@ async function runScan({
   await installGrype(grypeVersion);
 
   core.debug("Image: " + source);
-  core.debug("Debug Output: " + debug);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
   core.debug("ACS Enable: " + acsReportEnable);
@@ -155,12 +165,11 @@ async function runScan({
     },
   });
 
-  core.info("\nAnalyzing: " + source);
+  const exitCode = await core.group(`${cmd} output...`, async () => {
+    core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
 
-  core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
-
-  const exitCode = await core.group(`${cmd} output...`, async () =>
-    exec(cmd, cmdArgs, {
+    return exec(cmd, cmdArgs, {
+      env,
       ignoreReturnCode: true,
       outStream,
       listeners: {
@@ -174,8 +183,8 @@ async function runScan({
           core.debug(message);
         },
       },
-    })
-  );
+    });
+  });
 
   if (core.isDebug()) {
     core.debug("Grype output:");

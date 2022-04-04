@@ -10,10 +10,6 @@ inputs:
   path:
     description: 'The path to scan. This option is mutually exclusive with "image".'
     required: false
-  debug:
-    description: "Set this to any value to enable verbose debug output"
-    required: false
-    default: "false"
   fail-build:
     description: "Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)"
     required: false
