@@ -24,7 +24,7 @@ class TestInvalidInput:
             assert "discovered vulnerabilities at or above the severity threshold" not in line
 
     def test_error_is_reported(self, invalid_output):
-        assert "Cannot use both 'image' and 'path' as sources" in invalid_output
+        assert "The following options are mutually exclusive: image, path, raw-source" in invalid_output
 
     def test_grype_never_runs(self, invalid_output):
         lines = invalid_output.split('\n')
@@ -53,7 +53,7 @@ class TestNoSources:
             assert "discovered vulnerabilities at or above the severity threshold" not in line
 
     def test_error_is_reported(self, sources_output):
-        assert "At least one source for scanning needs to be provided. Available options are: image, and path" in sources_output
+        assert "At least one source for scanning needs to be provided. Available options are: image, path and raw-source" in sources_output
 
     def test_grype_never_runs(self, sources_output):
         lines = sources_output.split('\n')
