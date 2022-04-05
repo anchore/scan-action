@@ -9,8 +9,9 @@ const actionPath = path.join(__dirname, "../dist/index.js");
 function runAction(inputs) {
   // Set up the environment variables
   const env = {
-    RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
     PATH: process.env.PATH,
+    RUNNER_TEMP: process.env.RUNNER_TEMP,
+    RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
   };
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   for (const k in inputs) {
