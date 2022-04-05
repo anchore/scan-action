@@ -7,17 +7,30 @@ const actionPath = path.join(__dirname, "../index.js");
 
 // Execute the action, and return any outputs
 function runAction(inputs) {
+  const env = {};
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   for (const k in inputs) {
-    process.env[`INPUT_${k}`.toUpperCase()] = inputs[k];
+    env[`INPUT_${k}`.toUpperCase()] = inputs[k];
   }
   // capture stdout
-  const stdout = child_process
-    .execSync(`node ${actionPath}`, {
-      env: process.env,
-    })
-    .toString("utf8");
-  const outputs = {};
+  let exitCode = 0;
+  let stdout;
+  try {
+    stdout = child_process
+      .execSync(`node ${actionPath}`, {
+        env: Object.assign(env, process.env),
+      })
+      .toString("utf8");
+  } catch (error) {
+    exitCode = error.status;
+    stdout = error.stdout.toString("utf8");
+  }
+
+  const outputs = {
+    exitCode,
+    stdout,
+  };
+
   // reverse setOutput command calls like:
   // ::set-output name=cmd::/tmp/actions/cache/grype/0.34.4/x64/grype
   for (const line of stdout.split(os.EOL)) {
@@ -26,14 +39,37 @@ function runAction(inputs) {
       outputs[groups[1]] = groups[2];
     }
   }
+
   return outputs;
 }
 
-describe("sbom-action", () => {
+describe("scan-action", () => {
   it("runs download-grype", () => {
     const outputs = runAction({
       run: "download-grype",
     });
     expect(outputs.cmd).toBeDefined();
+  });
+
+  it("errors with invalid input", () => {
+    const outputs = runAction({
+      image: "some-image",
+      path: "some-path",
+    });
+    expect(outputs.exitCode).toBe(1);
+    expect(outputs.stdout).toContain(
+      "Cannot use both 'image' and 'path' as sources"
+    );
+    expect(outputs.stdout).not.toContain("grype");
+  });
+
+  it("fails due to vulnerabilities found", () => {
+    const outputs = runAction({
+      image: "localhost:5000/match-coverage/debian:latest",
+      "severity-cutoff": "medium",
+    });
+    expect(outputs.stdout).toContain(
+      "Failed minimum severity level. Found vulnerabilities with level medium or higher"
+    );
   });
 });
