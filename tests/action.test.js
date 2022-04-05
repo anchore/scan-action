@@ -34,8 +34,6 @@ function runAction(inputs) {
     stdout = error.stdout.toString("utf8");
   }
 
-  console.log("Executed:", actionPath, "with env:", env, "got output:", stdout);
-
   const outputs = {
     exitCode,
     stdout,
