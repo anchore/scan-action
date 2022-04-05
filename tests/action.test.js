@@ -7,16 +7,6 @@ const actionPath = path.join(__dirname, "../dist/index.js");
 
 // Execute the action, and return any outputs
 function runAction(inputs) {
-  // set defaults:
-  inputs = Object.assign(
-    {
-      "fail-build": "true",
-      "acs-report-enable": "true",
-      "severity-cutoff": "medium",
-    },
-    inputs
-  );
-
   // Set up the environment variables
   const env = {
     RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
@@ -24,6 +14,8 @@ function runAction(inputs) {
   };
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   for (const k in inputs) {
+    // NOTE: there is a bug with node exec where environment variables with dashes
+    // are not always preserved - we will just have to rely on defaults in the code
     env[`INPUT_${k}`.toUpperCase()] = inputs[k];
   }
 
@@ -83,7 +75,6 @@ describe("scan-action", () => {
   it("fails due to vulnerabilities found", () => {
     const outputs = runAction({
       image: "localhost:5000/match-coverage/debian:latest",
-      "severity-cutoff": "low",
     });
     expect(outputs.stdout).toContain("Failed minimum severity level.");
   });
