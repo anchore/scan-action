@@ -65,9 +65,9 @@ async function run() {
     // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
-    const failBuild = core.getInput("fail-build");
-    const acsReportEnable = core.getInput("acs-report-enable");
-    const severityCutoff = core.getInput("severity-cutoff");
+    const failBuild = core.getInput("fail-build") || "true";
+    const acsReportEnable = core.getInput("acs-report-enable") || "true";
+    const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const out = await runScan({
       source,
       failBuild,
@@ -82,12 +82,7 @@ async function run() {
   }
 }
 
-async function runScan({
-  source,
-  failBuild = "true",
-  acsReportEnable = "true",
-  severityCutoff = "medium",
-}) {
+async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
   const out = {};
 
   const env = {

@@ -6,21 +6,21 @@ jobs:
   sarif-image:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v2
+      - name: Checkout the code
+        uses: actions/checkout@v2
 
-    - name: Run the local Scan Action with SARIF generation enabled
-      id: scan
-      uses: ./
-      with:
-        image: "debian:8"
-        debug: true
-        acs-report-enable: true
-        fail-build: false
-        #severity-cutoff: "Medium"
+      - name: Run the local Scan Action with SARIF generation enabled
+        id: scan
+        uses: ./
+        with:
+          image: "debian:8"
+          debug: true
+          acs-report-enable: true
+          fail-build: false
+          #severity-cutoff: "Medium"
 
-    - name: Inspect Generated SARIF
-      run: cat ${{ steps.scan.outputs.sarif }}
+      - name: Inspect Generated SARIF
+        run: cat ${{ steps.scan.outputs.sarif }}
 
     # Commented out to prevent incorrect SARIF uploads for this action
     # TODO: add functional tests that validate this
@@ -32,21 +32,21 @@ jobs:
   sarif-directory:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v2
+      - name: Checkout the code
+        uses: actions/checkout@v2
 
-    - name: Run the local Scan Action with SARIF generation enabled
-      id: scan
-      uses: ./
-      with:
-        path: "tests/python"
-        debug: true
-        acs-report-enable: true
-        fail-build: false
-        #severity-cutoff: "Medium"
+      - name: Run the local Scan Action with SARIF generation enabled
+        id: scan
+        uses: ./
+        with:
+          path: "tests/fixtures/npm-project"
+          debug: true
+          acs-report-enable: true
+          fail-build: false
+          #severity-cutoff: "Medium"
 
-    - name: Inspect Generated SARIF
-      run: cat ${{ steps.scan.outputs.sarif }}
+      - name: Inspect Generated SARIF
+        run: cat ${{ steps.scan.outputs.sarif }}
     # Commented out to prevent incorrect SARIF uploads for this action
     # TODO: add functional tests that validate this
     # - name: Upload SARIF

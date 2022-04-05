@@ -15,8 +15,10 @@ const testSource = async (source, vulnerabilities) => {
 
   const out = await runScan({
     source,
+    debug: "false",
     failBuild: "false",
     acsReportEnable: "true",
+    severityCutoff: "medium",
   });
 
   // expect to get sarif output
