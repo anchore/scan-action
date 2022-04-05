@@ -136,6 +136,10 @@ async function runScan({
         item === severityCutoff.toLowerCase()
     )
   ) {
+    console.log(
+      "Unable to find severityCutoff, process.env:",
+      __webpack_require__(765).env
+    );
     throw new Error(
       `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
     );
@@ -5255,6 +5259,14 @@ module.exports = require("os");
 
 "use strict";
 module.exports = require("path");
+
+/***/ }),
+
+/***/ 765:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("process");
 
 /***/ }),
 
