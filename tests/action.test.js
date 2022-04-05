@@ -7,7 +7,12 @@ const actionPath = path.join(__dirname, "../index.js");
 
 // Execute the action, and return any outputs
 function runAction(inputs) {
-  const env = {};
+  // set defaults:
+  const env = {
+    "fail-build": "true",
+    "acs-report-enable": "true",
+    "severity-cutoff": "medium",
+  };
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   for (const k in inputs) {
     env[`INPUT_${k}`.toUpperCase()] = inputs[k];
