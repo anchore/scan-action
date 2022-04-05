@@ -91,16 +91,16 @@ async function runScan({
   const out = {};
 
   const env = {
-    SYFT_CHECK_FOR_APP_UPDATE: "false",
+    GRYPE_CHECK_FOR_APP_UPDATE: "false",
   };
 
   const registryUser = core.getInput("registry-username");
   const registryPass = core.getInput("registry-password");
 
   if (registryUser) {
-    env.SYFT_REGISTRY_AUTH_USERNAME = registryUser;
+    env.GRYPE_REGISTRY_AUTH_USERNAME = registryUser;
     if (registryPass) {
-      env.SYFT_REGISTRY_AUTH_PASSWORD = registryPass;
+      env.GRYPE_REGISTRY_AUTH_PASSWORD = registryPass;
     } else {
       core.warning(
         "WARNING: registry-username specified without registry-password"
