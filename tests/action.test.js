@@ -3,33 +3,44 @@ const os = require("os");
 const path = require("path");
 const process = require("process");
 
-const actionPath = path.join(__dirname, "../index.js");
+const actionPath = path.join(__dirname, "../dist/index.js");
 
 // Execute the action, and return any outputs
 function runAction(inputs) {
   // set defaults:
+  inputs = Object.assign(
+    {
+      "fail-build": "true",
+      "acs-report-enable": "true",
+      "severity-cutoff": "medium",
+    },
+    inputs
+  );
+
+  // Set up the environment variables
   const env = {
-    "fail-build": "true",
-    "acs-report-enable": "true",
-    "severity-cutoff": "medium",
+    ...process.env,
   };
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   for (const k in inputs) {
     env[`INPUT_${k}`.toUpperCase()] = inputs[k];
   }
-  // capture stdout
+
+  // capture stdout and exit code, and execute the command
   let exitCode = 0;
   let stdout;
   try {
     stdout = child_process
       .execSync(`node ${actionPath}`, {
-        env: Object.assign(env, process.env),
+        env,
       })
       .toString("utf8");
   } catch (error) {
     exitCode = error.status;
     stdout = error.stdout.toString("utf8");
   }
+
+  console.log("Executed:", actionPath, "with env:", env, "got output:", stdout);
 
   const outputs = {
     exitCode,
