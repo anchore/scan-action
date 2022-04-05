@@ -19,7 +19,8 @@ function runAction(inputs) {
 
   // Set up the environment variables
   const env = {
-    ...process.env,
+    RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
+    PATH: process.env.PATH,
   };
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   for (const k in inputs) {
@@ -82,10 +83,8 @@ describe("scan-action", () => {
   it("fails due to vulnerabilities found", () => {
     const outputs = runAction({
       image: "localhost:5000/match-coverage/debian:latest",
-      "severity-cutoff": "medium",
+      "severity-cutoff": "low",
     });
-    expect(outputs.stdout).toContain(
-      "Failed minimum severity level. Found vulnerabilities with level medium or higher"
-    );
+    expect(outputs.stdout).toContain("Failed minimum severity level.");
   });
 });
