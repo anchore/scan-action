@@ -113,13 +113,12 @@ async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
   const registryUser = core.getInput("registry-username");
   const registryPass = core.getInput("registry-password");
 
-  if (registryUser) {
+  if (registryUser || registryPass) {
     env.GRYPE_REGISTRY_AUTH_USERNAME = registryUser;
-    if (registryPass) {
-      env.GRYPE_REGISTRY_AUTH_PASSWORD = registryPass;
-    } else {
+    env.GRYPE_REGISTRY_AUTH_PASSWORD = registryPass;
+    if (!registryUser || !registryPass) {
       core.warning(
-        "WARNING: registry-username specified without registry-password"
+        "WARNING: registry-username and registry-password must be specified together"
       );
     }
   }
