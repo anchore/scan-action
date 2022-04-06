@@ -72,16 +72,16 @@ To scan a directory, add the following step:
 
 The `path` key allows any valid path for the current project. The root of the path (`"."` in this example) is the repository root.
 
-## Scanning SBOM file
+## Scanning an SBOM file
 
-Scan a SBOM file:
+Scan an SBOM file:
 
 ```yaml
 - name: Create SBOM
   uses: anchore/sbom-action@v0
   with:
     format: spdx-json
-    artifact-name: "${{ github.event.repository.name }}-sbom.spdx.json"
+    output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
 
 - name: Scan SBOM
   uses: anchore/scan-action@v3
