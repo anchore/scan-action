@@ -54,18 +54,32 @@ async function installGrype(version) {
   return `${grypePath}/${grypeBinary}`;
 }
 
+// Determines if multiple arguments are defined
+function multipleDefined(...args) {
+  let defined = false;
+  for (const a of args) {
+    if (defined && a) {
+      return true;
+    }
+    if (a) {
+      defined = true;
+    }
+  }
+  return false;
+}
+
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
   var sbom = core.getInput("sbom");
 
-  if (image && path && raw) {
+  if (multipleDefined(image, path, sbom)) {
     throw new Error(
       "The following options are mutually exclusive: image, path, sbom"
     );
   }
 
-  if (!(image || path || raw)) {
+  if (!(image || path || sbom)) {
     throw new Error(
       "At least one source for scanning needs to be provided. Available options are: image, path and sbom"
     );
