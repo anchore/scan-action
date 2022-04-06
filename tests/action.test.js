@@ -60,13 +60,33 @@ describe("scan-action", () => {
   });
 
   it("errors with invalid input", () => {
-    const outputs = runAction({
+    let outputs = runAction({
       image: "some-image",
       path: "some-path",
     });
     expect(outputs.exitCode).toBe(1);
     expect(outputs.stdout).toContain(
-      "Cannot use both 'image' and 'path' as sources"
+      "The following options are mutually exclusive: image, path, sbom"
+    );
+    expect(outputs.stdout).not.toContain("grype");
+
+    outputs = runAction({
+      image: "some-image",
+      sbom: "some-path",
+    });
+    expect(outputs.exitCode).toBe(1);
+    expect(outputs.stdout).toContain(
+      "The following options are mutually exclusive: image, path, sbom"
+    );
+    expect(outputs.stdout).not.toContain("grype");
+
+    outputs = runAction({
+      path: "some-path",
+      sbom: "some-image",
+    });
+    expect(outputs.exitCode).toBe(1);
+    expect(outputs.stdout).toContain(
+      "The following options are mutually exclusive: image, path, sbom"
     );
     expect(outputs.stdout).not.toContain("grype");
   });
@@ -74,6 +94,13 @@ describe("scan-action", () => {
   it("fails due to vulnerabilities found", () => {
     const outputs = runAction({
       image: "localhost:5000/match-coverage/debian:latest",
+    });
+    expect(outputs.stdout).toContain("Failed minimum severity level.");
+  });
+
+  it("runs with sbom", () => {
+    const outputs = runAction({
+      sbom: "fixtures/test_sbom.spdx.json",
     });
     expect(outputs.stdout).toContain("Failed minimum severity level.");
   });

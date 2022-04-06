@@ -54,16 +54,37 @@ async function installGrype(version) {
   return `${grypePath}/${grypeBinary}`;
 }
 
+// Determines if multiple arguments are defined
+function multipleDefined(...args) {
+  let defined = false;
+  for (const a of args) {
+    if (defined && a) {
+      return true;
+    }
+    if (a) {
+      defined = true;
+    }
+  }
+  return false;
+}
+
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
+  var sbom = core.getInput("sbom");
 
-  if (image && path) {
-    throw new Error("Cannot use both 'image' and 'path' as sources");
+  if (multipleDefined(image, path, sbom)) {
+    throw new Error(
+      "The following options are mutually exclusive: image, path, sbom"
+    );
   }
 
   if (image) {
     return image;
+  }
+
+  if (sbom) {
+    return "sbom:" + sbom;
   }
 
   if (!path) {
@@ -150,7 +171,7 @@ async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
   core.debug(`Installing grype version ${grypeVersion}`);
   await installGrype(grypeVersion);
 
-  core.debug("Image: " + source);
+  core.debug("Source: " + source);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
   core.debug("ACS Enable: " + acsReportEnable);

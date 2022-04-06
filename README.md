@@ -72,6 +72,23 @@ To scan a directory, add the following step:
 
 The `path` key allows any valid path for the current project. The root of the path (`"."` in this example) is the repository root.
 
+## Scanning an SBOM file
+
+Use the `sbom` key to scan an SBOM file:
+
+```yaml
+- name: Create SBOM
+  uses: anchore/sbom-action@v0
+  with:
+    format: spdx-json
+    output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
+
+- name: Scan SBOM
+  uses: anchore/scan-action@v3
+  with:
+    sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
+```
+
 ## Failing a build on vulnerability severity
 
 By default, if any vulnerability at `medium` or higher is seen, the build fails. To have the build step fail in cases where there are vulnerabilities with a severity level different than the default, set the `severity-cutoff` field to one of `low`, `high`, or `critical`:
@@ -99,17 +116,18 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ### Action Inputs
 
-The only required key is `image` or `path`; all the other keys are optional. These are all the available keys to configure this action, along with its defaults:
+The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan; all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
 
-| Input Name          | Description                                                                                                                                                                                                                                                                                                    | Default Value        |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `path`              | A path on the filesystem to scan. This is mutually exclusive to `image`.                                                                                                                                                                                                                                       | \<current directory> |
-| `image`             | A container image to scan. This is mutually exclusive to `path`. See [Container scanning](#container-scanning) for more information.                                                                                                                                                                           |
-| `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                                                                       |
-| `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                                                                       |
-| `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`               |
-| `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                                    | `true`               |
-| `severity-cutoff`   | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`           |
+| Input Name          | Description                                                                                                                                                                                                                                                                                                    | Default Value |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `image`             | The image to scan                                                                                                                                                                                                                                                                                              | N/A           |
+| `path`              | The file path to scan                                                                                                                                                                                                                                                                                          | N/A           |
+| `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                                                               | N/A           |
+| `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
+| `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
+| `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`        |
+| `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                                    | `true`        |
+| `severity-cutoff`   | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`    |
 
 ### Action Outputs
 
