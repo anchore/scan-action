@@ -23,3 +23,13 @@ jobs:
           debug: true
           severity-cutoff: "negligible"
           fail-build: false
+
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          sbom: tests/fixtures/test_sbom.spdx.json
+          debug: true
+          fail-build: false

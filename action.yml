@@ -5,10 +5,13 @@ branding:
   icon: check-circle
 inputs:
   image:
-    description: 'The image to scan. This option is mutually exclusive with "path". '
+    description: 'The image to scan. This option is mutually exclusive with "path" and "sbom". '
     required: false
   path:
-    description: 'The path to scan. This option is mutually exclusive with "image".'
+    description: 'The path to scan. This option is mutually exclusive with "image" and "sbom".'
+    required: false
+  sbom:
+    description: 'The SBOM file to scan. This option is mutually exclusive with "path" and "image".'
     required: false
   debug:
     description: "Set this to any value to enable verbose debug output"

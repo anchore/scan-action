@@ -39,22 +39,43 @@ async function installGrype(version) {
   return `${grypePath}/${grypeBinary}`;
 }
 
+// Determines if multiple arguments are defined
+function multipleDefined(...args) {
+  let defined = false;
+  for (const a of args) {
+    if (defined && a) {
+      return true;
+    }
+    if (a) {
+      defined = true;
+    }
+  }
+  return false;
+}
+
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
+  var sbom = core.getInput("sbom");
 
-  if (image && path) {
-    throw new Error("Cannot use both 'image' and 'path' as sources");
+  if (multipleDefined(image, path, sbom)) {
+    throw new Error(
+      "The following options are mutually exclusive: image, path, sbom"
+    );
   }
 
-  if (!(image || path)) {
+  if (!(image || path || sbom)) {
     throw new Error(
-      "At least one source for scanning needs to be provided. Available options are: image, and path"
+      "At least one source for scanning needs to be provided. Available options are: image, path and sbom"
     );
   }
 
   if (image !== "") {
     return image;
+  }
+
+  if (sbom !== "") {
+    return "sbom:" + sbom;
   }
 
   return "dir:" + path;
@@ -129,7 +150,7 @@ async function runScan({
   core.debug(`Installing grype version ${grypeVersion}`);
   await installGrype(grypeVersion);
 
-  core.debug("Image: " + source);
+  core.debug("Source: " + source);
   core.debug("Debug Output: " + debug);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
