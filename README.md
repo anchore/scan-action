@@ -74,7 +74,7 @@ The `path` key allows any valid path for the current project. The root of the pa
 
 ## Scanning an SBOM file
 
-Scan an SBOM file:
+Use the `sbom` key to scan an SBOM file:
 
 ```yaml
 - name: Create SBOM
@@ -116,12 +116,13 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ### Action Inputs
 
-The only required key is `image` or `path`; all the other keys are optional. These are all the available keys to configure this action, along with its defaults:
+The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan; all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
 
 | Input Name          | Description                                                                                                                                                                                                                                                                                                    | Default Value |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `image`             | The image to scan, this is mutually exclusive to `path`                                                                                                                                                                                                                                                        | N/A           |
-| `path`              | The file path to scan, this is mutually exclusive to `image`                                                                                                                                                                                                                                                   | N/A           |
+| `image`             | The image to scan                                                                                                                                                                                                                                                                                              | N/A           |
+| `path`              | The file path to scan                                                                                                                                                                                                                                                                                          | N/A           |
+| `sbom`              | An SBOM to scan                                                                                                                                                                                                                                                                                                | N/A           |
 | `debug`             | Verbose logging output                                                                                                                                                                                                                                                                                         | `false`       |
 | `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`        |
 | `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                                    | `true`        |
