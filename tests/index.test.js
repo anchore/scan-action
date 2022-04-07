@@ -3,7 +3,6 @@ jest.mock("@actions/exec");
 jest.mock("@actions/tool-cache");
 
 const core = require("@actions/core");
-const exec = require("@actions/exec");
 const path = require("path");
 const fs = require("fs");
 
@@ -85,29 +84,5 @@ describe("unit-tests", () => {
     expect(contentFiles.length).toEqual(5);
 
     mock.mockRestore(); // restore fs.readFileSync()
-  });
-});
-
-describe("functional-tests", () => {
-  beforeEach(() => {
-    exec.exec = jest.fn();
-
-    const mockReaddirSync = jest.spyOn(fs, "readdirSync");
-    mockReaddirSync.mockImplementation(() => {
-      return Object.keys(contentMergeFixture);
-    });
-
-    const mockWriteFileSync = jest.spyOn(fs, "writeFileSync");
-    mockWriteFileSync.mockImplementation(() => jest.fn());
-
-    core.getInput = jest
-      .fn()
-      .mockReturnValueOnce("localbuild/testimage:12345") // image-reference
-      .mockReturnValueOnce("./Dockerfile") // dockerfile-path
-      .mockReturnValueOnce("true") // debug
-      .mockReturnValueOnce("true") // fail-build
-      .mockReturnValueOnce("false") // acs-report
-      .mockReturnValueOnce("Medium") // sev-cut-off
-      .mockReturnValueOnce(null); // version
   });
 });
