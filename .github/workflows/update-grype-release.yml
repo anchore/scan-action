@@ -18,6 +18,7 @@ jobs:
           echo "exports.GRYPE_VERSION = \"$LATEST_VERSION\";" > GrypeVersion.js
           # install husky hooks and dependencies:
           npm install
+          npm run build
           # export the version for use with create-pull-request:
           echo "::set-output name=LATEST_VERSION::$LATEST_VERSION"
         id: latest-version
