@@ -576,7 +576,7 @@ Link: [CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)",
               "id": "CVE-2014-6051-libvncserver",
               "name": "ApkMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2014-6051 high vulnerability for libvncserver package",
@@ -606,7 +606,7 @@ Link: [CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)",
               "id": "CVE-2014-6052-libvncserver",
               "name": "ApkMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2014-6052 high vulnerability for libvncserver package",
@@ -636,7 +636,7 @@ Link: [CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)",
               "id": "CVE-2014-6053-libvncserver",
               "name": "ApkMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "5.000000",
+                "security-severity": "5.0",
               },
               "shortDescription": Object {
                 "text": "CVE-2014-6053 medium vulnerability for libvncserver package",
@@ -666,7 +666,7 @@ Link: [CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)",
               "id": "CVE-2014-6054-libvncserver",
               "name": "ApkMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "4.300000",
+                "security-severity": "4.3",
               },
               "shortDescription": Object {
                 "text": "CVE-2014-6054 medium vulnerability for libvncserver package",
@@ -696,7 +696,7 @@ Link: [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)",
               "id": "CVE-2014-6055-libvncserver",
               "name": "ApkMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "6.500000",
+                "security-severity": "6.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2014-6055 medium vulnerability for libvncserver package",
@@ -726,7 +726,7 @@ Link: [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
               "id": "CVE-2016-9941-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "9.800000",
+                "security-severity": "9.8",
               },
               "shortDescription": Object {
                 "text": "CVE-2016-9941 critical vulnerability for libvncserver package",
@@ -756,7 +756,7 @@ Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
               "id": "CVE-2016-9942-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "9.800000",
+                "security-severity": "9.8",
               },
               "shortDescription": Object {
                 "text": "CVE-2016-9942 critical vulnerability for libvncserver package",
@@ -786,7 +786,7 @@ Link: [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-722
               "id": "CVE-2018-7225-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "9.800000",
+                "security-severity": "9.8",
               },
               "shortDescription": Object {
                 "text": "CVE-2018-7225 critical vulnerability for libvncserver package",
@@ -816,7 +816,7 @@ Link: [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15
               "id": "CVE-2019-15681-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2019-15681 high vulnerability for libvncserver package",
@@ -846,7 +846,7 @@ Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
               "id": "CVE-2019-20839-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2019-20839 high vulnerability for libvncserver package",
@@ -876,7 +876,7 @@ Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
               "id": "CVE-2019-20840-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2019-20840 high vulnerability for libvncserver package",
@@ -906,7 +906,7 @@ Link: [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14397-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14397 high vulnerability for libvncserver package",
@@ -936,7 +936,7 @@ Link: [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14399-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14399 high vulnerability for libvncserver package",
@@ -966,7 +966,7 @@ Link: [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14400-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14400 high vulnerability for libvncserver package",
@@ -996,7 +996,7 @@ Link: [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14401-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "6.500000",
+                "security-severity": "6.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14401 medium vulnerability for libvncserver package",
@@ -1026,7 +1026,7 @@ Link: [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14402-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "5.500000",
+                "security-severity": "5.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14402 medium vulnerability for libvncserver package",
@@ -1056,7 +1056,7 @@ Link: [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14403-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "5.500000",
+                "security-severity": "5.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14403 medium vulnerability for libvncserver package",
@@ -1086,7 +1086,7 @@ Link: [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14404-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "5.500000",
+                "security-severity": "5.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14404 medium vulnerability for libvncserver package",
@@ -1116,7 +1116,7 @@ Link: [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               "id": "CVE-2020-14405-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "6.500000",
+                "security-severity": "6.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-14405 medium vulnerability for libvncserver package",
@@ -1146,7 +1146,7 @@ Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25
               "id": "CVE-2020-25708-libvncserver",
               "name": "ApkMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-25708 high vulnerability for libvncserver package",
@@ -1395,7 +1395,7 @@ Link: [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)
               "id": "CVE-2011-3374-apt",
               "name": "DpkgMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "4.300000",
+                "security-severity": "4.3",
               },
               "shortDescription": Object {
                 "text": "CVE-2011-3374 low vulnerability for apt package",
@@ -1425,7 +1425,7 @@ Link: [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)",
               "id": "CVE-2020-36327-bundler",
               "name": "RubyGemMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "9.300000",
+                "security-severity": "9.3",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-36327 high vulnerability for bundler package",
@@ -1455,7 +1455,7 @@ Link: [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)",
               "id": "CVE-2021-43809-bundler",
               "name": "RubyGemMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "9.300000",
+                "security-severity": "9.3",
               },
               "shortDescription": Object {
                 "text": "CVE-2021-43809 high vulnerability for bundler package",
@@ -1485,7 +1485,7 @@ Link: [GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)",
               "id": "GHSA-9w8r-397f-prfh-Pygments",
               "name": "PythonMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "GHSA-9w8r-397f-prfh high vulnerability for Pygments package",
@@ -1515,7 +1515,7 @@ Link: [GHSA-fj7f-vq84-fh43](https://github.com/advisories/GHSA-fj7f-vq84-fh43)",
               "id": "GHSA-fj7f-vq84-fh43-bundler",
               "name": "RubyGemMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "9.300000",
+                "security-severity": "9.3",
               },
               "shortDescription": Object {
                 "text": "GHSA-fj7f-vq84-fh43 medium vulnerability for bundler package",
@@ -1545,7 +1545,7 @@ Link: [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)",
               "id": "GHSA-fp4w-jxhp-m23p-bundler",
               "name": "RubyGemMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "9.300000",
+                "security-severity": "9.3",
               },
               "shortDescription": Object {
                 "text": "GHSA-fp4w-jxhp-m23p high vulnerability for bundler package",
@@ -1575,7 +1575,7 @@ Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
               "id": "GHSA-pq64-v7f5-gqh8-Pygments",
               "name": "PythonMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "GHSA-pq64-v7f5-gqh8 medium vulnerability for Pygments package",
@@ -1602,7 +1602,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1614,7 +1614,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "CVE-2021-32803-tar",
         },
@@ -1623,7 +1623,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1635,7 +1635,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "CVE-2021-37701-tar",
         },
@@ -1644,7 +1644,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1656,7 +1656,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "CVE-2021-37712-tar",
         },
@@ -1665,7 +1665,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1677,7 +1677,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "CVE-2021-37713-tar",
         },
@@ -1686,7 +1686,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1698,7 +1698,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-3jfq-g458-7qm9-tar",
         },
@@ -1707,7 +1707,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1719,7 +1719,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-5955-9wpr-37jh-tar",
         },
@@ -1728,7 +1728,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1740,7 +1740,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-9r2w-394v-53qc-tar",
         },
@@ -1749,7 +1749,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1761,7 +1761,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-qq89-hq3f-393p-tar",
         },
@@ -1770,7 +1770,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "package-lock.json",
+                  "uri": "tests/fixtures/npm-project/package-lock.json",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -1782,7 +1782,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-r628-mhmh-qjhw-tar",
         },
@@ -1800,7 +1800,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2021-32803**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | package-lock.json  | nvd  | [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)  |
+| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)  |
 ",
                 "text": "Vulnerability CVE-2021-32803
 Severity: high
@@ -1808,7 +1808,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: nvd
 Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
               },
@@ -1816,7 +1816,7 @@ Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
               "id": "CVE-2021-32803-tar",
               "name": "JavascriptMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "8.100000",
+                "security-severity": "8.1",
               },
               "shortDescription": Object {
                 "text": "CVE-2021-32803 high vulnerability for tar package",
@@ -1830,7 +1830,7 @@ Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
                 "markdown": "**Vulnerability CVE-2021-37701**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | package-lock.json  | nvd  | [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)  |
+| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)  |
 ",
                 "text": "Vulnerability CVE-2021-37701
 Severity: high
@@ -1838,7 +1838,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: nvd
 Link: [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)",
               },
@@ -1846,7 +1846,7 @@ Link: [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)",
               "id": "CVE-2021-37701-tar",
               "name": "JavascriptMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "8.600000",
+                "security-severity": "8.6",
               },
               "shortDescription": Object {
                 "text": "CVE-2021-37701 high vulnerability for tar package",
@@ -1860,7 +1860,7 @@ Link: [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)",
                 "markdown": "**Vulnerability CVE-2021-37712**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | package-lock.json  | nvd  | [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)  |
+| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)  |
 ",
                 "text": "Vulnerability CVE-2021-37712
 Severity: high
@@ -1868,7 +1868,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: nvd
 Link: [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)",
               },
@@ -1876,7 +1876,7 @@ Link: [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)",
               "id": "CVE-2021-37712-tar",
               "name": "JavascriptMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "8.600000",
+                "security-severity": "8.6",
               },
               "shortDescription": Object {
                 "text": "CVE-2021-37712 high vulnerability for tar package",
@@ -1890,7 +1890,7 @@ Link: [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)",
                 "markdown": "**Vulnerability CVE-2021-37713**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | package-lock.json  | nvd  | [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)  |
+| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)  |
 ",
                 "text": "Vulnerability CVE-2021-37713
 Severity: high
@@ -1898,7 +1898,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: nvd
 Link: [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)",
               },
@@ -1906,7 +1906,7 @@ Link: [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)",
               "id": "CVE-2021-37713-tar",
               "name": "JavascriptMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "8.600000",
+                "security-severity": "8.6",
               },
               "shortDescription": Object {
                 "text": "CVE-2021-37713 high vulnerability for tar package",
@@ -1920,7 +1920,7 @@ Link: [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)",
                 "markdown": "**Vulnerability GHSA-3jfq-g458-7qm9**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.1  | npm  | package-lock.json  | github:npm  | [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)  |
+| high  | tar  | 6.1.0  | 6.1.1  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)  |
 ",
                 "text": "Vulnerability GHSA-3jfq-g458-7qm9
 Severity: high
@@ -1928,7 +1928,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.1
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: github:npm
 Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
               },
@@ -1936,7 +1936,7 @@ Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
               "id": "GHSA-3jfq-g458-7qm9-tar",
               "name": "JavascriptMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "8.100000",
+                "security-severity": "8.1",
               },
               "shortDescription": Object {
                 "text": "GHSA-3jfq-g458-7qm9 high vulnerability for tar package",
@@ -1950,7 +1950,7 @@ Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
                 "markdown": "**Vulnerability GHSA-5955-9wpr-37jh**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.9  | npm  | package-lock.json  | github:npm  | [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)  |
+| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)  |
 ",
                 "text": "Vulnerability GHSA-5955-9wpr-37jh
 Severity: high
@@ -1958,7 +1958,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: github:npm
 Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
               },
@@ -1966,7 +1966,7 @@ Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
               "id": "GHSA-5955-9wpr-37jh-tar",
               "name": "JavascriptMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "8.600000",
+                "security-severity": "8.6",
               },
               "shortDescription": Object {
                 "text": "GHSA-5955-9wpr-37jh high vulnerability for tar package",
@@ -1980,7 +1980,7 @@ Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
                 "markdown": "**Vulnerability GHSA-9r2w-394v-53qc**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.7  | npm  | package-lock.json  | github:npm  | [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)  |
+| high  | tar  | 6.1.0  | 6.1.7  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)  |
 ",
                 "text": "Vulnerability GHSA-9r2w-394v-53qc
 Severity: high
@@ -1988,7 +1988,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.7
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: github:npm
 Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
               },
@@ -1996,7 +1996,7 @@ Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
               "id": "GHSA-9r2w-394v-53qc-tar",
               "name": "JavascriptMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "8.600000",
+                "security-severity": "8.6",
               },
               "shortDescription": Object {
                 "text": "GHSA-9r2w-394v-53qc high vulnerability for tar package",
@@ -2010,7 +2010,7 @@ Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
                 "markdown": "**Vulnerability GHSA-qq89-hq3f-393p**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.9  | npm  | package-lock.json  | github:npm  | [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)  |
+| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)  |
 ",
                 "text": "Vulnerability GHSA-qq89-hq3f-393p
 Severity: high
@@ -2018,7 +2018,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: github:npm
 Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
               },
@@ -2026,7 +2026,7 @@ Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
               "id": "GHSA-qq89-hq3f-393p-tar",
               "name": "JavascriptMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "8.600000",
+                "security-severity": "8.6",
               },
               "shortDescription": Object {
                 "text": "GHSA-qq89-hq3f-393p high vulnerability for tar package",
@@ -2040,7 +2040,7 @@ Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
                 "markdown": "**Vulnerability GHSA-r628-mhmh-qjhw**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.2  | npm  | package-lock.json  | github:npm  | [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)  |
+| high  | tar  | 6.1.0  | 6.1.2  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)  |
 ",
                 "text": "Vulnerability GHSA-r628-mhmh-qjhw
 Severity: high
@@ -2048,7 +2048,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.2
 Type: npm
-Location: package-lock.json
+Location: tests/fixtures/npm-project/package-lock.json
 Data Namespace: github:npm
 Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
@@ -2056,7 +2056,7 @@ Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               "id": "GHSA-r628-mhmh-qjhw-tar",
               "name": "JavascriptMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "8.100000",
+                "security-severity": "8.1",
               },
               "shortDescription": Object {
                 "text": "GHSA-r628-mhmh-qjhw high vulnerability for tar package",
@@ -2083,7 +2083,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "yarn.lock",
+                  "uri": "tests/fixtures/yarn-project/yarn.lock",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -2095,7 +2095,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "CVE-2020-7753-trim",
         },
@@ -2104,7 +2104,7 @@ Object {
             Object {
               "physicalLocation": Object {
                 "artifactLocation": Object {
-                  "uri": "yarn.lock",
+                  "uri": "tests/fixtures/yarn-project/yarn.lock",
                 },
                 "region": Object {
                   "endColumn": 1,
@@ -2116,7 +2116,7 @@ Object {
             },
           ],
           "message": Object {
-            "text": "The path yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-w5p7-h5w8-2hfq-trim",
         },
@@ -2134,7 +2134,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2020-7753**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | trim  | 0.0.2  |   | npm  | yarn.lock  | nvd  | [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)  |
+| high  | trim  | 0.0.2  |   | npm  | tests/fixtures/yarn-project/yarn.lock  | nvd  | [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)  |
 ",
                 "text": "Vulnerability CVE-2020-7753
 Severity: high
@@ -2142,7 +2142,7 @@ Package: trim
 Version: 0.0.2
 Fix Version: 
 Type: npm
-Location: yarn.lock
+Location: tests/fixtures/yarn-project/yarn.lock
 Data Namespace: nvd
 Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
               },
@@ -2150,7 +2150,7 @@ Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
               "id": "CVE-2020-7753-trim",
               "name": "JavascriptMatcherCpeMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "CVE-2020-7753 high vulnerability for trim package",
@@ -2164,7 +2164,7 @@ Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
                 "markdown": "**Vulnerability GHSA-w5p7-h5w8-2hfq**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | trim  | 0.0.2  | 0.0.3  | npm  | yarn.lock  | github:npm  | [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)  |
+| high  | trim  | 0.0.2  | 0.0.3  | npm  | tests/fixtures/yarn-project/yarn.lock  | github:npm  | [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)  |
 ",
                 "text": "Vulnerability GHSA-w5p7-h5w8-2hfq
 Severity: high
@@ -2172,7 +2172,7 @@ Package: trim
 Version: 0.0.2
 Fix Version: 0.0.3
 Type: npm
-Location: yarn.lock
+Location: tests/fixtures/yarn-project/yarn.lock
 Data Namespace: github:npm
 Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
@@ -2180,7 +2180,7 @@ Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               "id": "GHSA-w5p7-h5w8-2hfq-trim",
               "name": "JavascriptMatcherExactDirectMatch",
               "properties": Object {
-                "security-severity": "7.500000",
+                "security-severity": "7.5",
               },
               "shortDescription": Object {
                 "text": "GHSA-w5p7-h5w8-2hfq high vulnerability for trim package",
