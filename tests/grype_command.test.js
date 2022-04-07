@@ -38,12 +38,11 @@ describe("Grype command", () => {
   it("is invoked with values", async () => {
     let cmd = await mockExec({
       source: "asdf",
-      debug: "true",
       failBuild: "false",
       acsReportEnable: "false",
       severityCutoff: "low",
       version: "0.6.0",
     });
-    expect(cmd).toBe("grype -vv -o json --fail-on low asdf");
+    expect(cmd).toBe("grype -o json --fail-on low asdf");
   });
 });

@@ -123,7 +123,8 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `image`             | The image to scan                                                                                                                                                                                                                                                                                              | N/A           |
 | `path`              | The file path to scan                                                                                                                                                                                                                                                                                          | N/A           |
 | `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                                                               | N/A           |
-| `debug`             | Verbose logging output                                                                                                                                                                                                                                                                                         | `false`       |
+| `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
+| `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
 | `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`        |
 | `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                                    | `true`        |
 | `severity-cutoff`   | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`    |
@@ -233,3 +234,9 @@ Connect with the community directly on [slack](https://anchore.com/slack).
 
 [test]: https://github.com/anchore/scan-action
 [test-img]: https://github.com/anchore/scan-action/workflows/Tests/badge.svg
+
+## Diagnostics
+
+This action makes extensive use of GitHub Action debug logging,
+which can be enabled as [described here](https://github.com/actions/toolkit/blob/master/docs/action-debugging.md)
+by setting a secret in your repository of `ACTIONS_STEP_DEBUG` to `true`.
