@@ -29,5 +29,5 @@ outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"
