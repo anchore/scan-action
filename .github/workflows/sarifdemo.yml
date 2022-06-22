@@ -25,7 +25,7 @@ jobs:
     # Commented out to prevent incorrect SARIF uploads for this action
     # TODO: add functional tests that validate this
     # - name: Upload SARIF
-    #   uses: github/codeql-action/upload-sarif@v1
+    #   uses: github/codeql-action/upload-sarif@v2
     #   with:
     #     sarif_file: ${{ steps.scan.outputs.sarif }}
 
@@ -50,6 +50,6 @@ jobs:
     # Commented out to prevent incorrect SARIF uploads for this action
     # TODO: add functional tests that validate this
     # - name: Upload SARIF
-    #   uses: github/codeql-action/upload-sarif@v1
+    #   uses: github/codeql-action/upload-sarif@v2
     #   with:
     #     sarif_file: ${{ steps.scan.outputs.sarif }}
