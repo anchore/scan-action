@@ -1559,10 +1559,10 @@ Link: [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)",
                 "markdown": "**Vulnerability GHSA-pq64-v7f5-gqh8**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | Pygments  | 2.6.1  | 2.7.4  | python  | /python/dist-info/METADATA  | github:python  | [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)  |
+| high  | Pygments  | 2.6.1  | 2.7.4  | python  | /python/dist-info/METADATA  | github:python  | [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)  |
 ",
                 "text": "Vulnerability GHSA-pq64-v7f5-gqh8
-Severity: medium
+Severity: high
 Package: Pygments
 Version: 2.6.1
 Fix Version: 2.7.4
@@ -1578,7 +1578,7 @@ Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
                 "security-severity": "7.5",
               },
               "shortDescription": Object {
-                "text": "GHSA-pq64-v7f5-gqh8 medium vulnerability for Pygments package",
+                "text": "GHSA-pq64-v7f5-gqh8 high vulnerability for Pygments package",
               },
             },
           ],
