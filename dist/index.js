@@ -103,12 +103,14 @@ async function run() {
     const source = sourceInput();
     const failBuild = core.getInput("fail-build") || "true";
     const acsReportEnable = core.getInput("acs-report-enable") || "true";
+    const outputFormat = core.getInput("output-format") || "sarif";
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const out = await runScan({
       source,
       failBuild,
       acsReportEnable,
       severityCutoff,
+      outputFormat
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -118,7 +120,7 @@ async function run() {
   }
 }
 
-async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
+async function runScan({ source, failBuild, acsReportEnable, severityCutoff ,outputFormat}) {
   const out = {};
 
   const env = {
@@ -139,6 +141,8 @@ async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
   }
 
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
+  const FORMAT_LIST = ["sarif", "json"];
+
   let cmdArgs = [];
 
   if (core.isDebug()) {
@@ -152,7 +156,7 @@ async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
   if (acsReportEnable) {
     cmdArgs.push("-o", "sarif");
   } else {
-    cmdArgs.push("-o", "json");
+    cmdArgs.push("-o", outputFormat);
   }
 
   if (
@@ -164,6 +168,17 @@ async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
   ) {
     throw new Error(
       `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
+    );
+  }
+  if (
+    !FORMAT_LIST.some(
+      (item) =>
+        typeof outputFormat.toLowerCase() === "string" &&
+        item === outputFormat.toLowerCase()
+    )
+  ) {
+    throw new Error(
+      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`
     );
   }
 
@@ -225,6 +240,10 @@ async function runScan({ source, failBuild, acsReportEnable, severityCutoff }) {
     const SARIF_FILE = "./results.sarif";
     fs.writeFileSync(SARIF_FILE, cmdOutput);
     out.sarif = SARIF_FILE;
+  }else {
+    const REPORT_FILE = "./results.report";
+    fs.writeFileSync(REPORT_FILE, cmdOutput);
+    out.report = REPORT_FILE;
   }
 
   if (failBuild === true && exitCode > 0) {

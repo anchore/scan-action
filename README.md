@@ -116,7 +116,7 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ### Action Inputs
 
-The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan; all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
+The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan;inputs `output-format` and`acs-report-enable` are mutually exclusive to specify the report format;all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
 
 | Input Name          | Description                                                                                                                                                                                                                                                                                                    | Default Value |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -126,7 +126,8 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
 | `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
 | `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`        |
-| `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                                                    | `true`        |
+| `output-format`     | Set the output parameter after successful action execution. Valid choices are "json" and "sarif"                                                                                                                                                                                                               | `sarif`       |
+| `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter (Override the output-format) after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                       | `true`        |
 | `severity-cutoff`   | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`    |
 
 ### Action Outputs
@@ -134,6 +135,7 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | Output Name | Description                   | Type   |
 | ----------- | ----------------------------- | ------ |
 | `sarif`     | Path to the SARIF report file | string |
+| `report`    | Path to the report file       | string |
 
 ### Example Workflows
 
