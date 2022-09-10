@@ -17,6 +17,10 @@ inputs:
     description: "Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)"
     required: false
     default: "true"
+  output-format:
+    description: 'Set the output parameter after successful action execution. Valid choices are "json" and "sarif".'
+    required: false
+    default: "sarif"
   acs-report-enable:
     description: "Generate a SARIF report and set the `sarif` output parameter after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report."
     required: false
