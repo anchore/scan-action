@@ -560,7 +560,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2014-6051**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd  | [CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)  |
+| high  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd:cpe  | [CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)  |
 ",
                 "text": "Vulnerability CVE-2014-6051
 Severity: high
@@ -569,7 +569,7 @@ Version: 0.9.9
 Fix Version: 
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -590,7 +590,7 @@ Link: [CVE-2014-6051](https://nvd.nist.gov/vuln/detail/CVE-2014-6051)",
                 "markdown": "**Vulnerability CVE-2014-6052**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd  | [CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)  |
+| high  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd:cpe  | [CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)  |
 ",
                 "text": "Vulnerability CVE-2014-6052
 Severity: high
@@ -599,7 +599,7 @@ Version: 0.9.9
 Fix Version: 
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -620,7 +620,7 @@ Link: [CVE-2014-6052](https://nvd.nist.gov/vuln/detail/CVE-2014-6052)",
                 "markdown": "**Vulnerability CVE-2014-6053**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd  | [CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)  |
+| medium  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd:cpe  | [CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)  |
 ",
                 "text": "Vulnerability CVE-2014-6053
 Severity: medium
@@ -629,7 +629,7 @@ Version: 0.9.9
 Fix Version: 
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -650,7 +650,7 @@ Link: [CVE-2014-6053](https://nvd.nist.gov/vuln/detail/CVE-2014-6053)",
                 "markdown": "**Vulnerability CVE-2014-6054**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd  | [CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)  |
+| medium  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd:cpe  | [CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)  |
 ",
                 "text": "Vulnerability CVE-2014-6054
 Severity: medium
@@ -659,7 +659,7 @@ Version: 0.9.9
 Fix Version: 
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -680,7 +680,7 @@ Link: [CVE-2014-6054](https://nvd.nist.gov/vuln/detail/CVE-2014-6054)",
                 "markdown": "**Vulnerability CVE-2014-6055**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd  | [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)  |
+| medium  | libvncserver  | 0.9.9  |   | apk  | /lib/apk/db/installed  | nvd:cpe  | [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)  |
 ",
                 "text": "Vulnerability CVE-2014-6055
 Severity: medium
@@ -689,7 +689,7 @@ Version: 0.9.9
 Fix Version: 
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -710,7 +710,7 @@ Link: [CVE-2014-6055](https://nvd.nist.gov/vuln/detail/CVE-2014-6055)",
                 "markdown": "**Vulnerability CVE-2016-9941**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| critical  | libvncserver  | 0.9.9  | 0.9.11-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)  |
+| critical  | libvncserver  | 0.9.9  | 0.9.11-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)  |
 ",
                 "text": "Vulnerability CVE-2016-9941
 Severity: critical
@@ -719,7 +719,7 @@ Version: 0.9.9
 Fix Version: 0.9.11-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9941)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -740,7 +740,7 @@ Link: [CVE-2016-9941](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
                 "markdown": "**Vulnerability CVE-2016-9942**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| critical  | libvncserver  | 0.9.9  | 0.9.11-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)  |
+| critical  | libvncserver  | 0.9.9  | 0.9.11-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)  |
 ",
                 "text": "Vulnerability CVE-2016-9942
 Severity: critical
@@ -749,7 +749,7 @@ Version: 0.9.9
 Fix Version: 0.9.11-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9942)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -770,7 +770,7 @@ Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
                 "markdown": "**Vulnerability CVE-2018-7225**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| critical  | libvncserver  | 0.9.9  | 0.9.11-r2  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)  |
+| critical  | libvncserver  | 0.9.9  | 0.9.11-r2  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)  |
 ",
                 "text": "Vulnerability CVE-2018-7225
 Severity: critical
@@ -779,7 +779,7 @@ Version: 0.9.9
 Fix Version: 0.9.11-r2
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7225)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -800,7 +800,7 @@ Link: [CVE-2018-7225](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-722
                 "markdown": "**Vulnerability CVE-2019-15681**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.12-r1  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)  |
+| high  | libvncserver  | 0.9.9  | 0.9.12-r1  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)  |
 ",
                 "text": "Vulnerability CVE-2019-15681
 Severity: high
@@ -809,7 +809,7 @@ Version: 0.9.9
 Fix Version: 0.9.12-r1
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15681)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -830,7 +830,7 @@ Link: [CVE-2019-15681](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-15
                 "markdown": "**Vulnerability CVE-2019-20839**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)  |
+| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)  |
 ",
                 "text": "Vulnerability CVE-2019-20839
 Severity: high
@@ -839,7 +839,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20839)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -860,7 +860,7 @@ Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
                 "markdown": "**Vulnerability CVE-2019-20840**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)  |
+| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)  |
 ",
                 "text": "Vulnerability CVE-2019-20840
 Severity: high
@@ -869,7 +869,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20840)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -890,7 +890,7 @@ Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
                 "markdown": "**Vulnerability CVE-2020-14397**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)  |
+| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)  |
 ",
                 "text": "Vulnerability CVE-2020-14397
 Severity: high
@@ -899,7 +899,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14397)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -920,7 +920,7 @@ Link: [CVE-2020-14397](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14399**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)  |
+| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)  |
 ",
                 "text": "Vulnerability CVE-2020-14399
 Severity: high
@@ -929,7 +929,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14399)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -950,7 +950,7 @@ Link: [CVE-2020-14399](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14400**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)  |
+| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)  |
 ",
                 "text": "Vulnerability CVE-2020-14400
 Severity: high
@@ -959,7 +959,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14400)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -980,7 +980,7 @@ Link: [CVE-2020-14400](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14401**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14401)  |
+| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14401)  |
 ",
                 "text": "Vulnerability CVE-2020-14401
 Severity: medium
@@ -989,7 +989,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14401)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1010,7 +1010,7 @@ Link: [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14402**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14402)  |
+| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14402)  |
 ",
                 "text": "Vulnerability CVE-2020-14402
 Severity: medium
@@ -1019,7 +1019,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14402)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1040,7 +1040,7 @@ Link: [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14403**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14403)  |
+| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14403)  |
 ",
                 "text": "Vulnerability CVE-2020-14403
 Severity: medium
@@ -1049,7 +1049,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14403)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1070,7 +1070,7 @@ Link: [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14404**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14404)  |
+| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14404)  |
 ",
                 "text": "Vulnerability CVE-2020-14404
 Severity: medium
@@ -1079,7 +1079,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14404)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1100,7 +1100,7 @@ Link: [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-14405**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14405)  |
+| medium  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14405)  |
 ",
                 "text": "Vulnerability CVE-2020-14405
 Severity: medium
@@ -1109,7 +1109,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14405)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1130,7 +1130,7 @@ Link: [CVE-2020-14405](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
                 "markdown": "**Vulnerability CVE-2020-25708**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:3.12  | [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)  |
+| high  | libvncserver  | 0.9.9  | 0.9.13-r0  | apk  | /lib/apk/db/installed  | alpine:distro:alpine:3.12  | [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)  |
 ",
                 "text": "Vulnerability CVE-2020-25708
 Severity: high
@@ -1139,7 +1139,7 @@ Version: 0.9.9
 Fix Version: 0.9.13-r0
 Type: apk
 Location: /lib/apk/db/installed
-Data Namespace: alpine:3.12
+Data Namespace: alpine:distro:alpine:3.12
 Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25708)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1221,6 +1221,68 @@ Object {
             "text": "The path /ruby/specifications/bundler.gemspec reports bundler at version 2.1.4  which is a vulnerable (gem) package installed in the container",
           },
           "ruleId": "CVE-2020-36327-bundler",
+        },
+        Object {
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "",
+                  "name": "/python/dist-info/METADATA",
+                },
+                Object {
+                  "fullyQualifiedName": "",
+                  "name": "/python/dist-info/top_level.txt",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "image//python/dist-info/METADATA",
+                },
+                "region": Object {
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "text": "The path /python/dist-info/METADATA reports Pygments at version 2.6.1  which is a vulnerable (python) package installed in the container",
+          },
+          "ruleId": "CVE-2021-20270-Pygments",
+        },
+        Object {
+          "locations": Array [
+            Object {
+              "logicalLocations": Array [
+                Object {
+                  "fullyQualifiedName": "",
+                  "name": "/python/dist-info/METADATA",
+                },
+                Object {
+                  "fullyQualifiedName": "",
+                  "name": "/python/dist-info/top_level.txt",
+                },
+              ],
+              "physicalLocation": Object {
+                "artifactLocation": Object {
+                  "uri": "image//python/dist-info/METADATA",
+                },
+                "region": Object {
+                  "endColumn": 1,
+                  "endLine": 1,
+                  "startColumn": 1,
+                  "startLine": 1,
+                },
+              },
+            },
+          ],
+          "message": Object {
+            "text": "The path /python/dist-info/METADATA reports Pygments at version 2.6.1  which is a vulnerable (python) package installed in the container",
+          },
+          "ruleId": "CVE-2021-27291-Pygments",
         },
         Object {
           "locations": Array [
@@ -1379,7 +1441,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2011-3374**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| low  | apt  | 1.8.2  |   | deb  | /var/lib/dpkg/status  | debian:8  | [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)  |
+| low  | apt  | 1.8.2  |   | deb  | /var/lib/dpkg/status  | debian:distro:debian:8  | [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)  |
 ",
                 "text": "Vulnerability CVE-2011-3374
 Severity: low
@@ -1388,7 +1450,7 @@ Version: 1.8.2
 Fix Version: 
 Type: deb
 Location: /var/lib/dpkg/status
-Data Namespace: debian:8
+Data Namespace: debian:distro:debian:8
 Link: [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1409,7 +1471,7 @@ Link: [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)
                 "markdown": "**Vulnerability CVE-2020-36327**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | bundler  | 2.1.4  |   | gem  | /ruby/specifications/bundler.gemspec  | nvd  | [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)  |
+| high  | bundler  | 2.1.4  |   | gem  | /ruby/specifications/bundler.gemspec  | nvd:cpe  | [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)  |
 ",
                 "text": "Vulnerability CVE-2020-36327
 Severity: high
@@ -1418,7 +1480,7 @@ Version: 2.1.4
 Fix Version: 
 Type: gem
 Location: /ruby/specifications/bundler.gemspec
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1433,13 +1495,73 @@ Link: [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)",
             },
             Object {
               "fullDescription": Object {
+                "text": "An infinite loop in SMLLexer in Pygments versions 1.5 to 2.7.3 may lead to denial of service when performing syntax highlighting of a Standard ML (SML) source file, as demonstrated by input that only contains the \\"exception\\" keyword.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-20270**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| high  | Pygments  | 2.6.1  |   | python  | /python/dist-info/METADATA  | nvd:cpe  | [CVE-2021-20270](https://nvd.nist.gov/vuln/detail/CVE-2021-20270)  |
+",
+                "text": "Vulnerability CVE-2021-20270
+Severity: high
+Package: Pygments
+Version: 2.6.1
+Fix Version: 
+Type: python
+Location: /python/dist-info/METADATA
+Data Namespace: nvd:cpe
+Link: [CVE-2021-20270](https://nvd.nist.gov/vuln/detail/CVE-2021-20270)",
+              },
+              "helpUri": "https://github.com/anchore/grype",
+              "id": "CVE-2021-20270-Pygments",
+              "name": "PythonMatcherCpeMatch",
+              "properties": Object {
+                "security-severity": "7.5",
+              },
+              "shortDescription": Object {
+                "text": "CVE-2021-20270 high vulnerability for Pygments package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
+                "text": "In pygments 1.1+, fixed in 2.7.4, the lexers used to parse programming languages rely heavily on regular expressions. Some of the regular expressions have exponential or cubic worst-case complexity and are vulnerable to ReDoS. By crafting malicious input, an attacker can cause a denial of service.",
+              },
+              "help": Object {
+                "markdown": "**Vulnerability CVE-2021-27291**
+| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| high  | Pygments  | 2.6.1  |   | python  | /python/dist-info/METADATA  | nvd:cpe  | [CVE-2021-27291](https://nvd.nist.gov/vuln/detail/CVE-2021-27291)  |
+",
+                "text": "Vulnerability CVE-2021-27291
+Severity: high
+Package: Pygments
+Version: 2.6.1
+Fix Version: 
+Type: python
+Location: /python/dist-info/METADATA
+Data Namespace: nvd:cpe
+Link: [CVE-2021-27291](https://nvd.nist.gov/vuln/detail/CVE-2021-27291)",
+              },
+              "helpUri": "https://github.com/anchore/grype",
+              "id": "CVE-2021-27291-Pygments",
+              "name": "PythonMatcherCpeMatch",
+              "properties": Object {
+                "security-severity": "7.5",
+              },
+              "shortDescription": Object {
+                "text": "CVE-2021-27291 high vulnerability for Pygments package",
+              },
+            },
+            Object {
+              "fullDescription": Object {
                 "text": "\`Bundler\` is a package for managing application dependencies in Ruby. In \`bundler\` versions before 2.2.33, when working with untrusted and apparently harmless \`Gemfile\`'s, it is not expected that they lead to execution of external code, unless that's explicit in the ruby code inside the \`Gemfile\` itself. However, if the \`Gemfile\` includes \`gem\` entries that use the \`git\` option with invalid, but seemingly harmless, values with a leading dash, this can be false. To handle dependencies that come from a Git repository instead of a registry, Bundler uses various commands, such as \`git clone\`. These commands are being constructed using user input (e.g. the repository URL). When building the commands, Bundler versions before 2.2.33 correctly avoid Command Injection vulnerabilities by passing an array of arguments instead of a command string. However, there is the possibility that a user input starts with a dash (\`-\`) and is therefore treated as an optional argument instead of a positional one. This can lead to Code Execution because some of the commands have options that can be leveraged to run arbitrary executables. Since this value comes from the \`Gemfile\` file, it can contain any character, including a leading dash. To exploit this vulnerability, an attacker has to craft a directory containing a \`Gemfile\` file that declares a dependency that is located in a Git repository. This dependency has to have a Git URL in the form of \`-u./payload\`. This URL will be used to construct a Git clone command but will be interpreted as the upload-pack argument. Then this directory needs to be shared with the victim, who then needs to run a command that evaluates the Gemfile, such as \`bundle lock\`, inside. This vulnerability can lead to Arbitrary Code Execution, which could potentially lead to the takeover of the system. However, the exploitability is very low, because it requires a lot of user interaction. Bundler 2.2.33 has patched this problem by inserting \`--\` as an argument before any positional arguments to those Git commands that were affected by this issue. Regardless of whether users can upgrade or not, they should review any untrustred \`Gemfile\`'s before running any \`bundler\` commands that may read them, since they can contain arbitrary ruby code.",
               },
               "help": Object {
                 "markdown": "**Vulnerability CVE-2021-43809**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | bundler  | 2.1.4  |   | gem  | /ruby/specifications/bundler.gemspec  | nvd  | [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)  |
+| high  | bundler  | 2.1.4  |   | gem  | /ruby/specifications/bundler.gemspec  | nvd:cpe  | [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)  |
 ",
                 "text": "Vulnerability CVE-2021-43809
 Severity: high
@@ -1448,7 +1570,7 @@ Version: 2.1.4
 Fix Version: 
 Type: gem
 Location: /ruby/specifications/bundler.gemspec
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1469,7 +1591,7 @@ Link: [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)",
                 "markdown": "**Vulnerability GHSA-9w8r-397f-prfh**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | Pygments  | 2.6.1  | 2.7.4  | python  | /python/dist-info/METADATA  | github:python  | [GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)  |
+| high  | Pygments  | 2.6.1  | 2.7.4  | python  | /python/dist-info/METADATA  | github:language:python  | [GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)  |
 ",
                 "text": "Vulnerability GHSA-9w8r-397f-prfh
 Severity: high
@@ -1478,7 +1600,7 @@ Version: 2.6.1
 Fix Version: 2.7.4
 Type: python
 Location: /python/dist-info/METADATA
-Data Namespace: github:python
+Data Namespace: github:language:python
 Link: [GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1499,7 +1621,7 @@ Link: [GHSA-9w8r-397f-prfh](https://github.com/advisories/GHSA-9w8r-397f-prfh)",
                 "markdown": "**Vulnerability GHSA-fj7f-vq84-fh43**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| medium  | bundler  | 2.1.4  | 2.2.33  | gem  | /ruby/specifications/bundler.gemspec  | github:gem  | [GHSA-fj7f-vq84-fh43](https://github.com/advisories/GHSA-fj7f-vq84-fh43)  |
+| medium  | bundler  | 2.1.4  | 2.2.33  | gem  | /ruby/specifications/bundler.gemspec  | github:language:ruby  | [GHSA-fj7f-vq84-fh43](https://github.com/advisories/GHSA-fj7f-vq84-fh43)  |
 ",
                 "text": "Vulnerability GHSA-fj7f-vq84-fh43
 Severity: medium
@@ -1508,7 +1630,7 @@ Version: 2.1.4
 Fix Version: 2.2.33
 Type: gem
 Location: /ruby/specifications/bundler.gemspec
-Data Namespace: github:gem
+Data Namespace: github:language:ruby
 Link: [GHSA-fj7f-vq84-fh43](https://github.com/advisories/GHSA-fj7f-vq84-fh43)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1529,7 +1651,7 @@ Link: [GHSA-fj7f-vq84-fh43](https://github.com/advisories/GHSA-fj7f-vq84-fh43)",
                 "markdown": "**Vulnerability GHSA-fp4w-jxhp-m23p**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | bundler  | 2.1.4  | 2.2.10  | gem  | /ruby/specifications/bundler.gemspec  | github:gem  | [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)  |
+| high  | bundler  | 2.1.4  | 2.2.10  | gem  | /ruby/specifications/bundler.gemspec  | github:language:ruby  | [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)  |
 ",
                 "text": "Vulnerability GHSA-fp4w-jxhp-m23p
 Severity: high
@@ -1538,7 +1660,7 @@ Version: 2.1.4
 Fix Version: 2.2.10
 Type: gem
 Location: /ruby/specifications/bundler.gemspec
-Data Namespace: github:gem
+Data Namespace: github:language:ruby
 Link: [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1559,7 +1681,7 @@ Link: [GHSA-fp4w-jxhp-m23p](https://github.com/advisories/GHSA-fp4w-jxhp-m23p)",
                 "markdown": "**Vulnerability GHSA-pq64-v7f5-gqh8**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | Pygments  | 2.6.1  | 2.7.4  | python  | /python/dist-info/METADATA  | github:python  | [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)  |
+| high  | Pygments  | 2.6.1  | 2.7.4  | python  | /python/dist-info/METADATA  | github:language:python  | [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)  |
 ",
                 "text": "Vulnerability GHSA-pq64-v7f5-gqh8
 Severity: high
@@ -1568,7 +1690,7 @@ Version: 2.6.1
 Fix Version: 2.7.4
 Type: python
 Location: /python/dist-info/METADATA
-Data Namespace: github:python
+Data Namespace: github:language:python
 Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1597,90 +1719,6 @@ Object {
   "runs": Array [
     Object {
       "results": Array [
-        Object {
-          "locations": Array [
-            Object {
-              "physicalLocation": Object {
-                "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
-                },
-                "region": Object {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": Object {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
-          },
-          "ruleId": "CVE-2021-32803-tar",
-        },
-        Object {
-          "locations": Array [
-            Object {
-              "physicalLocation": Object {
-                "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
-                },
-                "region": Object {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": Object {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
-          },
-          "ruleId": "CVE-2021-37701-tar",
-        },
-        Object {
-          "locations": Array [
-            Object {
-              "physicalLocation": Object {
-                "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
-                },
-                "region": Object {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": Object {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
-          },
-          "ruleId": "CVE-2021-37712-tar",
-        },
-        Object {
-          "locations": Array [
-            Object {
-              "physicalLocation": Object {
-                "artifactLocation": Object {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
-                },
-                "region": Object {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": Object {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
-          },
-          "ruleId": "CVE-2021-37713-tar",
-        },
         Object {
           "locations": Array [
             Object {
@@ -1794,133 +1832,13 @@ Object {
           "rules": Array [
             Object {
               "fullDescription": Object {
-                "text": "The npm package \\"tar\\" (aka node-tar) before versions 6.1.2, 5.0.7, 4.4.15, and 3.2.3 has an arbitrary File Creation/Overwrite vulnerability via insufficient symlink protection. \`node-tar\` aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary \`stat\` calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory. This order of operations resulted in the directory being created and added to the \`node-tar\` directory cache. When a directory is present in the directory cache, subsequent calls to mkdir for that directory are skipped. However, this is also where \`node-tar\` checks for symlinks occur. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass \`node-tar\` symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.3, 4.4.15, 5.0.7 and 6.1.2.",
-              },
-              "help": Object {
-                "markdown": "**Vulnerability CVE-2021-32803**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)  |
-",
-                "text": "Vulnerability CVE-2021-32803
-Severity: high
-Package: tar
-Version: 6.1.0
-Fix Version: 
-Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: nvd
-Link: [CVE-2021-32803](https://nvd.nist.gov/vuln/detail/CVE-2021-32803)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-32803-tar",
-              "name": "JavascriptMatcherCpeMatch",
-              "properties": Object {
-                "security-severity": "8.1",
-              },
-              "shortDescription": Object {
-                "text": "CVE-2021-32803 high vulnerability for tar package",
-              },
-            },
-            Object {
-              "fullDescription": Object {
-                "text": "The npm package \\"tar\\" (aka node-tar) before versions 4.4.16, 5.0.8, and 6.1.7 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory, where the symlink and directory names in the archive entry used backslashes as a path separator on posix systems. The cache checking logic used both \`\\\\\` and \`/\` characters as path separators, however \`\\\\\` is a valid filename character on posix systems. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. Additionally, a similar confusion could arise on case-insensitive filesystems. If a tar archive contained a directory at \`FOO\`, followed by a symbolic link named \`foo\`, then on case-insensitive file systems, the creation of the symbolic link would remove the directory from the filesystem, but _not_ from the internal directory cache, as it would not be treated as a cache hit. A subsequent file entry within the \`FOO\` directory would then be placed in the target of the symbolic link, thinking that the directory had already been created. These issues were addressed in releases 4.4.16, 5.0.8 and 6.1.7. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. If this is not possible, a workaround is available in the referenced GHSA-9r2w-394v-53qc.",
-              },
-              "help": Object {
-                "markdown": "**Vulnerability CVE-2021-37701**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)  |
-",
-                "text": "Vulnerability CVE-2021-37701
-Severity: high
-Package: tar
-Version: 6.1.0
-Fix Version: 
-Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: nvd
-Link: [CVE-2021-37701](https://nvd.nist.gov/vuln/detail/CVE-2021-37701)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-37701-tar",
-              "name": "JavascriptMatcherCpeMatch",
-              "properties": Object {
-                "security-severity": "8.6",
-              },
-              "shortDescription": Object {
-                "text": "CVE-2021-37701 high vulnerability for tar package",
-              },
-            },
-            Object {
-              "fullDescription": Object {
-                "text": "The npm package \\"tar\\" (aka node-tar) before versions 4.4.18, 5.0.10, and 6.1.9 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with names containing unicode values that normalized to the same value. Additionally, on Windows systems, long path portions would resolve to the same file system entities as their 8.3 \\"short path\\" counterparts. A specially crafted tar archive could thus include a directory with one form of the path, followed by a symbolic link with a different string that resolves to the same file system entity, followed by a file using the first form. By first creating a directory, and then replacing that directory with a symlink that had a different apparent name that resolved to the same entry in the filesystem, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. These issues were addressed in releases 4.4.18, 5.0.10 and 6.1.9. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. If this is not possible, a workaround is available in the referenced GHSA-qq89-hq3f-393p.",
-              },
-              "help": Object {
-                "markdown": "**Vulnerability CVE-2021-37712**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)  |
-",
-                "text": "Vulnerability CVE-2021-37712
-Severity: high
-Package: tar
-Version: 6.1.0
-Fix Version: 
-Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: nvd
-Link: [CVE-2021-37712](https://nvd.nist.gov/vuln/detail/CVE-2021-37712)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-37712-tar",
-              "name": "JavascriptMatcherCpeMatch",
-              "properties": Object {
-                "security-severity": "8.6",
-              },
-              "shortDescription": Object {
-                "text": "CVE-2021-37712 high vulnerability for tar package",
-              },
-            },
-            Object {
-              "fullDescription": Object {
-                "text": "The npm package \\"tar\\" (aka node-tar) before versions 4.4.18, 5.0.10, and 6.1.9 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be outside of the extraction target directory is not extracted. This is, in part, accomplished by sanitizing absolute paths of entries within the archive, skipping archive entries that contain \`..\` path portions, and resolving the sanitized paths against the extraction target directory. This logic was insufficient on Windows systems when extracting tar files that contained a path that was not an absolute path, but specified a drive letter different from the extraction target, such as \`C:some\\\\path\`. If the drive letter does not match the extraction target, for example \`D:\\\\extraction\\\\dir\`, then the result of \`path.resolve(extractionDirectory, entryPath)\` would resolve against the current working directory on the \`C:\` drive, rather than the extraction target directory. Additionally, a \`..\` portion of the path could occur immediately after the drive letter, such as \`C:../foo\`, and was not properly sanitized by the logic that checked for \`..\` within the normalized and split portions of the path. This only affects users of \`node-tar\` on Windows systems. These issues were addressed in releases 4.4.18, 5.0.10 and 6.1.9. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. There is no reasonable way to work around this issue without performing the same path normalization procedures that node-tar now does. Users are encouraged to upgrade to the latest patched versions of node-tar, rather than attempt to sanitize paths themselves.",
-              },
-              "help": Object {
-                "markdown": "**Vulnerability CVE-2021-37713**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  |   | npm  | tests/fixtures/npm-project/package-lock.json  | nvd  | [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)  |
-",
-                "text": "Vulnerability CVE-2021-37713
-Severity: high
-Package: tar
-Version: 6.1.0
-Fix Version: 
-Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: nvd
-Link: [CVE-2021-37713](https://nvd.nist.gov/vuln/detail/CVE-2021-37713)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-37713-tar",
-              "name": "JavascriptMatcherCpeMatch",
-              "properties": Object {
-                "security-severity": "8.6",
-              },
-              "shortDescription": Object {
-                "text": "CVE-2021-37713 high vulnerability for tar package",
-              },
-            },
-            Object {
-              "fullDescription": Object {
                 "text": "Arbitrary File Creation/Overwrite due to insufficient absolute path sanitization",
               },
               "help": Object {
                 "markdown": "**Vulnerability GHSA-3jfq-g458-7qm9**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.1  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)  |
+| high  | tar  | 6.1.0  | 6.1.1  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)  |
 ",
                 "text": "Vulnerability GHSA-3jfq-g458-7qm9
 Severity: high
@@ -1929,7 +1847,7 @@ Version: 6.1.0
 Fix Version: 6.1.1
 Type: npm
 Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: github:npm
+Data Namespace: github:language:javascript
 Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1950,7 +1868,7 @@ Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
                 "markdown": "**Vulnerability GHSA-5955-9wpr-37jh**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)  |
+| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)  |
 ",
                 "text": "Vulnerability GHSA-5955-9wpr-37jh
 Severity: high
@@ -1959,7 +1877,7 @@ Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
 Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: github:npm
+Data Namespace: github:language:javascript
 Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -1980,7 +1898,7 @@ Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
                 "markdown": "**Vulnerability GHSA-9r2w-394v-53qc**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.7  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)  |
+| high  | tar  | 6.1.0  | 6.1.7  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)  |
 ",
                 "text": "Vulnerability GHSA-9r2w-394v-53qc
 Severity: high
@@ -1989,7 +1907,7 @@ Version: 6.1.0
 Fix Version: 6.1.7
 Type: npm
 Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: github:npm
+Data Namespace: github:language:javascript
 Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -2010,7 +1928,7 @@ Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
                 "markdown": "**Vulnerability GHSA-qq89-hq3f-393p**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)  |
+| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)  |
 ",
                 "text": "Vulnerability GHSA-qq89-hq3f-393p
 Severity: high
@@ -2019,7 +1937,7 @@ Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
 Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: github:npm
+Data Namespace: github:language:javascript
 Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -2040,7 +1958,7 @@ Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
                 "markdown": "**Vulnerability GHSA-r628-mhmh-qjhw**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.2  | npm  | tests/fixtures/npm-project/package-lock.json  | github:npm  | [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)  |
+| high  | tar  | 6.1.0  | 6.1.2  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)  |
 ",
                 "text": "Vulnerability GHSA-r628-mhmh-qjhw
 Severity: high
@@ -2049,7 +1967,7 @@ Version: 6.1.0
 Fix Version: 6.1.2
 Type: npm
 Location: tests/fixtures/npm-project/package-lock.json
-Data Namespace: github:npm
+Data Namespace: github:language:javascript
 Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -2134,7 +2052,7 @@ Object {
                 "markdown": "**Vulnerability CVE-2020-7753**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | trim  | 0.0.2  |   | npm  | tests/fixtures/yarn-project/yarn.lock  | nvd  | [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)  |
+| high  | trim  | 0.0.2  |   | npm  | tests/fixtures/yarn-project/yarn.lock  | nvd:cpe  | [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)  |
 ",
                 "text": "Vulnerability CVE-2020-7753
 Severity: high
@@ -2143,7 +2061,7 @@ Version: 0.0.2
 Fix Version: 
 Type: npm
 Location: tests/fixtures/yarn-project/yarn.lock
-Data Namespace: nvd
+Data Namespace: nvd:cpe
 Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
               },
               "helpUri": "https://github.com/anchore/grype",
@@ -2164,7 +2082,7 @@ Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
                 "markdown": "**Vulnerability GHSA-w5p7-h5w8-2hfq**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | trim  | 0.0.2  | 0.0.3  | npm  | tests/fixtures/yarn-project/yarn.lock  | github:npm  | [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)  |
+| high  | trim  | 0.0.2  | 0.0.3  | npm  | tests/fixtures/yarn-project/yarn.lock  | github:language:javascript  | [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)  |
 ",
                 "text": "Vulnerability GHSA-w5p7-h5w8-2hfq
 Severity: high
@@ -2173,7 +2091,7 @@ Version: 0.0.2
 Fix Version: 0.0.3
 Type: npm
 Location: tests/fixtures/yarn-project/yarn.lock
-Data Namespace: github:npm
+Data Namespace: github:language:javascript
 Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
               "helpUri": "https://github.com/anchore/grype",
