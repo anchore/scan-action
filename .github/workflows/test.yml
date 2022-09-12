@@ -3,6 +3,17 @@ name: "Tests"
 on: [push, pull_request]
 
 jobs:
+  build: # make sure build/ci work properly and there is no faked build ncc built scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm audit --production
+      - run: npm run build
+      - run: git status --porcelain
+      - run: git diff
+      - run: git diff --exit-code
+
   test:
     runs-on: ubuntu-latest
     services:
@@ -11,7 +22,7 @@ jobs:
         ports:
           - 5000:5000
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build images
         run: |
           for distro in alpine centos debian; do

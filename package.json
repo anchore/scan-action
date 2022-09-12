@@ -14,6 +14,7 @@
     "download-pinned-grype-db": "mkdir -p grype-db/3 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2022-03-16T08:14:11Z.tar.gz | tar zxf - -C grype-db/3",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
+    "prepare": "husky install",
     "prettier": "prettier -w index.js"
   },
   "repository": {
