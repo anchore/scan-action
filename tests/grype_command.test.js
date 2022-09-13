@@ -29,6 +29,7 @@ describe("Grype command", () => {
       debug: "false",
       failBuild: "false",
       acsReportEnable: "true",
+      outputFormat: "sarif",
       severityCutoff: "high",
       version: "0.6.0",
     });
@@ -40,6 +41,7 @@ describe("Grype command", () => {
       source: "asdf",
       failBuild: "false",
       acsReportEnable: "false",
+      outputFormat: "json",
       severityCutoff: "low",
       version: "0.6.0",
     });
