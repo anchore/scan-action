@@ -143,6 +143,12 @@ async function runScan({
 
   acsReportEnable = acsReportEnable.toLowerCase() === "true";
 
+  if (outputFormat !== "sarif" && acsReportEnable) {
+    throw new Error(
+      `Invalid output-format selected. If acs-report-enabled is true (which is the default if it is omitted), the output-format parameter must be sarif or must be omitted`
+    );
+  }
+
   if (acsReportEnable) {
     cmdArgs.push("-o", "sarif");
   } else {
