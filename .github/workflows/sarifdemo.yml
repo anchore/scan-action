@@ -15,7 +15,6 @@ jobs:
         with:
           image: "debian:8"
           debug: true
-          acs-report-enable: true
           fail-build: false
           #severity-cutoff: "Medium"
 
@@ -41,7 +40,6 @@ jobs:
         with:
           path: "tests/fixtures/npm-project"
           debug: true
-          acs-report-enable: true
           fail-build: false
           #severity-cutoff: "Medium"
 

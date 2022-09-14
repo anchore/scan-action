@@ -102,13 +102,11 @@ async function run() {
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
     const failBuild = core.getInput("fail-build") || "true";
-    const acsReportEnable = core.getInput("acs-report-enable") || "true";
     const outputFormat = core.getInput("output-format") || "sarif";
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const out = await runScan({
       source,
       failBuild,
-      acsReportEnable,
       severityCutoff,
       outputFormat,
     });
@@ -120,13 +118,7 @@ async function run() {
   }
 }
 
-async function runScan({
-  source,
-  failBuild,
-  acsReportEnable,
-  severityCutoff,
-  outputFormat,
-}) {
+async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   const out = {};
 
   const env = {
@@ -156,19 +148,7 @@ async function runScan({
 
   failBuild = failBuild.toLowerCase() === "true";
 
-  acsReportEnable = acsReportEnable.toLowerCase() === "true";
-
-  if (outputFormat !== "sarif" && acsReportEnable) {
-    throw new Error(
-      `Invalid output-format selected. If acs-report-enabled is true (which is the default if it is omitted), the output-format parameter must be sarif or must be omitted`
-    );
-  }
-
-  if (acsReportEnable) {
-    cmdArgs.push("-o", "sarif");
-  } else {
-    cmdArgs.push("-o", outputFormat);
-  }
+  cmdArgs.push("-o", outputFormat);
 
   if (
     !SEVERITY_LIST.some(
@@ -199,7 +179,6 @@ async function runScan({
   core.debug("Source: " + source);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
-  core.debug("ACS Enable: " + acsReportEnable);
   core.debug("Output Format: " + outputFormat);
 
   core.debug("Creating options for GRYPE analyzer");
@@ -248,12 +227,12 @@ async function runScan({
     core.debug(cmdOutput);
   }
 
-  if (acsReportEnable) {
+  if (outputFormat === "sarif") {
     const SARIF_FILE = "./results.sarif";
     fs.writeFileSync(SARIF_FILE, cmdOutput);
     out.sarif = SARIF_FILE;
   } else {
-    const REPORT_FILE = "./results.report";
+    const REPORT_FILE = "./results.json";
     fs.writeFileSync(REPORT_FILE, cmdOutput);
     out.report = REPORT_FILE;
   }
