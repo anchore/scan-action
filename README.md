@@ -53,10 +53,10 @@ The simplest workflow for scanning a `localbuild/testimage` container:
     push: false
     load: true
 
- - name: Scan image
-   uses: anchore/scan-action@v3
-   with:
-     image: "localbuild/testimage:latest"
+- name: Scan image
+  uses: anchore/scan-action@v3
+  with:
+    image: "localbuild/testimage:latest"
 ```
 
 ## Directory scanning
@@ -116,26 +116,25 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ### Action Inputs
 
-The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan;inputs `output-format` and`acs-report-enable` are mutually exclusive to specify the report format;all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
+The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan; all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
 
-| Input Name          | Description                                                                                                                                                                                                                                                                                                    | Default Value |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `image`             | The image to scan                                                                                                                                                                                                                                                                                              | N/A           |
-| `path`              | The file path to scan                                                                                                                                                                                                                                                                                          | N/A           |
-| `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                                                               | N/A           |
-| `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
-| `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                                                                       |               |
-| `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                                                                 | `true`        |
-| `output-format`     | Set the output parameter after successful action execution. Valid choices are "json" and "sarif"                                                                                                                                                                                                               | `sarif`       |
-| `acs-report-enable` | Generate a SARIF report and set the `sarif` output parameter (Override the output-format) after successful action execution. This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.                                       | `true`        |
-| `severity-cutoff`   | With ACS reporting enabled, optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`    |
+| Input Name          | Description                                                                                                                                                                                                                                                      | Default Value |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `image`             | The image to scan                                                                                                                                                                                                                                                | N/A           |
+| `path`              | The file path to scan                                                                                                                                                                                                                                            | N/A           |
+| `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                 | N/A           |
+| `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                         |               |
+| `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                         |               |
+| `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `"medium"` and can be set with `severity-cutoff`.                                                                                                                   | `true`        |
+| `output-format`     | Set the output parameter after successful action execution. Valid choices are "json" and "sarif"                                                                                                                                                                 | `sarif`       |
+| `severity-cutoff`   | Optionally specify the minimum vulnerability severity to trigger a failure. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `"medium"`    |
 
 ### Action Outputs
 
-| Output Name | Description                   | Type   |
-| ----------- | ----------------------------- | ------ |
-| `sarif`     | Path to the SARIF report file | string |
-| `report`    | Path to the report file       | string |
+| Output Name | Description                                                  | Type   |
+| ----------- | ------------------------------------------------------------ | ------ |
+| `sarif`     | Path to the SARIF report file, if `output-format` is `sarif` | string |
+| `json`      | Path to the report file , if `output-format` is `json`       | string |
 
 ### Example Workflows
 
@@ -157,7 +156,7 @@ jobs:
           fail-build: true
 ```
 
-Same example as above, but with Automated Code Scanning (ACS) feature enabled - with this example, the action will generate a SARIF report, which can be uploaded and then displayed as a Code Scanning Report in the GitHub UI.
+Same example as above, but with SARIF output format - as is the default, the action will generate a SARIF report, which can be uploaded and then displayed as a Code Scanning Report in the GitHub UI.
 
 > :bulb: Code Scanning is a Github service that is currently in Beta. [Follow the instructions on how to enable this service for your project](https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/enabling-code-scanning-for-a-repository).
 
@@ -175,7 +174,6 @@ jobs:
         id: scan
         with:
           image: "localbuild/testimage:latest"
-          acs-report-enable: true
       - name: upload Anchore scan SARIF report
         uses: github/codeql-action/upload-sarif@v2
         with:

@@ -17,7 +17,6 @@ const testSource = async (source, vulnerabilities) => {
     source,
     debug: "false",
     failBuild: "false",
-    acsReportEnable: "true",
     outputFormat: "sarif",
     severityCutoff: "medium",
   });

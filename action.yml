@@ -21,10 +21,6 @@ inputs:
     description: 'Set the output parameter after successful action execution. Valid choices are "json" and "sarif".'
     required: false
     default: "sarif"
-  acs-report-enable:
-    description: "Generate a SARIF report and set the `sarif` output parameter after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report."
-    required: false
-    default: "true"
   severity-cutoff:
     description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
     required: false
@@ -32,7 +28,7 @@ inputs:
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
-  report:
+  json:
     description: "Path to a JSON report file for the image"
 runs:
   using: "node16"
