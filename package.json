@@ -11,9 +11,10 @@
     "lint": "eslint index.js",
     "test": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db jest",
     "update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db jest --updateSnapshot",
-    "download-pinned-grype-db": "mkdir -p grype-db/3 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2021-09-10T08:18:17Z.tar.gz | tar zxf - -C grype-db/3",
+    "download-pinned-grype-db": "mkdir -p grype-db/3 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2022-03-16T08:14:11Z.tar.gz | tar zxf - -C grype-db/3",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
+    "prepare": "husky install",
     "prettier": "prettier -w index.js"
   },
   "repository": {
@@ -31,7 +32,7 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "@actions/exec": "^1.0.4",
     "@actions/tool-cache": "^1.6.0",
     "lodash": "^4.17.21"
@@ -40,8 +41,8 @@
     "@microsoft/jest-sarif": "^1.0.0-beta.0",
     "@vercel/ncc": "^0.24.1",
     "eslint": "^6.8.0",
-    "husky": "^3.1.0",
-    "jest": "^25.5.4",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1"
   }

@@ -2,6 +2,14 @@ module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 244:
+/***/ ((__unused_webpack_module, exports) => {
+
+exports.GRYPE_VERSION = "v0.50.1";
+
+
+/***/ }),
+
 /***/ 932:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -10,348 +18,10 @@ const core = __webpack_require__(186);
 const { exec } = __webpack_require__(514);
 const fs = __webpack_require__(747);
 const stream = __webpack_require__(413);
+const { GRYPE_VERSION } = __webpack_require__(244);
 
 const grypeBinary = "grype";
-const grypeVersion = "0.22.0";
-
-// sarif code
-function convert_severity_to_acs_level(input_severity, severity_cutoff_param) {
-  // The `severity_cutoff_param` has been lowercased for case-insensitivity at this point, but the
-  // severity from the vulnerability will be capitalized, so this must be capitalized again to calculate
-  // using the same object
-  let param =
-    severity_cutoff_param[0].toUpperCase() + severity_cutoff_param.substring(1);
-  var ret = "error";
-  const severityLevels = {
-    Unknown: 0,
-    Negligible: 1,
-    Low: 2,
-    Medium: 3,
-    High: 4,
-    Critical: 5,
-  };
-
-  if (severityLevels[input_severity] < severityLevels[param]) {
-    ret = "warning";
-  }
-
-  return ret;
-}
-
-function getLocation(v) {
-  if (v.artifact.locations.length) {
-    // If the scan was against a directory, the location will be a string
-    var location = v.artifact.locations[0];
-    if (typeof location === "string") {
-      return location;
-    }
-    // Otherwise it is an object with "path" and "layer" keys
-    return location["path"];
-  }
-  // XXX there is room for improvement here, trying to mimick previous behavior
-  // If no `dockerfile-path` was provided, and in the improbable situation where there
-  // are no locations for the artifact, return 'Dockerfile'
-  return "Dockerfile";
-}
-
-function textMessage(v) {
-  const path = getLocation(v);
-  var scheme = sourceScheme();
-  let prefix = `The path ${path} reports ${v.artifact.name} at version ${v.artifact.version} `;
-
-  if (["dir", "tar"].includes(scheme)) {
-    return `${prefix} which would result in a vulnerable (${v.artifact.type}) package installed`;
-  } else {
-    return `${prefix} which is a vulnerable (${v.artifact.type}) package installed in the container`;
-  }
-}
-
-function dottedQuadFileVersion(version) {
-  // The dotted quad version requirements of the SARIF schema has some strict requirements. Because
-  // it is tied to the version which can be (optionally) set by the user, it isn't enough to blindly
-  // add a trailing ".0" - This function validates the end result, falling back to a version that would
-  // pass the schema while issuing a warning.
-  const pattern = /[0-9]+(\.[0-9]+){3}/;
-  // grype has some releases with dashes, ensure these are pruned
-  version = version.split("-")[0];
-
-  // None of the Grype versions will ever have version with four parts, add a trailing `.0` here
-  version = version + ".0";
-
-  if (!version.match(pattern)) {
-    // After prunning and adding a trailing .0 we still got a failure. Warn about this, and fallback to
-    // a made-up version guaranteed to work.
-    core.warning(
-      `Unable to produce an acceptable four-part dotted version: ${version} \n` +
-        `SARIF reporting requires pattern matching against "[0-9]+(\\.[0-9]+){3}" \n` +
-        "Will fallback to 0.0.0.0"
-    );
-    return "0.0.0.0";
-  }
-  return version;
-}
-
-function get_fix_versions(v) {
-  if (
-    v.vulnerability.fix &&
-    v.vulnerability.fix.state === "fixed" &&
-    v.vulnerability.fix.versions &&
-    v.vulnerability.fix.versions.length > 0
-  ) {
-    return v.vulnerability.fix.versions.join(",");
-  }
-  return "";
-}
-
-function make_subtitle(v) {
-  let subtitle = `${v.vulnerability.description}`;
-  if (subtitle != "undefined") {
-    return subtitle;
-  }
-
-  const fixVersions = get_fix_versions(v);
-  if (fixVersions) {
-    return `Version ${v.artifact.version} is affected with an available fix in versions ${fixVersions}`;
-  }
-
-  return `Version ${v.artifact.version} is affected with no fixes reported yet.`;
-}
-
-function grype_render_rules(vulnerabilities, source) {
-  var ret = {};
-  let scheme = sourceScheme();
-  if (vulnerabilities) {
-    let ruleIDs = [];
-    // This uses .reduce() because there can be duplicate vulnerabilities which the SARIF schema complains about.
-    ret = vulnerabilities.reduce(function (result, v) {
-      let ruleID = `ANCHOREVULN_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      if (scheme == "docker") {
-        // include the container as part of the rule id so that users can sort by that
-        ruleID = `ANCHOREVULN_${source}_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      }
-
-      if (!ruleIDs.includes(ruleID)) {
-        ruleIDs.push(ruleID);
-        // Entirely possible to not have any links whatsoever
-        let link = v.vulnerability.id;
-        if ("dataSource" in v.vulnerability) {
-          link = `[${v.vulnerability.id}](${v.vulnerability.dataSource})`;
-        } else if (
-          "urls" in v.vulnerability &&
-          v.vulnerability.urls.length > 0
-        ) {
-          link = `[${v.vulnerability.id}](${v.vulnerability.urls[0]})`;
-        }
-
-        result.push({
-          id: ruleID,
-          // Title of the SARIF report
-          shortDescription: {
-            text: `${v.vulnerability.id} ${v.vulnerability.severity} vulnerability for ${v.artifact.name} package`,
-          },
-          // Subtitle of the SARIF report
-          fullDescription: {
-            text: make_subtitle(v),
-          },
-          help: {
-            text:
-              "Vulnerability " +
-              v.vulnerability.id +
-              "\n" +
-              "Severity: " +
-              v.vulnerability.severity +
-              "\n" +
-              "Package: " +
-              v.artifact.name +
-              "\n" +
-              "Version: " +
-              v.artifact.version +
-              "\n" +
-              "Fix Version: " +
-              (get_fix_versions(v) || "none") +
-              "\n" +
-              "Type: " +
-              v.artifact.type +
-              "\n" +
-              "Location: " +
-              v.artifact.locations[0].path +
-              "\n" +
-              //"Data Namespace: "+v.vulnerability.matched_by.matcher +"\n"+
-              "Data Namespace: " +
-              "unknown" +
-              "\n" +
-              `Link: ${link}`,
-            markdown:
-              "**Vulnerability " +
-              v.vulnerability.id +
-              "**\n" +
-              "| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |\n" +
-              "| --- | --- | --- | --- | --- | --- | --- | --- |\n" +
-              "|" +
-              v.vulnerability.severity +
-              "|" +
-              v.artifact.name +
-              "|" +
-              v.artifact.version +
-              "|" +
-              (get_fix_versions(v) || "none") +
-              "|" +
-              v.artifact.type +
-              "|" +
-              v.artifact.locations[0].path +
-              "|" +
-              "unknown" +
-              "|" +
-              link +
-              "|\n",
-          },
-        });
-      }
-      return result;
-    }, []);
-  }
-  return ret;
-}
-
-function grype_render_results(vulnerabilities, severity_cutoff_param, source) {
-  var ret = {};
-  let scheme = sourceScheme();
-  if (vulnerabilities) {
-    ret = vulnerabilities.map((v) => {
-      let ruleid = `ANCHOREVULN_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      if (scheme == "docker") {
-        // include the container as part of the rule id so that users can sort by that
-        ruleid = `ANCHOREVULN_${source}_${v.vulnerability.id}_${v.artifact.type}_${v.artifact.name}_${v.artifact.version}`;
-      }
-      return {
-        ruleId: ruleid,
-        ruleIndex: 0,
-        level: convert_severity_to_acs_level(
-          v.vulnerability.severity,
-          severity_cutoff_param
-        ),
-        message: {
-          text: textMessage(v),
-          id: "default",
-        },
-        analysisTarget: {
-          uri: getLocation(v),
-          // XXX This is possibly a bug. The SARIF schema invalidates this when the index is present because there
-          // aren't any other elements present.
-          //"index": 0
-        },
-        locations: [
-          {
-            physicalLocation: {
-              artifactLocation: {
-                uri: getLocation(v),
-              },
-              // TODO: When grype starts reporting line numbers this will need to get updated
-              region: {
-                startLine: 1,
-                startColumn: 1,
-                endLine: 1,
-                endColumn: 1,
-                byteOffset: 1,
-                byteLength: 1,
-              },
-            },
-            logicalLocations: [
-              {
-                fullyQualifiedName: "dockerfile",
-              },
-            ],
-          },
-        ],
-        suppressions: [
-          {
-            kind: "external",
-          },
-        ],
-        baselineState: "unchanged",
-      };
-    });
-  }
-
-  return ret;
-}
-
-function vulnerabilities_to_sarif(
-  grypeVulnerabilities,
-  severity_cutoff_param,
-  version,
-  source
-) {
-  let vulnerabilities = grypeVulnerabilities.matches;
-
-  const sarifOutput = {
-    $schema:
-      "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.4.json",
-    version: "2.1.0",
-    runs: [
-      {
-        tool: {
-          driver: {
-            name: "Anchore Container Vulnerability Report (T0)",
-            fullName: "Anchore Container Vulnerability Report (T0)",
-            version: version,
-            semanticVersion: version,
-            dottedQuadFileVersion: dottedQuadFileVersion(version),
-            rules: grype_render_rules(vulnerabilities, source),
-          },
-        },
-        logicalLocations: [
-          {
-            name: "dockerfile",
-            fullyQualifiedName: "dockerfile",
-            kind: "namespace",
-          },
-        ],
-        results: grype_render_results(
-          vulnerabilities,
-          severity_cutoff_param,
-          source
-        ),
-        columnKind: "utf16CodeUnits",
-      },
-    ],
-  };
-
-  return sarifOutput;
-}
-
-// Find all 'content-*.json' files in the directory. dirname should include the full path
-function findContent(searchDir) {
-  let contentFiles = [];
-  let match = /content-.*\.json/;
-  var dirItems = fs.readdirSync(searchDir);
-  if (dirItems) {
-    for (let i = 0; i < dirItems.length; i++) {
-      if (match.test(dirItems[i])) {
-        contentFiles.push(`${searchDir}/${dirItems[i]}`);
-      }
-    }
-  } else {
-    core.debug("no dir content found");
-  }
-
-  core.debug(contentFiles.toString());
-  return contentFiles;
-}
-
-// Load the json content of each file in a list and return them as a list
-function loadContent(files) {
-  let contents = [];
-  if (files) {
-    files.forEach((item) => contents.push(JSON.parse(fs.readFileSync(item))));
-  }
-  return contents;
-}
-
-// Merge the multiple content output types into a single array
-function mergeResults(contentArray) {
-  return contentArray.reduce((merged, n) => merged.concat(n.content), []);
-}
+const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
 async function downloadGrype(version) {
   let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
@@ -364,7 +34,7 @@ async function downloadGrype(version) {
   // Make sure the tool's executable bit is set
   await exec(`chmod +x ${installPath}`);
 
-  let cmd = `${installPath} -b ${installPath}_grype v${version}`;
+  let cmd = `${installPath} -b ${installPath}_grype ${version}`;
   await exec(cmd);
   let grypePath = `${installPath}_grype/grype`;
 
@@ -381,35 +51,45 @@ async function installGrype(version) {
 
   // Add tool to path for this and future actions to use
   core.addPath(grypePath);
+  return `${grypePath}/${grypeBinary}`;
 }
 
-function sourceScheme() {
-  // This potentially can be removed once grype starts reporting what it used to perform the scan
-  // in the JSON output
-  // Any newer schemes like OCI need to be added here
-  if (core.getInput("image") != "") {
-    return "docker";
+// Determines if multiple arguments are defined
+function multipleDefined(...args) {
+  let defined = false;
+  for (const a of args) {
+    if (defined && a) {
+      return true;
+    }
+    if (a) {
+      defined = true;
+    }
   }
-  // Only two options are currently supported
-  return "dir";
+  return false;
 }
 
 function sourceInput() {
   var image = core.getInput("image");
   var path = core.getInput("path");
+  var sbom = core.getInput("sbom");
 
-  if (image && path) {
-    throw new Error("Cannot use both 'image' and 'path' as sources");
-  }
-
-  if (!(image || path)) {
+  if (multipleDefined(image, path, sbom)) {
     throw new Error(
-      "At least one source for scanning needs to be provided. Available options are: image, and path"
+      "The following options are mutually exclusive: image, path, sbom"
     );
   }
 
-  if (image != "") {
+  if (image) {
     return image;
+  }
+
+  if (sbom) {
+    return "sbom:" + sbom;
+  }
+
+  if (!path) {
+    // Default to the CWD
+    path = ".";
   }
 
   return "dir:" + path;
@@ -421,18 +101,14 @@ async function run() {
     // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
-    const debug = core.getInput("debug");
-    const failBuild = core.getInput("fail-build");
-    const acsReportEnable = core.getInput("acs-report-enable");
-    const severityCutoff = core.getInput("severity-cutoff");
-    const showGrypeOutput = core.getInput("show-grype-output");
+    const failBuild = core.getInput("fail-build") || "true";
+    const outputFormat = core.getInput("output-format") || "sarif";
+    const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const out = await runScan({
       source,
-      debug,
       failBuild,
-      acsReportEnable,
       severityCutoff,
-      showGrypeOutput,
+      outputFormat,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -442,44 +118,37 @@ async function run() {
   }
 }
 
-async function runScan({
-  source,
-  debug = "false",
-  failBuild = "true",
-  acsReportEnable = "true",
-  severityCutoff = "medium",
-  showGrypeOutput = "false",
-}) {
+async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   const out = {};
 
+  const env = {
+    GRYPE_CHECK_FOR_APP_UPDATE: "false",
+  };
+
+  const registryUser = core.getInput("registry-username");
+  const registryPass = core.getInput("registry-password");
+
+  if (registryUser || registryPass) {
+    env.GRYPE_REGISTRY_AUTH_USERNAME = registryUser;
+    env.GRYPE_REGISTRY_AUTH_PASSWORD = registryPass;
+    if (!registryUser || !registryPass) {
+      core.warning(
+        "WARNING: registry-username and registry-password must be specified together"
+      );
+    }
+  }
+
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
+  const FORMAT_LIST = ["sarif", "json"];
   let cmdArgs = [];
 
-  if (debug.toLowerCase() === "true") {
-    debug = "true";
-    cmdArgs = [`-vv`, `-o`, `json`];
-  } else {
-    debug = "false";
-    cmdArgs = [`-o`, `json`];
+  if (core.isDebug()) {
+    cmdArgs.push(`-vv`);
   }
 
-  if (failBuild.toLowerCase() === "true") {
-    failBuild = true;
-  } else {
-    failBuild = false;
-  }
+  failBuild = failBuild.toLowerCase() === "true";
 
-  if (acsReportEnable.toLowerCase() === "true") {
-    acsReportEnable = true;
-  } else {
-    acsReportEnable = false;
-  }
-
-  if (showGrypeOutput.toLowerCase() === "true") {
-    showGrypeOutput = true;
-  } else {
-    showGrypeOutput = false;
-  }
+  cmdArgs.push("-o", outputFormat);
 
   if (
     !SEVERITY_LIST.some(
@@ -492,22 +161,32 @@ async function runScan({
       `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
     );
   }
+  if (
+    !FORMAT_LIST.some(
+      (item) =>
+        typeof outputFormat.toLowerCase() === "string" &&
+        item === outputFormat.toLowerCase()
+    )
+  ) {
+    throw new Error(
+      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`
+    );
+  }
 
   core.debug(`Installing grype version ${grypeVersion}`);
   await installGrype(grypeVersion);
 
-  core.debug("Image: " + source);
-  core.debug("Debug Output: " + debug);
+  core.debug("Source: " + source);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
-  core.debug("ACS Enable: " + acsReportEnable);
+  core.debug("Output Format: " + outputFormat);
 
   core.debug("Creating options for GRYPE analyzer");
 
   // Run the grype analyzer
   let cmdOutput = "";
   let cmd = `${grypeBinary}`;
-  if (severityCutoff != "") {
+  if (severityCutoff !== "") {
     cmdArgs.push("--fail-on");
     cmdArgs.push(severityCutoff.toLowerCase());
   }
@@ -522,63 +201,54 @@ async function runScan({
     },
   });
 
-  const cmdOpts = {
-    ignoreReturnCode: true,
-    outStream,
-    listeners: {
-      stdout: (data = Buffer) => {
-        cmdOutput += data.toString();
+  const exitCode = await core.group(`${cmd} output...`, async () => {
+    core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
+
+    return exec(cmd, cmdArgs, {
+      env,
+      ignoreReturnCode: true,
+      outStream,
+      listeners: {
+        stdout(buffer) {
+          cmdOutput += buffer.toString();
+        },
+        stderr(buffer) {
+          core.info(buffer.toString());
+        },
+        debug(message) {
+          core.debug(message);
+        },
       },
-    },
-  };
-
-  core.info("\nAnalyzing: " + source);
-
-  core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
-
-  const exitCode = await exec(cmd, cmdArgs, cmdOpts);
+    });
+  });
 
   if (core.isDebug()) {
     core.debug("Grype output:");
     core.debug(cmdOutput);
   }
 
-  let grypeVulnerabilities;
-  try {
-    grypeVulnerabilities = JSON.parse(cmdOutput);
-  } catch (e) {
-    core.error(`Unable to parse grype output: ${e}`);
-    core.error(cmdOutput);
+  if (outputFormat === "sarif") {
+    const SARIF_FILE = "./results.sarif";
+    fs.writeFileSync(SARIF_FILE, cmdOutput);
+    out.sarif = SARIF_FILE;
+  } else {
+    const REPORT_FILE = "./results.json";
+    fs.writeFileSync(REPORT_FILE, cmdOutput);
+    out.report = REPORT_FILE;
   }
-  if (acsReportEnable) {
-    try {
-      const serifOut = sarifGrypeGeneration(
-        grypeVulnerabilities,
-        severityCutoff.toLowerCase(),
-        grypeVersion,
-        source
-      );
-      Object.assign(out, serifOut);
-    } catch (err) {
-      throw new Error(err);
-    }
+
+  if (failBuild === true && exitCode > 0) {
+    core.setFailed(
+      `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
+    );
   }
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
-  if (exitCode > 0) {
+  if (failBuild === false && exitCode > 0) {
     // There was a non-zero exit status but it wasn't because of failing severity, this must be
     // a grype problem
     if (!severityCutoff) {
       core.warning("grype had a non-zero exit status when running");
-    }
-
-    if (failBuild === true) {
-      if (showGrypeOutput) {
-        core.info(cmdOutput);
-      }
-      core.setFailed(
-        `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
-      );
     } else {
       // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
       // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
@@ -592,42 +262,26 @@ async function runScan({
   return out;
 }
 
-function sarifGrypeGeneration(
-  grypeVulnerabilities,
-  severity_cutoff_param,
-  version,
-  source
-) {
-  // sarif generate section
-  const SARIF_FILE = "./results.sarif";
-  let sarifOutput = vulnerabilities_to_sarif(
-    grypeVulnerabilities,
-    severity_cutoff_param,
-    version,
-    source
-  );
-  fs.writeFileSync(SARIF_FILE, JSON.stringify(sarifOutput, null, 2));
-  return {
-    sarif: SARIF_FILE,
-  };
-  // end sarif generate section
-}
-
 module.exports = {
   run,
   runScan,
   installGrype,
-  mergeResults,
-  findContent,
-  loadContent,
-  vulnerabilities_to_sarif,
-  convert_severity_to_acs_level,
 };
 
 if (require.main === require.cache[eval('__filename')]) {
-  run().catch((err) => {
-    throw new Error(err);
-  });
+  const entrypoint = core.getInput("run");
+  switch (entrypoint) {
+    case "download-grype": {
+      installGrype(grypeVersion).then((path) => {
+        core.info(`Downloaded Grype to: ${path}`);
+        core.setOutput("cmd", path);
+      });
+      break;
+    }
+    default: {
+      run().then();
+    }
+  }
 }
 
 
@@ -772,7 +426,7 @@ const file_command_1 = __webpack_require__(717);
 const utils_1 = __webpack_require__(278);
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
-const uuid_1 = __webpack_require__(552);
+const uuid_1 = __webpack_require__(826);
 const oidc_utils_1 = __webpack_require__(41);
 /**
  * The code to exit an action
@@ -1608,6 +1262,370 @@ function toCommandProperties(annotationProperties) {
 }
 exports.toCommandProperties = toCommandProperties;
 //# sourceMappingURL=utils.js.map
+
+/***/ }),
+
+/***/ 826:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "v1": () => /* reexport */ esm_node_v1,
+  "v3": () => /* reexport */ esm_node_v3,
+  "v4": () => /* reexport */ esm_node_v4,
+  "v5": () => /* reexport */ esm_node_v5,
+  "NIL": () => /* reexport */ nil,
+  "version": () => /* reexport */ esm_node_version,
+  "validate": () => /* reexport */ esm_node_validate,
+  "stringify": () => /* reexport */ esm_node_stringify,
+  "parse": () => /* reexport */ esm_node_parse
+});
+
+// EXTERNAL MODULE: external "crypto"
+var external_crypto_ = __webpack_require__(417);
+var external_crypto_default = /*#__PURE__*/__webpack_require__.n(external_crypto_);
+
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/rng.js
+
+const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
+
+let poolPtr = rnds8Pool.length;
+function rng() {
+  if (poolPtr > rnds8Pool.length - 16) {
+    external_crypto_default().randomFillSync(rnds8Pool);
+    poolPtr = 0;
+  }
+
+  return rnds8Pool.slice(poolPtr, poolPtr += 16);
+}
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/regex.js
+/* harmony default export */ const regex = (/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/validate.js
+
+
+function validate(uuid) {
+  return typeof uuid === 'string' && regex.test(uuid);
+}
+
+/* harmony default export */ const esm_node_validate = (validate);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/stringify.js
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!esm_node_validate(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+/* harmony default export */ const esm_node_stringify = (stringify);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/v1.js
+
+ // **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+
+let _nodeId;
+
+let _clockseq; // Previous uuid creation time
+
+
+let _lastMSecs = 0;
+let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
+
+function v1(options, buf, offset) {
+  let i = buf && offset || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+
+  if (node == null || clockseq == null) {
+    const seedBytes = options.random || (options.rng || rng)();
+
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
+    }
+
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+
+
+  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+
+  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+
+
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
+
+
+  if (nsecs >= 10000) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+
+  msecs += 12219292800000; // `time_low`
+
+  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
+
+  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
+
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+
+  b[i++] = clockseq & 0xff; // `node`
+
+  for (let n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf || esm_node_stringify(b);
+}
+
+/* harmony default export */ const esm_node_v1 = (v1);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/parse.js
+
+
+function parse(uuid) {
+  if (!esm_node_validate(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  let v;
+  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
+
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = v >>> 16 & 0xff;
+  arr[2] = v >>> 8 & 0xff;
+  arr[3] = v & 0xff; // Parse ........-####-....-....-............
+
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 0xff; // Parse ........-....-####-....-............
+
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 0xff; // Parse ........-....-....-####-............
+
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 0xff; // Parse ........-....-....-....-############
+  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
+
+  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
+  arr[11] = v / 0x100000000 & 0xff;
+  arr[12] = v >>> 24 & 0xff;
+  arr[13] = v >>> 16 & 0xff;
+  arr[14] = v >>> 8 & 0xff;
+  arr[15] = v & 0xff;
+  return arr;
+}
+
+/* harmony default export */ const esm_node_parse = (parse);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/v35.js
+
+
+
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
+
+  const bytes = [];
+
+  for (let i = 0; i < str.length; ++i) {
+    bytes.push(str.charCodeAt(i));
+  }
+
+  return bytes;
+}
+
+const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+/* harmony default export */ function v35(name, version, hashfunc) {
+  function generateUUID(value, namespace, buf, offset) {
+    if (typeof value === 'string') {
+      value = stringToBytes(value);
+    }
+
+    if (typeof namespace === 'string') {
+      namespace = esm_node_parse(namespace);
+    }
+
+    if (namespace.length !== 16) {
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+    } // Compute hash of namespace and value, Per 4.3
+    // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
+    // hashfunc([...namespace, ... value])`
+
+
+    let bytes = new Uint8Array(16 + value.length);
+    bytes.set(namespace);
+    bytes.set(value, namespace.length);
+    bytes = hashfunc(bytes);
+    bytes[6] = bytes[6] & 0x0f | version;
+    bytes[8] = bytes[8] & 0x3f | 0x80;
+
+    if (buf) {
+      offset = offset || 0;
+
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = bytes[i];
+      }
+
+      return buf;
+    }
+
+    return esm_node_stringify(bytes);
+  } // Function#name is not settable on some platforms (#270)
+
+
+  try {
+    generateUUID.name = name; // eslint-disable-next-line no-empty
+  } catch (err) {} // For CommonJS default export support
+
+
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
+}
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/md5.js
+
+
+function md5(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return external_crypto_default().createHash('md5').update(bytes).digest();
+}
+
+/* harmony default export */ const esm_node_md5 = (md5);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/v3.js
+
+
+const v3 = v35('v3', 0x30, esm_node_md5);
+/* harmony default export */ const esm_node_v3 = (v3);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/v4.js
+
+
+
+function v4(options, buf, offset) {
+  options = options || {};
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return esm_node_stringify(rnds);
+}
+
+/* harmony default export */ const esm_node_v4 = (v4);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/sha1.js
+
+
+function sha1(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === 'string') {
+    bytes = Buffer.from(bytes, 'utf8');
+  }
+
+  return external_crypto_default().createHash('sha1').update(bytes).digest();
+}
+
+/* harmony default export */ const esm_node_sha1 = (sha1);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/v5.js
+
+
+const v5 = v35('v5', 0x50, esm_node_sha1);
+/* harmony default export */ const esm_node_v5 = (v5);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/nil.js
+/* harmony default export */ const nil = ('00000000-0000-0000-0000-000000000000');
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/version.js
+
+
+function version(uuid) {
+  if (!esm_node_validate(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  return parseInt(uuid.substr(14, 1), 16);
+}
+
+/* harmony default export */ const esm_node_version = (version);
+// CONCATENATED MODULE: ./node_modules/@actions/core/node_modules/uuid/dist/esm-node/index.js
+
+
+
+
+
+
+
+
+
 
 /***/ }),
 
@@ -3919,7 +3937,7 @@ const httpm = __importStar(__webpack_require__(371));
 const semver = __importStar(__webpack_require__(911));
 const stream = __importStar(__webpack_require__(413));
 const util = __importStar(__webpack_require__(669));
-const v4_1 = __importDefault(__webpack_require__(468));
+const v4_1 = __importDefault(__webpack_require__(824));
 const exec_1 = __webpack_require__(514);
 const assert_1 = __webpack_require__(357);
 const retry_helper_1 = __webpack_require__(279);
@@ -5149,90 +5167,6 @@ function checkBypass(reqUrl) {
     return false;
 }
 exports.checkBypass = checkBypass;
-
-
-/***/ }),
-
-/***/ 701:
-/***/ ((module) => {
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-var byteToHex = [];
-for (var i = 0; i < 256; ++i) {
-  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-}
-
-function bytesToUuid(buf, offset) {
-  var i = offset || 0;
-  var bth = byteToHex;
-  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]]
-  ]).join('');
-}
-
-module.exports = bytesToUuid;
-
-
-/***/ }),
-
-/***/ 269:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Unique ID creation requires a high quality random # generator.  In node.js
-// this is pretty straight-forward - we use the crypto API.
-
-var crypto = __webpack_require__(417);
-
-module.exports = function nodeRNG() {
-  return crypto.randomBytes(16);
-};
-
-
-/***/ }),
-
-/***/ 468:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-var rng = __webpack_require__(269);
-var bytesToUuid = __webpack_require__(701);
-
-function v4(options, buf, offset) {
-  var i = buf && offset || 0;
-
-  if (typeof(options) == 'string') {
-    buf = options === 'binary' ? new Array(16) : null;
-    options = null;
-  }
-  options = options || {};
-
-  var rnds = options.random || (options.rng || rng)();
-
-  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-  rnds[6] = (rnds[6] & 0x0f) | 0x40;
-  rnds[8] = (rnds[8] & 0x3f) | 0x80;
-
-  // Copy bytes to buffer, if provided
-  if (buf) {
-    for (var ii = 0; ii < 16; ++ii) {
-      buf[i + ii] = rnds[ii];
-    }
-  }
-
-  return buf || bytesToUuid(rnds);
-}
-
-module.exports = v4;
 
 
 /***/ }),
@@ -7120,366 +7054,86 @@ exports.debug = debug; // for test
 
 /***/ }),
 
-/***/ 552:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "v1": () => /* reexport */ esm_node_v1,
-  "v3": () => /* reexport */ esm_node_v3,
-  "v4": () => /* reexport */ esm_node_v4,
-  "v5": () => /* reexport */ esm_node_v5,
-  "NIL": () => /* reexport */ nil,
-  "version": () => /* reexport */ esm_node_version,
-  "validate": () => /* reexport */ esm_node_validate,
-  "stringify": () => /* reexport */ esm_node_stringify,
-  "parse": () => /* reexport */ esm_node_parse
-});
-
-// EXTERNAL MODULE: external "crypto"
-var external_crypto_ = __webpack_require__(417);
-var external_crypto_default = /*#__PURE__*/__webpack_require__.n(external_crypto_);
-
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/rng.js
-
-const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
-
-let poolPtr = rnds8Pool.length;
-function rng() {
-  if (poolPtr > rnds8Pool.length - 16) {
-    external_crypto_default().randomFillSync(rnds8Pool);
-    poolPtr = 0;
-  }
-
-  return rnds8Pool.slice(poolPtr, poolPtr += 16);
-}
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/regex.js
-/* harmony default export */ const regex = (/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/validate.js
-
-
-function validate(uuid) {
-  return typeof uuid === 'string' && regex.test(uuid);
-}
-
-/* harmony default export */ const esm_node_validate = (validate);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/stringify.js
+/***/ 707:
+/***/ ((module) => {
 
 /**
  * Convert array of 16 byte values to UUID string format of the form:
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
  */
-
-const byteToHex = [];
-
-for (let i = 0; i < 256; ++i) {
-  byteToHex.push((i + 0x100).toString(16).substr(1));
+var byteToHex = [];
+for (var i = 0; i < 256; ++i) {
+  byteToHex[i] = (i + 0x100).toString(16).substr(1);
 }
 
-function stringify(arr, offset = 0) {
-  // Note: Be careful editing this code!  It's been tuned for performance
-  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
-  // of the following:
-  // - One or more input array values don't map to a hex octet (leading to
-  // "undefined" in the uuid)
-  // - Invalid input values for the RFC `version` or `variant` fields
-
-  if (!esm_node_validate(uuid)) {
-    throw TypeError('Stringified UUID is invalid');
-  }
-
-  return uuid;
+function bytesToUuid(buf, offset) {
+  var i = offset || 0;
+  var bth = byteToHex;
+  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+  return ([
+    bth[buf[i++]], bth[buf[i++]],
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]], '-',
+    bth[buf[i++]], bth[buf[i++]],
+    bth[buf[i++]], bth[buf[i++]],
+    bth[buf[i++]], bth[buf[i++]]
+  ]).join('');
 }
 
-/* harmony default export */ const esm_node_stringify = (stringify);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/v1.js
+module.exports = bytesToUuid;
 
- // **`v1()` - Generate time-based UUID**
-//
-// Inspired by https://github.com/LiosK/UUID.js
-// and http://docs.python.org/library/uuid.html
 
-let _nodeId;
+/***/ }),
 
-let _clockseq; // Previous uuid creation time
+/***/ 859:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+// Unique ID creation requires a high quality random # generator.  In node.js
+// this is pretty straight-forward - we use the crypto API.
 
-let _lastMSecs = 0;
-let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
+var crypto = __webpack_require__(417);
 
-function v1(options, buf, offset) {
-  let i = buf && offset || 0;
-  const b = buf || new Array(16);
-  options = options || {};
-  let node = options.node || _nodeId;
-  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
-  // specified.  We do this lazily to minimize issues related to insufficient
-  // system entropy.  See #189
+module.exports = function nodeRNG() {
+  return crypto.randomBytes(16);
+};
 
-  if (node == null || clockseq == null) {
-    const seedBytes = options.random || (options.rng || rng)();
 
-    if (node == null) {
-      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
-      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
-    }
+/***/ }),
 
-    if (clockseq == null) {
-      // Per 4.2.2, randomize (14 bit) clockseq
-      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
-    }
-  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
-  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
-  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
-  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+/***/ 824:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-
-  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
-  // cycle to simulate higher resolution clock
-
-  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
-
-  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
-
-  if (dt < 0 && options.clockseq === undefined) {
-    clockseq = clockseq + 1 & 0x3fff;
-  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
-  // time interval
-
-
-  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
-    nsecs = 0;
-  } // Per 4.2.1.2 Throw error if too many uuids are requested
-
-
-  if (nsecs >= 10000) {
-    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
-  }
-
-  _lastMSecs = msecs;
-  _lastNSecs = nsecs;
-  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
-
-  msecs += 12219292800000; // `time_low`
-
-  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
-  b[i++] = tl >>> 24 & 0xff;
-  b[i++] = tl >>> 16 & 0xff;
-  b[i++] = tl >>> 8 & 0xff;
-  b[i++] = tl & 0xff; // `time_mid`
-
-  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
-  b[i++] = tmh >>> 8 & 0xff;
-  b[i++] = tmh & 0xff; // `time_high_and_version`
-
-  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
-
-  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
-
-  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
-
-  b[i++] = clockseq & 0xff; // `node`
-
-  for (let n = 0; n < 6; ++n) {
-    b[i + n] = node[n];
-  }
-
-  return buf || esm_node_stringify(b);
-}
-
-/* harmony default export */ const esm_node_v1 = (v1);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/parse.js
-
-
-function parse(uuid) {
-  if (!esm_node_validate(uuid)) {
-    throw TypeError('Invalid UUID');
-  }
-
-  let v;
-  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
-
-  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
-  arr[1] = v >>> 16 & 0xff;
-  arr[2] = v >>> 8 & 0xff;
-  arr[3] = v & 0xff; // Parse ........-####-....-....-............
-
-  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
-  arr[5] = v & 0xff; // Parse ........-....-####-....-............
-
-  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
-  arr[7] = v & 0xff; // Parse ........-....-....-####-............
-
-  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
-  arr[9] = v & 0xff; // Parse ........-....-....-....-############
-  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
-
-  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
-  arr[11] = v / 0x100000000 & 0xff;
-  arr[12] = v >>> 24 & 0xff;
-  arr[13] = v >>> 16 & 0xff;
-  arr[14] = v >>> 8 & 0xff;
-  arr[15] = v & 0xff;
-  return arr;
-}
-
-/* harmony default export */ const esm_node_parse = (parse);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/v35.js
-
-
-
-function stringToBytes(str) {
-  str = unescape(encodeURIComponent(str)); // UTF8 escape
-
-  const bytes = [];
-
-  for (let i = 0; i < str.length; ++i) {
-    bytes.push(str.charCodeAt(i));
-  }
-
-  return bytes;
-}
-
-const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
-const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
-/* harmony default export */ function v35(name, version, hashfunc) {
-  function generateUUID(value, namespace, buf, offset) {
-    if (typeof value === 'string') {
-      value = stringToBytes(value);
-    }
-
-    if (typeof namespace === 'string') {
-      namespace = esm_node_parse(namespace);
-    }
-
-    if (namespace.length !== 16) {
-      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
-    } // Compute hash of namespace and value, Per 4.3
-    // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
-    // hashfunc([...namespace, ... value])`
-
-
-    let bytes = new Uint8Array(16 + value.length);
-    bytes.set(namespace);
-    bytes.set(value, namespace.length);
-    bytes = hashfunc(bytes);
-    bytes[6] = bytes[6] & 0x0f | version;
-    bytes[8] = bytes[8] & 0x3f | 0x80;
-
-    if (buf) {
-      offset = offset || 0;
-
-      for (let i = 0; i < 16; ++i) {
-        buf[offset + i] = bytes[i];
-      }
-
-      return buf;
-    }
-
-    return esm_node_stringify(bytes);
-  } // Function#name is not settable on some platforms (#270)
-
-
-  try {
-    generateUUID.name = name; // eslint-disable-next-line no-empty
-  } catch (err) {} // For CommonJS default export support
-
-
-  generateUUID.DNS = DNS;
-  generateUUID.URL = URL;
-  return generateUUID;
-}
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/md5.js
-
-
-function md5(bytes) {
-  if (Array.isArray(bytes)) {
-    bytes = Buffer.from(bytes);
-  } else if (typeof bytes === 'string') {
-    bytes = Buffer.from(bytes, 'utf8');
-  }
-
-  return external_crypto_default().createHash('md5').update(bytes).digest();
-}
-
-/* harmony default export */ const esm_node_md5 = (md5);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/v3.js
-
-
-const v3 = v35('v3', 0x30, esm_node_md5);
-/* harmony default export */ const esm_node_v3 = (v3);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/v4.js
-
-
+var rng = __webpack_require__(859);
+var bytesToUuid = __webpack_require__(707);
 
 function v4(options, buf, offset) {
+  var i = buf && offset || 0;
+
+  if (typeof(options) == 'string') {
+    buf = options === 'binary' ? new Array(16) : null;
+    options = null;
+  }
   options = options || {};
-  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
 
-  rnds[6] = rnds[6] & 0x0f | 0x40;
-  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+  var rnds = options.random || (options.rng || rng)();
 
+  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+  // Copy bytes to buffer, if provided
   if (buf) {
-    offset = offset || 0;
-
-    for (let i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
+    for (var ii = 0; ii < 16; ++ii) {
+      buf[i + ii] = rnds[ii];
     }
-
-    return buf;
   }
 
-  return esm_node_stringify(rnds);
+  return buf || bytesToUuid(rnds);
 }
 
-/* harmony default export */ const esm_node_v4 = (v4);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/sha1.js
-
-
-function sha1(bytes) {
-  if (Array.isArray(bytes)) {
-    bytes = Buffer.from(bytes);
-  } else if (typeof bytes === 'string') {
-    bytes = Buffer.from(bytes, 'utf8');
-  }
-
-  return external_crypto_default().createHash('sha1').update(bytes).digest();
-}
-
-/* harmony default export */ const esm_node_sha1 = (sha1);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/v5.js
-
-
-const v5 = v35('v5', 0x50, esm_node_sha1);
-/* harmony default export */ const esm_node_v5 = (v5);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/nil.js
-/* harmony default export */ const nil = ('00000000-0000-0000-0000-000000000000');
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/version.js
-
-
-function version(uuid) {
-  if (!esm_node_validate(uuid)) {
-    throw TypeError('Invalid UUID');
-  }
-
-  return parseInt(uuid.substr(14, 1), 16);
-}
-
-/* harmony default export */ const esm_node_version = (version);
-// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-node/index.js
-
-
-
-
-
-
-
-
+module.exports = v4;
 
 
 /***/ }),

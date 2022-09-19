@@ -10,7 +10,7 @@ categories:
       - "fix"
       - "bugfix"
       - "bug"
-change-template: "- $TITLE (#$NUMBER)"
+change-template: "- $TITLE (#$NUMBER) [[$AUTHOR](https://github.com/$AUTHOR)]"
 version-resolver:
   major:
     labels:

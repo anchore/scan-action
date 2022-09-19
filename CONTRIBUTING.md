@@ -75,12 +75,6 @@ Date:   Mon Aug 1 11:27:13 2020 -0400
 [//]: # "TODO: Commit guidelines, commit title, extra body description"
 [//]: # "TODO: PR title and description"
 
-## Sign your commits
-
-To ensure the authenticity and integrity of code contributions, **we require that all commits are signed**. Signing commits proves that your commits were truly created by you, as the holder of a private key.
-
-Configuring git to sign your commits is a straightforward process. To get set up, see [GitHub's documentation on signing commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits).
-
 ## Test your changes
 
 Ensure that your changes have passed the test suite. For more information on working with this project's tests, see [Developing Tests](./tests/README.md#developing-tests).

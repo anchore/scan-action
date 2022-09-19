@@ -5,23 +5,22 @@ branding:
   icon: check-circle
 inputs:
   image:
-    description: 'The image to scan. This option is mutually exclusive with "path". '
+    description: 'The image to scan. This option is mutually exclusive with "path" and "sbom". '
     required: false
   path:
-    description: 'The path to scan. This option is mutually exclusive with "image".'
+    description: 'The path to scan. This option is mutually exclusive with "image" and "sbom".'
     required: false
-  debug:
-    description: "Set this to any value to enable verbose debug output"
+  sbom:
+    description: 'The SBOM file to scan. This option is mutually exclusive with "path" and "image".'
     required: false
-    default: "false"
   fail-build:
     description: "Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)"
     required: false
     default: "true"
-  acs-report-enable:
-    description: "Generate a SARIF report and set the `sarif` output parameter after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report."
+  output-format:
+    description: 'Set the output parameter after successful action execution. Valid choices are "json" and "sarif".'
     required: false
-    default: "true"
+    default: "sarif"
   severity-cutoff:
     description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
     required: false
@@ -33,6 +32,8 @@ inputs:
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
+  json:
+    description: "Path to a JSON report file for the image"
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"

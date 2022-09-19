@@ -3,6 +3,17 @@ name: "Tests"
 on: [push, pull_request]
 
 jobs:
+  build: # make sure build/ci work properly and there is no faked build ncc built scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm audit --production
+      - run: npm run build
+      - run: git status --porcelain
+      - run: git diff
+      - run: git diff --exit-code
+
   test:
     runs-on: ubuntu-latest
     services:
@@ -11,19 +22,7 @@ jobs:
         ports:
           - 5000:5000
     steps:
-      - uses: actions/checkout@v2
-      - run: echo $(uname -a)
-      - name: Check for npm (so make test works)
-        run: |
-          if ! [ -x "$(command -v npm)" ]; then
-            sudo apt update
-            sudo apt -y upgrade
-            sudo apt update
-            sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-            sudo apt -y install nodejs
-            sudo apt -y  install gcc g++ make
-          fi
+      - uses: actions/checkout@v3
       - name: Build images
         run: |
           for distro in alpine centos debian; do
@@ -39,13 +38,3 @@ jobs:
       - run: npm ci
       - run: npm audit --production
       - run: npm test
-
-  functional:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: make check
-      - uses: actions/upload-artifact@v2
-        with:
-          name: functional-test-output
-          path: tests/functional/output/*

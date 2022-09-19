@@ -23,25 +23,26 @@ const mockExec = async (args) => {
 };
 
 describe("Grype command", () => {
-  it("is invoked with defaults", async () => {
-    let cmd = await mockExec({ source: "python:3.8" });
-    expect(cmd).toBe("grype -o json --fail-on medium python:3.8");
-  });
-
   it("is invoked with dir", async () => {
-    let cmd = await mockExec({ source: "dir:.", severityCutoff: "high" });
-    expect(cmd).toBe("grype -o json --fail-on high dir:.");
+    let cmd = await mockExec({
+      source: "dir:.",
+      debug: "false",
+      failBuild: "false",
+      outputFormat: "sarif",
+      severityCutoff: "high",
+      version: "0.6.0",
+    });
+    expect(cmd).toBe("grype -o sarif --fail-on high dir:.");
   });
 
   it("is invoked with values", async () => {
     let cmd = await mockExec({
       source: "asdf",
-      debug: "true",
       failBuild: "false",
-      acsReportEnable: "false",
+      outputFormat: "json",
       severityCutoff: "low",
       version: "0.6.0",
     });
-    expect(cmd).toBe("grype -vv -o json --fail-on low asdf");
+    expect(cmd).toBe("grype -o json --fail-on low asdf");
   });
 });

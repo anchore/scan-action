@@ -8,9 +8,8 @@ describe("Github action args", () => {
     const inputs = {
       image: "",
       path: "tests/fixtures/npm-project",
-      debug: "false",
       "fail-build": "true",
-      "acs-report-enable": "false",
+      "output-format": "json",
       "severity-cutoff": "medium",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
@@ -44,9 +43,8 @@ describe("Github action args", () => {
     const inputs = {
       image: "",
       path: "tests/fixtures/npm-project",
-      debug: "false",
       "fail-build": "true",
-      "acs-report-enable": "true",
+      "output-format": "sarif",
       "severity-cutoff": "medium",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
