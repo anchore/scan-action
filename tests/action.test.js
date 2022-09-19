@@ -104,12 +104,4 @@ describe("scan-action", () => {
     });
     expect(outputs.stdout).toContain("Failed minimum severity level.");
   });
-
-  it("runs with table output-format", () => {
-    const outputs = runAction({
-      "output-format": "table",
-      image: "localhost:5000/match-coverage/debian:latest",
-    });
-    expect(outputs.stdout).toContain("VULNERABILITY");
-  });
 });

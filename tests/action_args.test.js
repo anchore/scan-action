@@ -73,4 +73,47 @@ describe("Github action args", () => {
     spyInput.mockRestore();
     spyOutput.mockRestore();
   });
+
+  it("runs with table output", async () => {
+    const inputs = {
+      image: "localhost:5000/match-coverage/debian:latest",
+      "fail-build": "true",
+      "output-format": "table",
+      "severity-cutoff": "medium",
+    };
+    const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
+      try {
+        return inputs[name];
+      } finally {
+        inputs[name] = true;
+      }
+    });
+
+    const outputs = {};
+    const spyOutput = jest
+      .spyOn(core, "setOutput")
+      .mockImplementation((name, value) => {
+        outputs[name] = value;
+      });
+
+    let stdout = "";
+    const spyStdout = jest.spyOn(core, "info").mockImplementation((value) => {
+      stdout += value;
+    });
+
+    await run();
+
+    Object.keys(inputs).map((name) => {
+      expect(inputs[name]).toBe(true);
+    });
+
+    expect(stdout).toContain("VULNERABILITY");
+
+    expect(outputs["sarif"]).toBeFalsy();
+    expect(outputs["json"]).toBeFalsy();
+
+    spyInput.mockRestore();
+    spyOutput.mockRestore();
+    spyStdout.mockRestore();
+  });
 });
