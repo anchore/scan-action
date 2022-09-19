@@ -18,7 +18,7 @@ inputs:
     required: false
     default: "true"
   output-format:
-    description: 'Set the output parameter after successful action execution. Valid choices are "json" and "sarif".'
+    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", and "table".'
     required: false
     default: "sarif"
   severity-cutoff:

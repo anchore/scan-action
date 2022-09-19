@@ -139,7 +139,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   }
 
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
-  const FORMAT_LIST = ["sarif", "json"];
+  const FORMAT_LIST = ["sarif", "json", "table"];
   let cmdArgs = [];
 
   if (core.isDebug()) {
@@ -227,34 +227,39 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
     core.debug(cmdOutput);
   }
 
-  if (outputFormat === "sarif") {
-    const SARIF_FILE = "./results.sarif";
-    fs.writeFileSync(SARIF_FILE, cmdOutput);
-    out.sarif = SARIF_FILE;
-  } else {
-    const REPORT_FILE = "./results.json";
-    fs.writeFileSync(REPORT_FILE, cmdOutput);
-    out.report = REPORT_FILE;
-  }
-
-  if (failBuild === true && exitCode > 0) {
-    core.setFailed(
-      `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
-    );
+  switch (outputFormat) {
+    case "sarif": {
+      const SARIF_FILE = "./results.sarif";
+      fs.writeFileSync(SARIF_FILE, cmdOutput);
+      out.sarif = SARIF_FILE;
+      break;
+    }
+    case "json": {
+      const REPORT_FILE = "./results.json";
+      fs.writeFileSync(REPORT_FILE, cmdOutput);
+      out.report = REPORT_FILE;
+      break;
+    }
+    default: // e.g. table
+      core.info(cmdOutput);
   }
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
-  if (failBuild === false && exitCode > 0) {
-    // There was a non-zero exit status but it wasn't because of failing severity, this must be
-    // a grype problem
+  if (exitCode > 0) {
     if (!severityCutoff) {
+      // There was a non-zero exit status but it wasn't because of failing severity, this must be
+      // a grype problem
       core.warning("grype had a non-zero exit status when running");
+    } else if (failBuild === true) {
+      core.setFailed(
+        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`
+      );
     } else {
       // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
       // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
       // Actions UI
       core.warning(
-        `Failed minimum severity level. Found vulnerabilities with level ${severityCutoff} or higher`
+        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`
       );
     }
   }
