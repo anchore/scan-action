@@ -15,7 +15,8 @@
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
     "prepare": "husky install",
-    "prettier": "prettier -w index.js"
+    "prettier": "prettier -w index.js",
+    "update-deps": "ncu -u && npm i && npm audit fix"
   },
   "repository": {
     "type": "git",
@@ -32,18 +33,18 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/core": "^1.9.1",
-    "@actions/exec": "^1.0.4",
-    "@actions/tool-cache": "^1.6.0",
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1",
+    "@actions/tool-cache": "^2.0.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@microsoft/jest-sarif": "^1.0.0-beta.0",
-    "@vercel/ncc": "^0.24.1",
-    "eslint": "^6.8.0",
-    "husky": "^7.0.4",
-    "jest": "^27.5.1",
-    "prettier": "^2.3.2",
-    "pretty-quick": "^3.1.1"
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.25.0",
+    "husky": "^8.0.1",
+    "jest": "^29.2.1",
+    "prettier": "^2.7.1",
+    "pretty-quick": "^3.1.3"
   }
 }
