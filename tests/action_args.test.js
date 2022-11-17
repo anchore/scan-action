@@ -1,5 +1,6 @@
 const { run } = require("../index");
 const core = require("@actions/core");
+const exec = require("@actions/exec");
 
 jest.setTimeout(30000);
 
@@ -115,5 +116,45 @@ describe("Github action args", () => {
     spyInput.mockRestore();
     spyOutput.mockRestore();
     spyStdout.mockRestore();
+  });
+
+  it("runs with environment variables", async () => {
+    const inputs = {
+      path: "tests/fixtures/npm-project",
+    };
+    const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
+      try {
+        return inputs[name];
+      } finally {
+        inputs[name] = true;
+      }
+    });
+    process.env.BOGUS_ENVIRONMENT_VARIABLE = "bogus";
+
+    try {
+      var call = {}; // commandLine, args, options
+      const baseExec = exec.exec;
+      const spyExec = jest
+        .spyOn(exec, "exec")
+        .mockImplementation((commandLine, args, options) => {
+          call = {
+            commandLine,
+            args,
+            options,
+          };
+          return baseExec(commandLine, args, options);
+        });
+
+      await run();
+
+      expect(call.options).toBeDefined();
+      expect(call.options.env.BOGUS_ENVIRONMENT_VARIABLE).toEqual("bogus");
+
+      spyExec.mockRestore();
+    } finally {
+      delete process.env.BOGUS_ENVIRONMENT_VARIABLE;
+    }
+
+    spyInput.mockRestore();
   });
 });
