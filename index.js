@@ -1,6 +1,6 @@
 const cache = require("@actions/tool-cache");
 const core = require("@actions/core");
-const { exec } = require("@actions/exec");
+const exec = require("@actions/exec");
 const fs = require("fs");
 const stream = require("stream");
 const { GRYPE_VERSION } = require("./GrypeVersion");
@@ -17,10 +17,10 @@ async function downloadGrype(version) {
   // Download the installer, and run
   const installPath = await cache.downloadTool(url);
   // Make sure the tool's executable bit is set
-  await exec(`chmod +x ${installPath}`);
+  await exec.exec(`chmod +x ${installPath}`);
 
   let cmd = `${installPath} -b ${installPath}_grype ${version}`;
-  await exec(cmd);
+  await exec.exec(cmd);
   let grypePath = `${installPath}_grype/grype`;
 
   // Cache the downloaded file
@@ -107,6 +107,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   const out = {};
 
   const env = {
+    ...process.env,
     GRYPE_CHECK_FOR_APP_UPDATE: "false",
   };
 
@@ -189,7 +190,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   const exitCode = await core.group(`${cmd} output...`, async () => {
     core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
 
-    return exec(cmd, cmdArgs, {
+    return exec.exec(cmd, cmdArgs, {
       env,
       ignoreReturnCode: true,
       outStream,

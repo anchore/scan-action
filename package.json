@@ -9,9 +9,9 @@
   },
   "scripts": {
     "lint": "eslint index.js",
-    "test": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db jest",
-    "test:update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db jest --updateSnapshot",
-    "download-pinned-grype-db": "mkdir -p grype-db/3 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v3_2022-03-16T08:14:11Z.tar.gz | tar zxf - -C grype-db/3",
+    "test": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest",
+    "test:update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest --updateSnapshot",
+    "download-pinned-grype-db": "mkdir -p grype-db/5 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v5_2022-10-17T08:14:57Z_b50a86ce07d268101316.tar.gz | tar zxf - -C grype-db/5",
     "build": "ncc build ./index.js",
     "precommit": "pretty-quick --staged && npm run build && git add dist/",
     "prepare": "husky install",
