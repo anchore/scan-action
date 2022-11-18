@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="ISO-8859-1">
+  <title>Grype analysis</title>
+  <script>
+    function myFunction() {
+      // Declare variables 
+      var input, filter, table, tr, td, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who do not match the search query
+      for (i = 1; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+          var tdata = td[j];
+          if (tdata) {
+            if (tdata.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+              break;
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/css">
+    table,
+    th,
+    td {
+      border: 1px solid black; // changing-colors
+      // word-wrap: break-word;
+    }
+
+    tr:first-child {
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background: #eef
+    }
+
+    // changing-colors
+    tr:nth-child(odd) {
+      background: #fee
+    }
+
+    // changing-colors
+
+    * {
+      box-sizing: border-box;
+    }
+
+    #myInput {
+      background-image: url("search.png");
+      background-position: left center;
+      background-repeat: no-repeat;
+      width: 94%;
+      font-size: 16px;
+      padding: 8px 20px 8px 40px;
+      border: 2px solid Tomato; // changing-colors
+      margin-bottom: 18px;
+    }
+
+    #myTable {
+      border-collapse: collapse;
+      border: 1px solid #ddd; // changing-colors
+      width: 100%;
+      margin-top: 18px;
+      // Remove the // in front of the below two lines, to get fixed-width
+      // table-layout: fixed;
+      // word-wrap: break-word;
+      // font-size: 18px;
+    }
+
+    #myTable th,
+    #myTable td {
+      text-align: left;
+      padding: 12px;
+    }
+
+    #myTable tr {
+      border-bottom: 1px solid #ddd; // changing-colors
+    }
+
+    #myTable tr:first-child:hover,
+    #myTable tr:hover {
+      background-color: rgb(4, 112, 155); // changing-colors
+    }
+
+    #myTable tr:first-child {
+      background-color: rgb(4, 112, 155); // changing-colors
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <h2 style="text-align:center;background-color:DodgerBlue;color:White;">Identified Vulnerabilites</h2>
+  <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search in all Fields...."
+    title="Type in a Search String" autofocus="autofocus">
+  <table id="myTable">
+    <tr>
+      <th>NAME</th>
+      <th>INSTALLED</th>
+      <th>TYPE</th>
+      <th>VULNERABILITY</th>
+      <th>SEVERITY</th>
+      <th>DESCRIPTION</th>
+      <th>STATE</th>
+      <th>FIXED IN</th>
+    </tr>
+{{- range .Matches}}
+    <tr>
+      <td>"{{.Artifact.Name}}"</td>
+      <td>"{{.Artifact.Version}}"</td>
+      <td>"{{.Artifact.Type}}"</td>
+      <td><a href = "https://nvd.nist.gov/vuln/detail/{{.Vulnerability.ID}}">{{.Vulnerability.ID}}</a></td>
+      <td>"{{.Vulnerability.Severity}}"</td>
+      <td>"{{.Vulnerability.Description}}"</td>
+      <td>"{{.Vulnerability.Fix.State}}"</td>
+      <td>"{{.Vulnerability.Fix.Versions}}"</td>
+    </tr>
+{{- end}}
+  </table>
+</body>
+
+</html>

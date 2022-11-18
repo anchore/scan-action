@@ -125,7 +125,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   }
 
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
-  const FORMAT_LIST = ["sarif", "json", "table"];
+  const FORMAT_LIST = ["sarif", "json", "table", "html"];
   let cmdArgs = [];
 
   if (core.isDebug()) {
@@ -134,7 +134,13 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
 
   failBuild = failBuild.toLowerCase() === "true";
 
-  cmdArgs.push("-o", outputFormat);
+  if (outputFormat == "html") {
+    cmdArgs.push("-o", "template");
+    cmdArgs.push("-t", "html.tmpl");
+  }
+  else {
+    cmdArgs.push("-o", outputFormat);
+  }
 
   if (
     !SEVERITY_LIST.some(
@@ -222,6 +228,12 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
     }
     case "json": {
       const REPORT_FILE = "./results.json";
+      fs.writeFileSync(REPORT_FILE, cmdOutput);
+      out.report = REPORT_FILE;
+      break;
+    }
+    case "html": {
+      const REPORT_FILE = "./results.html";
       fs.writeFileSync(REPORT_FILE, cmdOutput);
       out.report = REPORT_FILE;
       break;
