@@ -18,7 +18,7 @@ inputs:
     required: false
     default: "true"
   output-format:
-    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", and "table".'
+    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", "table "and "html".'
     required: false
     default: "sarif"
   severity-cutoff:
@@ -30,6 +30,8 @@ outputs:
     description: "Path to a SARIF report file for the image"
   json:
     description: "Path to a JSON report file for the image"
+  html:
+    description: "Path to a HTML report file for the image"
 runs:
   using: "node16"
   main: "dist/index.js"
