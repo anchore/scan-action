@@ -161,7 +161,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
     )
   ) {
     throw new Error(
-      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`
+      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json, sarif or html`
     );
   }
 
@@ -233,9 +233,9 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
       break;
     }
     case "html": {
-      const REPORT_FILE = "./results.html";
-      fs.writeFileSync(REPORT_FILE, cmdOutput);
-      out.report = REPORT_FILE;
+      const HTML_FILE = "./results.html";
+      fs.writeFileSync(HTML_FILE, cmdOutput);
+      out.html = HTML_FILE;
       break;
     }
     default: // e.g. table
