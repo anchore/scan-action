@@ -103,10 +103,12 @@ async function run() {
     const failBuild = core.getInput("fail-build") || "true";
     const outputFormat = core.getInput("output-format") || "sarif";
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
+    const onlyFixed = core.getInput("only-fixed") || "false";
     const out = await runScan({
       source,
       failBuild,
       severityCutoff,
+      onlyFixed,
       outputFormat,
     });
     Object.keys(out).map((key) => {
@@ -117,7 +119,7 @@ async function run() {
   }
 }
 
-async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
+async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFormat }) {
   const out = {};
 
   const env = {
@@ -147,6 +149,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   }
 
   failBuild = failBuild.toLowerCase() === "true";
+  onlyFixed = onlyFixed.toLowerCase() === "true";
 
   cmdArgs.push("-o", outputFormat);
 
@@ -179,6 +182,7 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   core.debug("Source: " + source);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
+  core.debug("Only Fixed: " + onlyFixed);
   core.debug("Output Format: " + outputFormat);
 
   core.debug("Creating options for GRYPE analyzer");
@@ -189,6 +193,9 @@ async function runScan({ source, failBuild, severityCutoff, outputFormat }) {
   if (severityCutoff !== "") {
     cmdArgs.push("--fail-on");
     cmdArgs.push(severityCutoff.toLowerCase());
+  }
+  if (onlyFixed === true) {
+    cmdArgs.push("--only-fixed");
   }
   cmdArgs.push(source);
 

@@ -19,6 +19,7 @@ const testSource = async (source, vulnerabilities) => {
     failBuild: "false",
     outputFormat: "sarif",
     severityCutoff: "medium",
+    onlyFixed: "false",
   });
 
   // expect to get sarif output
