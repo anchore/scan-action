@@ -23,7 +23,7 @@ const grypeBinary = "grype";
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
 async function downloadGrype(version) {
-  let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
+  let url = `https://raw.githubusercontent.com/jdolitsky/grype/fix-install/install.sh`;
 
   core.debug(`Installing ${version}`);
 
