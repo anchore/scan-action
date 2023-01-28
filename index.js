@@ -7,8 +7,9 @@ const { GRYPE_VERSION } = require("./GrypeVersion");
 
 const grypeBinary = "grype";
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
+const githubToken = core.getInput("github-token") || "";
 
-async function downloadGrype(version) {
+async function downloadGrype(version, githubToken) {
   let url = `https://raw.githubusercontent.com/jdolitsky/grype/fix-install/install.sh`;
 
   core.debug(`Installing ${version}`);
@@ -20,18 +21,18 @@ async function downloadGrype(version) {
   await exec.exec(`chmod +x ${installPath}`);
 
   let cmd = `${installPath} -b ${installPath}_grype ${version}`;
-  await exec.exec(cmd);
+  await exec.exec(cmd, [], {env: {GITHUB_TOKEN: githubToken}});
   let grypePath = `${installPath}_grype/grype`;
 
   // Cache the downloaded file
   return cache.cacheFile(grypePath, `grype`, `grype`, version);
 }
 
-async function installGrype(version) {
+async function installGrype(version, githubToken) {
   let grypePath = cache.find(grypeBinary, version);
   if (!grypePath) {
     // Not found, install it
-    grypePath = await downloadGrype(version);
+    grypePath = await downloadGrype(version, githubToken);
   }
 
   // Add tool to path for this and future actions to use
@@ -163,7 +164,7 @@ async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFor
   }
 
   core.debug(`Installing grype version ${grypeVersion}`);
-  await installGrype(grypeVersion);
+  await installGrype(grypeVersion, githubToken);
 
   core.debug("Source: " + source);
   core.debug("Fail Build: " + failBuild);
@@ -270,7 +271,7 @@ if (require.main === module) {
   const entrypoint = core.getInput("run");
   switch (entrypoint) {
     case "download-grype": {
-      installGrype(grypeVersion).then((path) => {
+      installGrype(grypeVersion, githubToken).then((path) => {
         core.info(`Downloaded Grype to: ${path}`);
         core.setOutput("cmd", path);
       });
