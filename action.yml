@@ -29,6 +29,10 @@ inputs:
     description: "Specify whether to only report vulnerabilities that have a fix available.  Default is false."
     required: false
     default: "false"
+  github-token:
+    description: "GitHub token to use for downloading Grype release."
+    required: false
+    default: ${{ github.token }}
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
