@@ -754,7 +754,7 @@ Link: [CVE-2016-9942](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-994
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2016-9942-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "9.8",
               },
@@ -844,7 +844,7 @@ Link: [CVE-2019-20839](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2019-20839-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "7.5",
               },
@@ -874,7 +874,7 @@ Link: [CVE-2019-20840](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-20
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2019-20840-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "7.5",
               },
@@ -994,7 +994,7 @@ Link: [CVE-2020-14401](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2020-14401-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "6.5",
               },
@@ -1024,7 +1024,7 @@ Link: [CVE-2020-14402](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2020-14402-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "5.5",
               },
@@ -1054,7 +1054,7 @@ Link: [CVE-2020-14403](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2020-14403-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "5.5",
               },
@@ -1084,7 +1084,7 @@ Link: [CVE-2020-14404](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14
               },
               "helpUri": "https://github.com/anchore/grype",
               "id": "CVE-2020-14404-libvncserver",
-              "name": "ApkMatcherExactDirectMatch",
+              "name": "ApkMatcherExactIndirectMatch",
               "properties": {
                 "security-severity": "5.5",
               },
