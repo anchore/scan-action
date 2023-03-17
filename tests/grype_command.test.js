@@ -49,4 +49,17 @@ describe("Grype command", () => {
     });
     expect(cmd).toBe("grype -o json --fail-on low asdf");
   });
+
+  it("adds missing CPEs if requested", async () => {
+    let cmd = await mockExec({
+      source: "asdf",
+      failBuild: "false",
+      outputFormat: "json",
+      severityCutoff: "low",
+      version: "0.6.0",
+      onlyFixed: "false",
+      addCpesIfNone: "true",
+    });
+    expect(cmd).toBe("grype -o json --fail-on low --add-cpes-if-none asdf");
+  });
 });
