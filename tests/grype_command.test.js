@@ -32,6 +32,7 @@ describe("Grype command", () => {
       severityCutoff: "high",
       version: "0.6.0",
       onlyFixed: "false",
+      addCpesIfNone: "false",
     });
     expect(cmd).toBe("grype -o sarif --fail-on high dir:.");
   });
@@ -44,6 +45,7 @@ describe("Grype command", () => {
       severityCutoff: "low",
       version: "0.6.0",
       onlyFixed: "false",
+      addCpesIfNone: "false",
     });
     expect(cmd).toBe("grype -o json --fail-on low asdf");
   });

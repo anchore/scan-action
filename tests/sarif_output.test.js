@@ -20,6 +20,7 @@ const testSource = async (source, vulnerabilities) => {
     outputFormat: "sarif",
     severityCutoff: "medium",
     onlyFixed: "false",
+    addCpesIfNone: "false",
   });
 
   // expect to get sarif output

@@ -12,6 +12,7 @@ describe("Github action args", () => {
       "fail-build": "true",
       "output-format": "json",
       "severity-cutoff": "medium",
+      "add-cpes-if-none": "true",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
@@ -47,6 +48,7 @@ describe("Github action args", () => {
       "fail-build": "true",
       "output-format": "sarif",
       "severity-cutoff": "medium",
+      "add-cpes-if-none": "true",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
@@ -81,6 +83,7 @@ describe("Github action args", () => {
       "fail-build": "true",
       "output-format": "table",
       "severity-cutoff": "medium",
+      "add-cpes-if-none": "true",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
