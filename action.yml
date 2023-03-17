@@ -29,6 +29,10 @@ inputs:
     description: "Specify whether to only report vulnerabilities that have a fix available.  Default is false."
     required: false
     default: "false"
+  add-cpes-if-none:
+    description: "Specify whether to autogenerate missing CPEs.  Default is false."
+    required: false
+    default: "false"
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
