@@ -31,9 +31,9 @@ jobs:
         with:
           signoff: true
           delete-branch: true
-          branch: auto/latest
+          branch: auto/latest-grype
           labels: dependencies
-          commit-message: "Update Grype to ${{ steps.latest-version.outputs.LATEST_VERSION }}"
-          title: "Update Grype to ${{ steps.latest-version.outputs.LATEST_VERSION }}"
+          commit-message: "chore(deps): update Grype to ${{ steps.latest-version.outputs.LATEST_VERSION }}"
+          title: "chore(deps): update Grype to ${{ steps.latest-version.outputs.LATEST_VERSION }}"
           body: "Update Grype to ${{ steps.latest-version.outputs.LATEST_VERSION }}"
           token: ${{ steps.generate-token.outputs.token }}
