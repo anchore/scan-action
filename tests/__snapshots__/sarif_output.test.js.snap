@@ -2015,27 +2015,6 @@ exports[`SARIF yarn 1`] = `
           "message": {
             "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
-          "ruleId": "CVE-2020-7753-trim",
-        },
-        {
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/yarn-project/yarn.lock",
-                },
-                "region": {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": {
-            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
-          },
           "ruleId": "GHSA-w5p7-h5w8-2hfq-trim",
         },
       ],
@@ -2044,36 +2023,6 @@ exports[`SARIF yarn 1`] = `
           "informationUri": "https://github.com/anchore/grype",
           "name": "Grype",
           "rules": [
-            {
-              "fullDescription": {
-                "text": "All versions of package trim are vulnerable to Regular Expression Denial of Service (ReDoS) via trim().",
-              },
-              "help": {
-                "markdown": "**Vulnerability CVE-2020-7753**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | trim  | 0.0.2  |   | npm  | tests/fixtures/yarn-project/yarn.lock  | nvd:cpe  | [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)  |
-",
-                "text": "Vulnerability CVE-2020-7753
-Severity: high
-Package: trim
-Version: 0.0.2
-Fix Version: 
-Type: npm
-Location: tests/fixtures/yarn-project/yarn.lock
-Data Namespace: nvd:cpe
-Link: [CVE-2020-7753](https://nvd.nist.gov/vuln/detail/CVE-2020-7753)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2020-7753-trim",
-              "name": "JavascriptMatcherCpeMatch",
-              "properties": {
-                "security-severity": "7.5",
-              },
-              "shortDescription": {
-                "text": "CVE-2020-7753 high vulnerability for trim package",
-              },
-            },
             {
               "fullDescription": {
                 "text": "Regular Expression Denial of Service in trim",
