@@ -251,7 +251,7 @@ async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFor
     case "json": {
       const REPORT_FILE = "./results.json";
       fs.writeFileSync(REPORT_FILE, cmdOutput);
-      out.report = REPORT_FILE;
+      out.json = REPORT_FILE;
       break;
     }
     default: // e.g. table

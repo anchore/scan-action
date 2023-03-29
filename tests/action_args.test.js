@@ -5,7 +5,7 @@ const exec = require("@actions/exec");
 jest.setTimeout(30000);
 
 describe("Github action args", () => {
-  it("runs without sarif report", async () => {
+  it("runs with json report", async () => {
     const inputs = {
       image: "",
       path: "tests/fixtures/npm-project",
@@ -36,6 +36,7 @@ describe("Github action args", () => {
     });
 
     expect(outputs["sarif"]).toBeFalsy();
+    expect(outputs["json"]).toBe("./results.json");
 
     spyInput.mockRestore();
     spyOutput.mockRestore();
