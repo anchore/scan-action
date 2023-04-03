@@ -20,7 +20,7 @@ jobs:
           npm install
           npm run build
           # export the version for use with create-pull-request:
-          echo "::set-output name=LATEST_VERSION::$LATEST_VERSION"
+          echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_OUTPUT
         id: latest-version
       - uses: tibdex/github-app-token@v1
         id: generate-token
