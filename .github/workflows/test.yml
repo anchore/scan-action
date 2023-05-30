@@ -59,7 +59,7 @@ jobs:
         uses: ./
         with:
           image: "alpine:latest"
-          grype-version: v0.54.0 # set the same version to test that current Grype binary wasn't overwrite by the latest version
+          grype-version: v0.54.0 # set the same version to test that current Grype binary wasn't overwritten by the latest version
           fail-build: false # to prevent fail due to vuln:s on test image
 
       - name: "Check Grype version after scan-action"
