@@ -20,7 +20,6 @@ jobs:
       - uses: ./
         with:
           path: "tests/fixtures/npm-project"
-          debug: true
           severity-cutoff: "negligible"
           fail-build: false
 
