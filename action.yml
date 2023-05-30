@@ -33,6 +33,9 @@ inputs:
     description: "Specify whether to autogenerate missing CPEs.  Default is false."
     required: false
     default: "false"
+  grype-version:
+    description: "A specific version of Grype to install"
+    required: false
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
