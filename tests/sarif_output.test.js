@@ -15,7 +15,6 @@ const testSource = async (source, vulnerabilities) => {
 
   const out = await runScan({
     source,
-    debug: "false",
     failBuild: "false",
     outputFormat: "sarif",
     severityCutoff: "medium",
