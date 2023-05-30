@@ -60,6 +60,7 @@ jobs:
         with:
           image: "alpine:latest"
           grype-version: v0.54.0
+          fail-build: false # to prevent fail due to vuln:s on test image
 
       - name: "Check Grype version after scan-action"
         run: grype version | egrep "^Version:.*0.54.0$"
