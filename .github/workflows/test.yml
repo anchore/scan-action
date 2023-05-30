@@ -38,3 +38,27 @@ jobs:
       - run: npm ci
       - run: npm audit --production
       - run: npm test
+
+  test-as-action: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: ./
+
+      - name: "Donwload Grype"
+        uses: ./download-grype # anchore/scan-action/download-grype
+        with:
+          grype-version: v0.54.0
+
+      - name: "Check Grype version before scan-action"
+        run: grype version | egrep "^Version:.*0.54.0$"
+
+      - name: "Scan image"
+        uses: ./
+        with:
+          image: "alpine:latest"
+
+      - name: "Check Grype version after scan-action"
+        run: grype version | egrep "^Version:.*0.54.0$"
