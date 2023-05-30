@@ -14,7 +14,6 @@ jobs:
         uses: ./
         with:
           image: "debian:8"
-          debug: true
           fail-build: false
           #severity-cutoff: "Medium"
 
@@ -39,7 +38,6 @@ jobs:
         uses: ./
         with:
           path: "tests/fixtures/npm-project"
-          debug: true
           fail-build: false
           #severity-cutoff: "Medium"
 
