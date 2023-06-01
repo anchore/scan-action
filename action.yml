@@ -33,6 +33,10 @@ inputs:
     description: "Specify whether to autogenerate missing CPEs.  Default is false."
     required: false
     default: "false"
+  by-cve:
+    description: "Specify whether to orient results by CVE rather than GHSA.  Default is false."
+    required: false
+    default: "false"
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
