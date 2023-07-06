@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+    "audit": "better-npm-audit audit --production",
     "lint": "eslint index.js",
     "test": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest",
     "test:update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest --updateSnapshot",
@@ -39,6 +40,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "better-npm-audit": "^3.7.3",
     "@microsoft/jest-sarif": "^1.0.0-beta.0",
     "@vercel/ncc": "^0.36.1",
     "eslint": "^8.37.0",
