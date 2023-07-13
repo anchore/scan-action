@@ -2,5 +2,9 @@
   "1092310": {
     "active": true,
     "notes": "Ignored since we don't use the vulnerable regex method"
+  },
+  "1092460": {
+    "active": true,
+    "notes": "We are not using untrusted user data for any regexes in scan-action"
   }
 }
