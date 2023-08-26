@@ -44,10 +44,10 @@ The simplest workflow for scanning a `localbuild/testimage` container:
 
 ```yaml
 - name: Set up Docker Buildx
-  uses: docker/setup-buildx-action@v1
+  uses: docker/setup-buildx-action@v2
 
 - name: build local container
-  uses: docker/build-push-action@v2
+  uses: docker/build-push-action@v4
   with:
     tags: localbuild/testimage:latest
     push: false
