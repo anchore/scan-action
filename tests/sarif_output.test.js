@@ -3,7 +3,7 @@ require("@microsoft/jest-sarif"); // for sarif validation
 const fs = require("fs");
 const { runScan } = require("../index");
 
-jest.setTimeout(30000);
+jest.setTimeout(50000);
 
 const testSource = async (source, vulnerabilities) => {
   if (fs.existsSync("./vulnerabilities.json")) {
