@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm ci
-      - run: npm audit --production
+      - run: npm run audit
       - run: npm run build
       - run: git status --porcelain
       - run: git diff
@@ -36,7 +36,7 @@ jobs:
             docker buildx imagetools inspect localhost:5000/match-coverage/$distro:latest
           done
       - run: npm ci
-      - run: npm audit --production
+      - run: npm run audit
       - run: npm test
 
   test-as-action: # run actions to test some scenarios

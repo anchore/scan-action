@@ -91,6 +91,7 @@ async function run() {
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const onlyFixed = core.getInput("only-fixed") || "false";
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
+    const byCve = core.getInput("by-cve") || "false";
     const out = await runScan({
       source,
       failBuild,
@@ -98,6 +99,7 @@ async function run() {
       onlyFixed,
       outputFormat,
       addCpesIfNone,
+      byCve,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -107,7 +109,15 @@ async function run() {
   }
 }
 
-async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFormat, addCpesIfNone }) {
+async function runScan({
+  source,
+  failBuild,
+  severityCutoff,
+  onlyFixed,
+  outputFormat,
+  addCpesIfNone,
+  byCve,
+}) {
   const out = {};
 
   const env = {
@@ -139,6 +149,7 @@ async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFor
   failBuild = failBuild.toLowerCase() === "true";
   onlyFixed = onlyFixed.toLowerCase() === "true";
   addCpesIfNone = addCpesIfNone.toLowerCase() === "true";
+  byCve = byCve.toLowerCase() === "true";
 
   cmdArgs.push("-o", outputFormat);
 
@@ -173,6 +184,7 @@ async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFor
   core.debug("Severity Cutoff: " + severityCutoff);
   core.debug("Only Fixed: " + onlyFixed);
   core.debug("Add Missing CPEs: " + addCpesIfNone);
+  core.debug("Orient by CVE: " + byCve);
   core.debug("Output Format: " + outputFormat);
 
   core.debug("Creating options for GRYPE analyzer");
@@ -189,6 +201,9 @@ async function runScan({ source, failBuild, severityCutoff, onlyFixed, outputFor
   }
   if (addCpesIfNone === true) {
     cmdArgs.push("--add-cpes-if-none");
+  }
+  if (byCve === true) {
+    cmdArgs.push("--by-cve");
   }
   cmdArgs.push(source);
 
