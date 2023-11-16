@@ -71,7 +71,7 @@ describe("SARIF", () => {
   it("debian", async () => {
     const sarif = await testSource(
       "localhost:5000/match-coverage/debian:latest",
-      ["CVE-2020-36327-bundler", "GHSA-9w8r-397f-prfh-Pygments"]
+      ["GHSA-9w8r-397f-prfh-Pygments", "GHSA-fp4w-jxhp-m23p-bundler"]
     );
     expect(sarif).toMatchSnapshot();
   });

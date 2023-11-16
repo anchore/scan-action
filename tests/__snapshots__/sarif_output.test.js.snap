@@ -2,7 +2,7 @@
 
 exports[`SARIF alpine 1`] = `
 {
-  "$schema": "https://json.schemastore.org/sarif-2.1.0-rtm.5.json",
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
   "runs": [
     {
       "results": [
@@ -550,7 +550,7 @@ exports[`SARIF alpine 1`] = `
       "tool": {
         "driver": {
           "informationUri": "https://github.com/anchore/grype",
-          "name": "Grype",
+          "name": "grype",
           "rules": [
             {
               "fullDescription": {
@@ -1164,7 +1164,7 @@ Link: [CVE-2020-25708](http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25
 
 exports[`SARIF debian 1`] = `
 {
-  "$schema": "https://json.schemastore.org/sarif-2.1.0-rtm.5.json",
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
   "runs": [
     {
       "results": [
@@ -1194,122 +1194,6 @@ exports[`SARIF debian 1`] = `
             "text": "The path /var/lib/dpkg/status reports apt at version 1.8.2  which is a vulnerable (deb) package installed in the container",
           },
           "ruleId": "CVE-2011-3374-apt",
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "",
-                  "name": "/ruby/specifications/bundler.gemspec",
-                },
-              ],
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "image//ruby/specifications/bundler.gemspec",
-                },
-                "region": {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": {
-            "text": "The path /ruby/specifications/bundler.gemspec reports bundler at version 2.1.4  which is a vulnerable (gem) package installed in the container",
-          },
-          "ruleId": "CVE-2020-36327-bundler",
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "",
-                  "name": "/python/dist-info/METADATA",
-                },
-                {
-                  "fullyQualifiedName": "",
-                  "name": "/python/dist-info/top_level.txt",
-                },
-              ],
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "image//python/dist-info/METADATA",
-                },
-                "region": {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": {
-            "text": "The path /python/dist-info/METADATA reports Pygments at version 2.6.1  which is a vulnerable (python) package installed in the container",
-          },
-          "ruleId": "CVE-2021-20270-Pygments",
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "",
-                  "name": "/python/dist-info/METADATA",
-                },
-                {
-                  "fullyQualifiedName": "",
-                  "name": "/python/dist-info/top_level.txt",
-                },
-              ],
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "image//python/dist-info/METADATA",
-                },
-                "region": {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": {
-            "text": "The path /python/dist-info/METADATA reports Pygments at version 2.6.1  which is a vulnerable (python) package installed in the container",
-          },
-          "ruleId": "CVE-2021-27291-Pygments",
-        },
-        {
-          "locations": [
-            {
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "",
-                  "name": "/ruby/specifications/bundler.gemspec",
-                },
-              ],
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "image//ruby/specifications/bundler.gemspec",
-                },
-                "region": {
-                  "endColumn": 1,
-                  "endLine": 1,
-                  "startColumn": 1,
-                  "startLine": 1,
-                },
-              },
-            },
-          ],
-          "message": {
-            "text": "The path /ruby/specifications/bundler.gemspec reports bundler at version 2.1.4  which is a vulnerable (gem) package installed in the container",
-          },
-          "ruleId": "CVE-2021-43809-bundler",
         },
         {
           "locations": [
@@ -1431,7 +1315,7 @@ exports[`SARIF debian 1`] = `
       "tool": {
         "driver": {
           "informationUri": "https://github.com/anchore/grype",
-          "name": "Grype",
+          "name": "grype",
           "rules": [
             {
               "fullDescription": {
@@ -1461,126 +1345,6 @@ Link: [CVE-2011-3374](https://security-tracker.debian.org/tracker/CVE-2011-3374)
               },
               "shortDescription": {
                 "text": "CVE-2011-3374 low vulnerability for apt package",
-              },
-            },
-            {
-              "fullDescription": {
-                "text": "Bundler 1.16.0 through 2.2.9 and 2.2.11 through 2.2.16 sometimes chooses a dependency source based on the highest gem version number, which means that a rogue gem found at a public source may be chosen, even if the intended choice was a private gem that is a dependency of another private gem that is explicitly depended on by the application. NOTE: it is not correct to use CVE-2021-24105 for every "Dependency Confusion" issue in every product.",
-              },
-              "help": {
-                "markdown": "**Vulnerability CVE-2020-36327**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | bundler  | 2.1.4  |   | gem  | /ruby/specifications/bundler.gemspec  | nvd:cpe  | [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)  |
-",
-                "text": "Vulnerability CVE-2020-36327
-Severity: high
-Package: bundler
-Version: 2.1.4
-Fix Version: 
-Type: gem
-Location: /ruby/specifications/bundler.gemspec
-Data Namespace: nvd:cpe
-Link: [CVE-2020-36327](https://nvd.nist.gov/vuln/detail/CVE-2020-36327)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2020-36327-bundler",
-              "name": "RubyGemMatcherCpeMatch",
-              "properties": {
-                "security-severity": "9.3",
-              },
-              "shortDescription": {
-                "text": "CVE-2020-36327 high vulnerability for bundler package",
-              },
-            },
-            {
-              "fullDescription": {
-                "text": "An infinite loop in SMLLexer in Pygments versions 1.5 to 2.7.3 may lead to denial of service when performing syntax highlighting of a Standard ML (SML) source file, as demonstrated by input that only contains the "exception" keyword.",
-              },
-              "help": {
-                "markdown": "**Vulnerability CVE-2021-20270**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | Pygments  | 2.6.1  |   | python  | /python/dist-info/METADATA  | nvd:cpe  | [CVE-2021-20270](https://nvd.nist.gov/vuln/detail/CVE-2021-20270)  |
-",
-                "text": "Vulnerability CVE-2021-20270
-Severity: high
-Package: Pygments
-Version: 2.6.1
-Fix Version: 
-Type: python
-Location: /python/dist-info/METADATA
-Data Namespace: nvd:cpe
-Link: [CVE-2021-20270](https://nvd.nist.gov/vuln/detail/CVE-2021-20270)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-20270-Pygments",
-              "name": "PythonMatcherCpeMatch",
-              "properties": {
-                "security-severity": "7.5",
-              },
-              "shortDescription": {
-                "text": "CVE-2021-20270 high vulnerability for Pygments package",
-              },
-            },
-            {
-              "fullDescription": {
-                "text": "In pygments 1.1+, fixed in 2.7.4, the lexers used to parse programming languages rely heavily on regular expressions. Some of the regular expressions have exponential or cubic worst-case complexity and are vulnerable to ReDoS. By crafting malicious input, an attacker can cause a denial of service.",
-              },
-              "help": {
-                "markdown": "**Vulnerability CVE-2021-27291**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | Pygments  | 2.6.1  |   | python  | /python/dist-info/METADATA  | nvd:cpe  | [CVE-2021-27291](https://nvd.nist.gov/vuln/detail/CVE-2021-27291)  |
-",
-                "text": "Vulnerability CVE-2021-27291
-Severity: high
-Package: Pygments
-Version: 2.6.1
-Fix Version: 
-Type: python
-Location: /python/dist-info/METADATA
-Data Namespace: nvd:cpe
-Link: [CVE-2021-27291](https://nvd.nist.gov/vuln/detail/CVE-2021-27291)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-27291-Pygments",
-              "name": "PythonMatcherCpeMatch",
-              "properties": {
-                "security-severity": "7.5",
-              },
-              "shortDescription": {
-                "text": "CVE-2021-27291 high vulnerability for Pygments package",
-              },
-            },
-            {
-              "fullDescription": {
-                "text": "\`Bundler\` is a package for managing application dependencies in Ruby. In \`bundler\` versions before 2.2.33, when working with untrusted and apparently harmless \`Gemfile\`'s, it is not expected that they lead to execution of external code, unless that's explicit in the ruby code inside the \`Gemfile\` itself. However, if the \`Gemfile\` includes \`gem\` entries that use the \`git\` option with invalid, but seemingly harmless, values with a leading dash, this can be false. To handle dependencies that come from a Git repository instead of a registry, Bundler uses various commands, such as \`git clone\`. These commands are being constructed using user input (e.g. the repository URL). When building the commands, Bundler versions before 2.2.33 correctly avoid Command Injection vulnerabilities by passing an array of arguments instead of a command string. However, there is the possibility that a user input starts with a dash (\`-\`) and is therefore treated as an optional argument instead of a positional one. This can lead to Code Execution because some of the commands have options that can be leveraged to run arbitrary executables. Since this value comes from the \`Gemfile\` file, it can contain any character, including a leading dash. To exploit this vulnerability, an attacker has to craft a directory containing a \`Gemfile\` file that declares a dependency that is located in a Git repository. This dependency has to have a Git URL in the form of \`-u./payload\`. This URL will be used to construct a Git clone command but will be interpreted as the upload-pack argument. Then this directory needs to be shared with the victim, who then needs to run a command that evaluates the Gemfile, such as \`bundle lock\`, inside. This vulnerability can lead to Arbitrary Code Execution, which could potentially lead to the takeover of the system. However, the exploitability is very low, because it requires a lot of user interaction. Bundler 2.2.33 has patched this problem by inserting \`--\` as an argument before any positional arguments to those Git commands that were affected by this issue. Regardless of whether users can upgrade or not, they should review any untrustred \`Gemfile\`'s before running any \`bundler\` commands that may read them, since they can contain arbitrary ruby code.",
-              },
-              "help": {
-                "markdown": "**Vulnerability CVE-2021-43809**
-| Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | bundler  | 2.1.4  |   | gem  | /ruby/specifications/bundler.gemspec  | nvd:cpe  | [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)  |
-",
-                "text": "Vulnerability CVE-2021-43809
-Severity: high
-Package: bundler
-Version: 2.1.4
-Fix Version: 
-Type: gem
-Location: /ruby/specifications/bundler.gemspec
-Data Namespace: nvd:cpe
-Link: [CVE-2021-43809](https://nvd.nist.gov/vuln/detail/CVE-2021-43809)",
-              },
-              "helpUri": "https://github.com/anchore/grype",
-              "id": "CVE-2021-43809-bundler",
-              "name": "RubyGemMatcherCpeMatch",
-              "properties": {
-                "security-severity": "9.3",
-              },
-              "shortDescription": {
-                "text": "CVE-2021-43809 high vulnerability for bundler package",
               },
             },
             {
@@ -1715,7 +1479,7 @@ Link: [GHSA-pq64-v7f5-gqh8](https://github.com/advisories/GHSA-pq64-v7f5-gqh8)",
 
 exports[`SARIF npm 1`] = `
 {
-  "$schema": "https://json.schemastore.org/sarif-2.1.0-rtm.5.json",
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
   "runs": [
     {
       "results": [
@@ -1724,7 +1488,7 @@ exports[`SARIF npm 1`] = `
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "/package-lock.json",
                 },
                 "region": {
                   "endColumn": 1,
@@ -1736,7 +1500,7 @@ exports[`SARIF npm 1`] = `
             },
           ],
           "message": {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path /package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-3jfq-g458-7qm9-tar",
         },
@@ -1745,7 +1509,7 @@ exports[`SARIF npm 1`] = `
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "/package-lock.json",
                 },
                 "region": {
                   "endColumn": 1,
@@ -1757,7 +1521,7 @@ exports[`SARIF npm 1`] = `
             },
           ],
           "message": {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path /package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-5955-9wpr-37jh-tar",
         },
@@ -1766,7 +1530,7 @@ exports[`SARIF npm 1`] = `
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "/package-lock.json",
                 },
                 "region": {
                   "endColumn": 1,
@@ -1778,7 +1542,7 @@ exports[`SARIF npm 1`] = `
             },
           ],
           "message": {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path /package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-9r2w-394v-53qc-tar",
         },
@@ -1787,7 +1551,7 @@ exports[`SARIF npm 1`] = `
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "/package-lock.json",
                 },
                 "region": {
                   "endColumn": 1,
@@ -1799,7 +1563,7 @@ exports[`SARIF npm 1`] = `
             },
           ],
           "message": {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path /package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-qq89-hq3f-393p-tar",
         },
@@ -1808,7 +1572,7 @@ exports[`SARIF npm 1`] = `
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/npm-project/package-lock.json",
+                  "uri": "/package-lock.json",
                 },
                 "region": {
                   "endColumn": 1,
@@ -1820,7 +1584,7 @@ exports[`SARIF npm 1`] = `
             },
           ],
           "message": {
-            "text": "The path tests/fixtures/npm-project/package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
+            "text": "The path /package-lock.json reports tar at version 6.1.0  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-r628-mhmh-qjhw-tar",
         },
@@ -1828,7 +1592,7 @@ exports[`SARIF npm 1`] = `
       "tool": {
         "driver": {
           "informationUri": "https://github.com/anchore/grype",
-          "name": "Grype",
+          "name": "grype",
           "rules": [
             {
               "fullDescription": {
@@ -1838,7 +1602,7 @@ exports[`SARIF npm 1`] = `
                 "markdown": "**Vulnerability GHSA-3jfq-g458-7qm9**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.1  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)  |
+| high  | tar  | 6.1.0  | 6.1.1  | npm  | /package-lock.json  | github:language:javascript  | [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)  |
 ",
                 "text": "Vulnerability GHSA-3jfq-g458-7qm9
 Severity: high
@@ -1846,7 +1610,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.1
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: /package-lock.json
 Data Namespace: github:language:javascript
 Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
               },
@@ -1868,7 +1632,7 @@ Link: [GHSA-3jfq-g458-7qm9](https://github.com/advisories/GHSA-3jfq-g458-7qm9)",
                 "markdown": "**Vulnerability GHSA-5955-9wpr-37jh**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)  |
+| high  | tar  | 6.1.0  | 6.1.9  | npm  | /package-lock.json  | github:language:javascript  | [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)  |
 ",
                 "text": "Vulnerability GHSA-5955-9wpr-37jh
 Severity: high
@@ -1876,7 +1640,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: /package-lock.json
 Data Namespace: github:language:javascript
 Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
               },
@@ -1898,7 +1662,7 @@ Link: [GHSA-5955-9wpr-37jh](https://github.com/advisories/GHSA-5955-9wpr-37jh)",
                 "markdown": "**Vulnerability GHSA-9r2w-394v-53qc**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.7  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)  |
+| high  | tar  | 6.1.0  | 6.1.7  | npm  | /package-lock.json  | github:language:javascript  | [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)  |
 ",
                 "text": "Vulnerability GHSA-9r2w-394v-53qc
 Severity: high
@@ -1906,7 +1670,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.7
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: /package-lock.json
 Data Namespace: github:language:javascript
 Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
               },
@@ -1928,7 +1692,7 @@ Link: [GHSA-9r2w-394v-53qc](https://github.com/advisories/GHSA-9r2w-394v-53qc)",
                 "markdown": "**Vulnerability GHSA-qq89-hq3f-393p**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.9  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)  |
+| high  | tar  | 6.1.0  | 6.1.9  | npm  | /package-lock.json  | github:language:javascript  | [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)  |
 ",
                 "text": "Vulnerability GHSA-qq89-hq3f-393p
 Severity: high
@@ -1936,7 +1700,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.9
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: /package-lock.json
 Data Namespace: github:language:javascript
 Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
               },
@@ -1958,7 +1722,7 @@ Link: [GHSA-qq89-hq3f-393p](https://github.com/advisories/GHSA-qq89-hq3f-393p)",
                 "markdown": "**Vulnerability GHSA-r628-mhmh-qjhw**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | tar  | 6.1.0  | 6.1.2  | npm  | tests/fixtures/npm-project/package-lock.json  | github:language:javascript  | [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)  |
+| high  | tar  | 6.1.0  | 6.1.2  | npm  | /package-lock.json  | github:language:javascript  | [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)  |
 ",
                 "text": "Vulnerability GHSA-r628-mhmh-qjhw
 Severity: high
@@ -1966,7 +1730,7 @@ Package: tar
 Version: 6.1.0
 Fix Version: 6.1.2
 Type: npm
-Location: tests/fixtures/npm-project/package-lock.json
+Location: /package-lock.json
 Data Namespace: github:language:javascript
 Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
               },
@@ -1992,7 +1756,7 @@ Link: [GHSA-r628-mhmh-qjhw](https://github.com/advisories/GHSA-r628-mhmh-qjhw)",
 
 exports[`SARIF yarn 1`] = `
 {
-  "$schema": "https://json.schemastore.org/sarif-2.1.0-rtm.5.json",
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
   "runs": [
     {
       "results": [
@@ -2001,7 +1765,7 @@ exports[`SARIF yarn 1`] = `
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/yarn-project/yarn.lock",
+                  "uri": "/yarn.lock",
                 },
                 "region": {
                   "endColumn": 1,
@@ -2013,7 +1777,7 @@ exports[`SARIF yarn 1`] = `
             },
           ],
           "message": {
-            "text": "The path tests/fixtures/yarn-project/yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
+            "text": "The path /yarn.lock reports trim at version 0.0.2  which would result in a vulnerable (npm) package installed",
           },
           "ruleId": "GHSA-w5p7-h5w8-2hfq-trim",
         },
@@ -2021,7 +1785,7 @@ exports[`SARIF yarn 1`] = `
       "tool": {
         "driver": {
           "informationUri": "https://github.com/anchore/grype",
-          "name": "Grype",
+          "name": "grype",
           "rules": [
             {
               "fullDescription": {
@@ -2031,7 +1795,7 @@ exports[`SARIF yarn 1`] = `
                 "markdown": "**Vulnerability GHSA-w5p7-h5w8-2hfq**
 | Severity | Package | Version | Fix Version | Type | Location | Data Namespace | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| high  | trim  | 0.0.2  | 0.0.3  | npm  | tests/fixtures/yarn-project/yarn.lock  | github:language:javascript  | [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)  |
+| high  | trim  | 0.0.2  | 0.0.3  | npm  | /yarn.lock  | github:language:javascript  | [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)  |
 ",
                 "text": "Vulnerability GHSA-w5p7-h5w8-2hfq
 Severity: high
@@ -2039,7 +1803,7 @@ Package: trim
 Version: 0.0.2
 Fix Version: 0.0.3
 Type: npm
-Location: tests/fixtures/yarn-project/yarn.lock
+Location: /yarn.lock
 Data Namespace: github:language:javascript
 Link: [GHSA-w5p7-h5w8-2hfq](https://github.com/advisories/GHSA-w5p7-h5w8-2hfq)",
               },
