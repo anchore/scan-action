@@ -40,6 +40,7 @@ inputs:
   grype-version:
     description: "A specific version of Grype to install"
     required: false
+    default: "false"
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"
