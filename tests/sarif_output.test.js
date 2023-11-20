@@ -72,11 +72,7 @@ describe("SARIF", () => {
   it("debian", async () => {
     const sarif = await testSource(
       "localhost:5000/match-coverage/debian:latest",
-<<<<<<< HEAD
-      ["GHSA-9w8r-397f-prfh-Pygments", "GHSA-fp4w-jxhp-m23p-bundler"]
-=======
       ["GHSA-fp4w-jxhp-m23p-bundler", "GHSA-9w8r-397f-prfh-Pygments"]
->>>>>>> 62370b53ab026f5d09b9fb43a7b5ec4b73c1a8e0
     );
     expect(sarif).toBeValidSarifLog();
   });
