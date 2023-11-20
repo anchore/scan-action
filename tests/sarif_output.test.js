@@ -3,7 +3,7 @@ require("@microsoft/jest-sarif"); // for sarif validation
 const fs = require("fs");
 const { runScan } = require("../index");
 
-jest.setTimeout(90000);
+jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
 const testSource = async (source, vulnerabilities) => {
   if (fs.existsSync("./vulnerabilities.json")) {

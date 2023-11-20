@@ -2,7 +2,7 @@ const { run } = require("../index");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
 
-jest.setTimeout(90000);
+jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
 describe("Github action args", () => {
   it("runs with json report", async () => {
