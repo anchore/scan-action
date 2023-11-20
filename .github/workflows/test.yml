@@ -1,6 +1,11 @@
 name: "Tests"
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   build: # make sure build/ci work properly and there is no faked build ncc built scripts
