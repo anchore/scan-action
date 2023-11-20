@@ -2,6 +2,12 @@ jest.mock("@actions/core");
 jest.mock("@actions/exec");
 jest.mock("@actions/tool-cache");
 
+beforeAll(async () => {
+  const { grypeVersion } = require("../GrypeVersion");
+  const { installGrype } = require("../index");
+  await installGrype(grypeVersion);
+});
+
 const core = require("@actions/core");
 const path = require("path");
 const fs = require("fs");
