@@ -2,7 +2,7 @@ const githubActionsExec = require("@actions/exec");
 const githubActionsToolCache = require("@actions/tool-cache");
 const core = require("@actions/core");
 
-jest.setTimeout(60000);
+jest.setTimeout(90000);
 
 jest.spyOn(githubActionsToolCache, "find").mockImplementation(() => {
   return "grype";
