@@ -43,3 +43,29 @@ jobs:
       - run: npm ci
       - run: npm run audit
       - run: npm test
+
+  test-as-action: # run actions to test some scenarios
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          path: ./
+
+      - name: "Donwload Grype v0.54.0"
+        uses: ./download-grype # anchore/scan-action/download-grype
+        with:
+          grype-version: v0.54.0
+
+      - name: "Check Grype version before scan-action"
+        run: grype version | egrep "^Version:.*0.54.0$"
+
+      - name: "Scan test image"
+        uses: ./
+        with:
+          image: "alpine:latest"
+          grype-version: v0.54.0 # set the same version to test that current Grype binary wasn't overwritten by the latest version
+          fail-build: false # to prevent fail due to vuln:s on test image
+
+      - name: "Check Grype version after scan-action"
+        run: grype version | egrep "^Version:.*0.54.0$"

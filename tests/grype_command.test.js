@@ -29,7 +29,6 @@ describe("Grype command", () => {
   it("is invoked with dir", async () => {
     let cmd = await mockExec({
       source: "dir:.",
-      debug: "false",
       failBuild: "false",
       outputFormat: "sarif",
       severityCutoff: "high",

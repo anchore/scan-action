@@ -8,13 +8,11 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
       - name: Run the local Scan Action with SARIF generation enabled
         id: scan
         uses: ./
         with:
           image: "debian:8"
-          debug: true
           fail-build: false
           #severity-cutoff: "Medium"
 
@@ -33,13 +31,11 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
       - name: Run the local Scan Action with SARIF generation enabled
         id: scan
         uses: ./
         with:
           path: "tests/fixtures/npm-project"
-          debug: true
           fail-build: false
           #severity-cutoff: "Medium"
 

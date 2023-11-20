@@ -5,6 +5,7 @@ const { runScan } = require("../index");
 
 jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
+
 const testSource = async (source, vulnerabilities) => {
   if (fs.existsSync("./vulnerabilities.json")) {
     fs.unlinkSync("./vulnerabilities.json");
@@ -15,7 +16,6 @@ const testSource = async (source, vulnerabilities) => {
 
   const out = await runScan({
     source,
-    debug: "false",
     failBuild: "false",
     outputFormat: "sarif",
     severityCutoff: "medium",

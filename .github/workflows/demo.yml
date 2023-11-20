@@ -10,7 +10,6 @@ jobs:
       - uses: ./
         with:
           image: "alpine:latest"
-          debug: true
           fail-build: false
 
   test-directory:
@@ -20,7 +19,6 @@ jobs:
       - uses: ./
         with:
           path: "tests/fixtures/npm-project"
-          debug: true
           severity-cutoff: "negligible"
           fail-build: false
 
@@ -31,5 +29,4 @@ jobs:
       - uses: ./
         with:
           sbom: tests/fixtures/test_sbom.spdx.json
-          debug: true
           fail-build: false
