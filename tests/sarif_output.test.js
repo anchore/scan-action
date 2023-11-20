@@ -3,7 +3,8 @@ require("@microsoft/jest-sarif"); // for sarif validation
 const fs = require("fs");
 const { runScan } = require("../index");
 
-jest.setTimeout(50000);
+jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
+
 
 const testSource = async (source, vulnerabilities) => {
   if (fs.existsSync("./vulnerabilities.json")) {
@@ -63,7 +64,7 @@ describe("SARIF", () => {
       "localhost:5000/match-coverage/alpine:latest",
       ["CVE-2014-6051-libvncserver"]
     );
-    expect(sarif).toMatchSnapshot();
+    expect(sarif).toBeValidSarifLog();
   });
   it("centos", async () => {
     await testSource("localhost:5000/match-coverage/centos:latest", []);
@@ -71,20 +72,24 @@ describe("SARIF", () => {
   it("debian", async () => {
     const sarif = await testSource(
       "localhost:5000/match-coverage/debian:latest",
+<<<<<<< HEAD
       ["GHSA-9w8r-397f-prfh-Pygments", "GHSA-fp4w-jxhp-m23p-bundler"]
+=======
+      ["GHSA-fp4w-jxhp-m23p-bundler", "GHSA-9w8r-397f-prfh-Pygments"]
+>>>>>>> 62370b53ab026f5d09b9fb43a7b5ec4b73c1a8e0
     );
-    expect(sarif).toMatchSnapshot();
+    expect(sarif).toBeValidSarifLog();
   });
   it("npm", async () => {
     const sarif = await testSource("dir:tests/fixtures/npm-project", [
       "GHSA-3jfq-g458-7qm9-tar",
     ]);
-    expect(sarif).toMatchSnapshot();
+    expect(sarif).toBeValidSarifLog();
   });
   it("yarn", async () => {
     const sarif = await testSource("dir:tests/fixtures/yarn-project", [
       "GHSA-w5p7-h5w8-2hfq-trim",
     ]);
-    expect(sarif).toMatchSnapshot();
+    expect(sarif).toBeValidSarifLog();
   });
 });

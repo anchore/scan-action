@@ -1,7 +1,8 @@
 const githubActionsExec = require("@actions/exec");
 const githubActionsToolCache = require("@actions/tool-cache");
+const core = require("@actions/core");
 
-jest.setTimeout(30000);
+jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
 jest.spyOn(githubActionsToolCache, "find").mockImplementation(() => {
   return "grype";
@@ -23,6 +24,8 @@ const mockExec = async (args) => {
 };
 
 describe("Grype command", () => {
+  const cmdPrefix = core.isDebug() ? "grype -vv" : "grype";
+
   it("is invoked with dir", async () => {
     let cmd = await mockExec({
       source: "dir:.",
@@ -34,7 +37,7 @@ describe("Grype command", () => {
       addCpesIfNone: "false",
       byCve: "false",
     });
-    expect(cmd).toBe("grype -o sarif --fail-on high dir:.");
+    expect(cmd).toBe(`${cmdPrefix} -o sarif --fail-on high dir:.`);
   });
 
   it("is invoked with values", async () => {
@@ -48,7 +51,7 @@ describe("Grype command", () => {
       addCpesIfNone: "false",
       byCve: "false",
     });
-    expect(cmd).toBe("grype -o json --fail-on low asdf");
+    expect(cmd).toBe(`${cmdPrefix} -o json --fail-on low asdf`);
   });
 
   it("adds missing CPEs if requested", async () => {
@@ -62,6 +65,8 @@ describe("Grype command", () => {
       addCpesIfNone: "true",
       byCve: "false",
     });
-    expect(cmd).toBe("grype -o json --fail-on low --add-cpes-if-none asdf");
+    expect(cmd).toBe(
+      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none asdf`
+    );
   });
 });
