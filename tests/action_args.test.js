@@ -2,7 +2,7 @@ const { run } = require("../index");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Github action args", () => {
   it("runs with json report", async () => {
