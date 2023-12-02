@@ -106,6 +106,7 @@ async function run() {
     const onlyFixed = core.getInput("only-fixed") || "false";
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
+    const vex = core.getInput("vex") || "";
     const out = await runScan({
       source,
       failBuild,
@@ -114,6 +115,7 @@ async function run() {
       outputFormat,
       addCpesIfNone,
       byCve,
+      vex,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -131,6 +133,7 @@ async function runScan({
   outputFormat,
   addCpesIfNone,
   byCve,
+  vex,
 }) {
   const out = {};
 
@@ -218,6 +221,10 @@ async function runScan({
   }
   if (byCve === true) {
     cmdArgs.push("--by-cve");
+  }
+  if (vex) {
+    cmdArgs.push("--vex");
+    cmdArgs.push(vex);
   }
   cmdArgs.push(source);
 

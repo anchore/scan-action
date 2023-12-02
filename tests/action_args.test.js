@@ -13,6 +13,7 @@ describe("Github action args", () => {
       "output-format": "json",
       "severity-cutoff": "medium",
       "add-cpes-if-none": "true",
+      "vex": "test.vex",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
