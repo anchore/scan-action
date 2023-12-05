@@ -40,6 +40,9 @@ inputs:
   grype-version:
     description: "A specific version of Grype to install"
     required: false
+  vex:
+    description: "Specify a list of VEX documents to consider when producing scanning results."
+    required: false
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"

@@ -69,4 +69,21 @@ describe("Grype command", () => {
       `${cmdPrefix} -o json --fail-on low --add-cpes-if-none asdf`
     );
   });
+
+  it("adds VEX processing if requested", async () => {
+    let cmd = await mockExec({
+      source: "asdf",
+      failBuild: "false",
+      outputFormat: "json",
+      severityCutoff: "low",
+      version: "0.6.0",
+      onlyFixed: "false",
+      addCpesIfNone: "true",
+      byCve: "false",
+      vex: "test.vex",
+    });
+    expect(cmd).toBe(
+      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none --vex test.vex asdf`
+    );
+  });
 });
