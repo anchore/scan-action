@@ -51,6 +51,6 @@
     "tslib": "^2.6.2"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.js": "prettier --write"
   }
 }
