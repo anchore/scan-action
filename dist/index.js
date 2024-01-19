@@ -74,7 +74,7 @@ function sourceInput() {
 
   if (multipleDefined(image, path, sbom)) {
     throw new Error(
-      "The following options are mutually exclusive: image, path, sbom"
+      "The following options are mutually exclusive: image, path, sbom",
     );
   }
 
@@ -150,7 +150,7 @@ async function runScan({
     env.GRYPE_REGISTRY_AUTH_PASSWORD = registryPass;
     if (!registryUser || !registryPass) {
       core.warning(
-        "WARNING: registry-username and registry-password must be specified together"
+        "WARNING: registry-username and registry-password must be specified together",
       );
     }
   }
@@ -174,22 +174,22 @@ async function runScan({
     !SEVERITY_LIST.some(
       (item) =>
         typeof severityCutoff.toLowerCase() === "string" &&
-        item === severityCutoff.toLowerCase()
+        item === severityCutoff.toLowerCase(),
     )
   ) {
     throw new Error(
-      `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
+      `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`,
     );
   }
   if (
     !FORMAT_LIST.some(
       (item) =>
         typeof outputFormat.toLowerCase() === "string" &&
-        item === outputFormat.toLowerCase()
+        item === outputFormat.toLowerCase(),
     )
   ) {
     throw new Error(
-      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`
+      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`,
     );
   }
 
@@ -288,14 +288,14 @@ async function runScan({
       core.warning("grype had a non-zero exit status when running");
     } else if (failBuild === true) {
       core.setFailed(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`
+        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
       );
     } else {
       // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
       // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
       // Actions UI
       core.warning(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`
+        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
       );
     }
   }
