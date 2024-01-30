@@ -52,5 +52,8 @@
   },
   "lint-staged": {
     "*.js": "prettier --write"
+  },
+  "engines": {
+    "node": ">=v20.11.0"
   }
 }
