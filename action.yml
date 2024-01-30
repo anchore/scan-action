@@ -49,5 +49,5 @@ outputs:
   json:
     description: "Path to a JSON report file for the image"
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
