@@ -44,7 +44,6 @@ jobs:
       - run: npm run audit
       - run: npm test
         id: npm_test
-        continue-on-error: true
       - name: Check test status
         if: always()
         run: |
