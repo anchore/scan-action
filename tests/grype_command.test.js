@@ -2,7 +2,7 @@ const githubActionsExec = require("@actions/exec");
 const githubActionsToolCache = require("@actions/tool-cache");
 const core = require("@actions/core");
 
-jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
+jest.setTimeout(120000); // 120 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
 jest.spyOn(githubActionsToolCache, "find").mockImplementation(() => {
   return "grype";
@@ -66,7 +66,7 @@ describe("Grype command", () => {
       byCve: "false",
     });
     expect(cmd).toBe(
-      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none asdf`
+      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none asdf`,
     );
   });
 
@@ -83,7 +83,7 @@ describe("Grype command", () => {
       vex: "test.vex",
     });
     expect(cmd).toBe(
-      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none --vex test.vex asdf`
+      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none --vex test.vex asdf`,
     );
   });
 });
