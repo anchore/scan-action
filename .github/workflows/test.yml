@@ -43,6 +43,17 @@ jobs:
       - run: npm ci
       - run: npm run audit
       - run: npm test
+        id: npm_test
+        continue-on-error: true
+      - name: Check test status
+        if: always()
+        run: |
+          if [[ ${{ steps.npm_test.outcome }} == "failure" ]]; then
+            echo "Test failed as expected"
+          else
+            echo "Tests should have failed but not!"
+            exit 1
+          fi
 
   test-as-action: # run actions to test some scenarios
     runs-on: ubuntu-latest
