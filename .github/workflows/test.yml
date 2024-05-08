@@ -11,7 +11,7 @@ jobs:
   build: # make sure build/ci work properly and there is no faked build ncc built scripts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+      - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
       - run: npm ci
       - run: npm run audit
       - run: npm run build
@@ -27,7 +27,7 @@ jobs:
         ports:
           - 5000:5000
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+      - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
       - name: Build images
         run: |
           for distro in alpine centos debian; do
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+      - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
         with:
           path: ./
 
