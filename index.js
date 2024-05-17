@@ -5,7 +5,8 @@ const fs = require("fs");
 const stream = require("stream");
 const { GRYPE_VERSION } = require("./GrypeVersion");
 
-const grypeBinary = "grype";
+const exeSuffix = process.platform == "win32" ? ".exe" : "";
+const grypeBinary = "grype" + exeSuffix;
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
 async function downloadGrype(version) {
@@ -16,15 +17,13 @@ async function downloadGrype(version) {
   // TODO: when grype starts supporting unreleased versions, support it here
   // Download the installer, and run
   const installPath = await cache.downloadTool(url);
-  // Make sure the tool's executable bit is set
-  await exec.exec(`chmod +x ${installPath}`);
 
-  let cmd = `${installPath} -b ${installPath}_grype ${version}`;
+  let cmd = `sh ${installPath} -d -b ${installPath}_grype ${version}`;
   await exec.exec(cmd);
-  let grypePath = `${installPath}_grype/grype`;
+  let grypePath = `${installPath}_grype/${grypeBinary}`;
 
   // Cache the downloaded file
-  return cache.cacheFile(grypePath, `grype`, `grype`, version);
+  return cache.cacheFile(grypePath, grypeBinary, grypeBinary, version);
 }
 
 async function installGrype(version) {
