@@ -136,7 +136,7 @@ jobs:
           fail-build: false
 
       - name: Validate file exists
-        run: ls ${{ steps.scan.outputs.sarif }}
+        run: ls '${{ steps.scan.outputs.sarif }}'
 
   test-sarif-directory:
     runs-on: ubuntu-latest
@@ -149,7 +149,7 @@ jobs:
           fail-build: false
 
       - name: Validate file exists
-        run: ls ${{ steps.scan.outputs.sarif }}
+        run: ls '${{ steps.scan.outputs.sarif }}'
 
   test-json-directory:
     runs-on: ubuntu-latest
@@ -162,4 +162,4 @@ jobs:
           fail-build: false
 
       - name: Validate file exists
-        run: ls ${{ steps.scan.outputs.json }}
+        run: ls '${{ steps.scan.outputs.json }}'
