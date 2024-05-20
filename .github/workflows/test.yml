@@ -75,6 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           image: alpine:latest
           fail-build: false
@@ -87,6 +88,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           path: tests/fixtures/npm-project
           fail-build: false
@@ -99,6 +101,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           sbom: tests/fixtures/test_sbom.spdx.json
           fail-build: false
@@ -111,6 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           output-format: table
           image: alpine:latest
@@ -121,6 +125,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           image: alpine:latest
           fail-build: false
@@ -133,6 +138,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           path: tests/fixtures/npm-project
           fail-build: false
@@ -145,6 +151,7 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - uses: ./
+        id: scan
         with:
           output-format: json
           path: tests/fixtures/npm-project
@@ -157,8 +164,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - id: scan
-        uses: ./
+      - uses: ./
+        id: scan
         with:
           image: debian:8
           fail-build: false
@@ -170,8 +177,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - id: scan
-        uses: ./
+      - uses: ./
+        id: scan
         with:
           path: tests/fixtures/npm-project
           fail-build: false
@@ -183,8 +190,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - id: scan
-        uses: ./
+      - uses: ./
+        id: scan
         with:
           output-format: json
           path: tests/fixtures/npm-project
