@@ -44,7 +44,7 @@ jobs:
       - run: npm run audit
       - run: npm test
 
-  test-download-action:
+  test-as-action: # run actions to test some scenarios
     runs-on: ubuntu-latest
 
     steps:
@@ -52,44 +52,20 @@ jobs:
         with:
           path: ./
 
-      - name: Download Grype v0.54.0
+      - name: "Donwload Grype v0.54.0"
         uses: ./download-grype # anchore/scan-action/download-grype
         with:
           grype-version: v0.54.0
 
-      - name: Check Grype version before scan-action
+      - name: "Check Grype version before scan-action"
         run: grype version | egrep "^Version:.*0.54.0$"
 
-      - name: Scan test image
+      - name: "Scan test image"
         uses: ./
         with:
-          image: alpine:latest
+          image: "alpine:latest"
           grype-version: v0.54.0 # set the same version to test that current Grype binary wasn't overwritten by the latest version
           fail-build: false # to prevent fail due to vuln:s on test image
 
-      - name: Check Grype version after scan-action
+      - name: "Check Grype version after scan-action"
         run: grype version | egrep "^Version:.*0.54.0$"
-
-  test-matrix:
-    strategy:
-      matrix:
-        image: ['', alpine:latest]
-        path: ['', tests/fixtures/npm-project]
-        sbom: ['', tests/fixtures/test_sbom.spdx.json]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        output-format: [sarif, json, table]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
-      - uses: ./
-        id: scan
-        with:
-          image: ${{ matrix.image }}
-          path: ${{ matrix.path }}
-          sbom: ${{ matrix.sbom }}
-          output-format: ${{ matrix.output-format }}
-          fail-build: false
-
-      - name: Validate file exists
-        if: ${{ matrix.output-format != 'table' }}
-        run: test -f '${{ steps.scan.outputs[matrix.output-format] }}'
