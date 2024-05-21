@@ -73,9 +73,11 @@ jobs:
   test-all:
     strategy:
       matrix:
-        image: ['', 'alpine:latest']
-        path: ['', 'tests/fixtures/npm-project']
-        sbom: ['', 'tests/fixtures/test_sbom.spdx.json']
+        config: [
+          {image: 'alpine:latest'},
+          {path: 'tests/fixtures/npm-project'},
+          {sbom: 'tests/fixtures/test_sbom.spdx.json'},
+        ]
         os: [ubuntu-latest, windows-latest, macos-latest]
         output-format: [sarif, json, table]
     runs-on: ${{ matrix.os }}
@@ -84,9 +86,9 @@ jobs:
       - uses: ./
         id: scan
         with:
-          image: ${{ matrix.image }}
-          path: ${{ matrix.path }}
-          sbom: ${{ matrix.sbom }}
+          image: ${{ matrix.config.image }}
+          path: ${{ matrix.config.path }}
+          sbom: ${{ matrix.config.sbom }}
           output-format: ${{ matrix.output-format }}
           fail-build: false
 
