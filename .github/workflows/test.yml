@@ -73,9 +73,9 @@ jobs:
   test-all:
     strategy:
       matrix:
-        image: ['', alpine:latest]
-        path: ['', tests/fixtures/npm-project]
-        sbom: ['', tests/fixtures/test_sbom.spdx.json]
+        image: ['', 'alpine:latest']
+        path: ['', 'tests/fixtures/npm-project']
+        sbom: ['', 'tests/fixtures/test_sbom.spdx.json']
         os: [ubuntu-latest, windows-latest, macos-latest]
         output-format: [sarif, json, table]
     runs-on: ${{ matrix.os }}
