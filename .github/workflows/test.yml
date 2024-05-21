@@ -144,7 +144,7 @@ jobs:
           fail-build: false
 
       - name: Validate file exists
-        run: ls '${{ steps.scan.outputs.sarif }}'
+        run: ls '${{ steps.scan.outputs.sarifs }}'
 
   test-windows-json:
     runs-on: windows-latest
