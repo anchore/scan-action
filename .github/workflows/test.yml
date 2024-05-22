@@ -52,22 +52,22 @@ jobs:
         with:
           path: ./
 
-      - name: Download Grype v0.54.0
+      - name: "Donwload Grype v0.54.0"
         uses: ./download-grype # anchore/scan-action/download-grype
         with:
           grype-version: v0.54.0
 
-      - name: Check Grype version before scan-action
+      - name: "Check Grype version before scan-action"
         run: grype version | egrep "^Version:.*0.54.0$"
 
-      - name: Scan test image
+      - name: "Scan test image"
         uses: ./
         with:
-          image: alpine:latest
+          image: "alpine:latest"
           grype-version: v0.54.0 # set the same version to test that current Grype binary wasn't overwritten by the latest version
           fail-build: false # to prevent fail due to vuln:s on test image
 
-      - name: Check Grype version after scan-action
+      - name: "Check Grype version after scan-action"
         run: grype version | egrep "^Version:.*0.54.0$"
 
   test-all:
