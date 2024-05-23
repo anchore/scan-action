@@ -44,7 +44,7 @@ jobs:
       - run: npm run audit
       - run: npm test
 
-  test-as-action: # run actions to test some scenarios
+  test-download-action:
     runs-on: ubuntu-latest
 
     steps:
@@ -69,3 +69,29 @@ jobs:
 
       - name: "Check Grype version after scan-action"
         run: grype version | egrep "^Version:.*0.54.0$"
+
+  test-all:
+    strategy:
+      matrix:
+        config: [
+          {image: 'alpine:latest'},
+          {path: 'tests/fixtures/npm-project'},
+          {sbom: 'tests/fixtures/test_sbom.spdx.json'},
+        ]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        output-format: [sarif, json, table]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - uses: ./
+        id: scan
+        with:
+          image: ${{ matrix.config.image }}
+          path: ${{ matrix.config.path }}
+          sbom: ${{ matrix.config.sbom }}
+          output-format: ${{ matrix.output-format }}
+          fail-build: false
+
+      - name: Validate file exists
+        if: ${{ matrix.output-format != 'table' }}
+        run: test -f '${{ steps.scan.outputs[matrix.output-format] }}'
