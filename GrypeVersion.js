@@ -1,1 +1,1 @@
-exports.GRYPE_VERSION = "v0.77.4";
+exports.GRYPE_VERSION = "v0.78.0";
