@@ -132,6 +132,7 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `add-cpes-if-none`  | Specify whether to autogenerate missing CPEs.                                                                                                                                                                                                                    | `false`       |
 | `by-cve`            | Specify whether to orient results by CVE rather than GHSA.                                                                                                                                                                                                       | `false`       |
 | `vex`               | Specify a list of VEX documents to consider when producing scanning results.                                                                                                                                                                                     | `false`       |
+| `grype-version`     | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js).                                                                                                                                                     |               |
 
 ### Action Outputs
 
