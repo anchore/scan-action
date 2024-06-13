@@ -13,7 +13,7 @@ describe("Github action args", () => {
       "output-format": "json",
       "severity-cutoff": "medium",
       "add-cpes-if-none": "true",
-      "vex": "test.vex",
+      vex: "test.vex",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
@@ -161,5 +161,35 @@ describe("Github action args", () => {
     }
 
     spyInput.mockRestore();
+  });
+
+  it("runs with config file", async () => {
+    const inputs = {
+      path: "tests/fixtures/npm-project",
+      config: "tests/fixtures/config-file/custom-config.yaml",
+    };
+    const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
+      try {
+        return inputs[name];
+      } finally {
+        inputs[name] = true;
+      }
+    });
+
+    const outputs = {};
+    const spyOutput = jest
+      .spyOn(core, "setOutput")
+      .mockImplementation((name, value) => {
+        outputs[name] = value;
+      });
+
+    await run();
+
+    Object.keys(inputs).map((name) => {
+      expect(inputs[name]).toBe(true);
+    });
+
+    spyInput.mockRestore();
+    spyOutput.mockRestore();
   });
 });

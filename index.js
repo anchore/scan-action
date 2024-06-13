@@ -85,6 +85,7 @@ async function run() {
     // Grype accepts several input options, initially this action is supporting both `image` and `path`, so
     // a check must happen to ensure one is selected at least, and then return it
     const source = sourceInput();
+    const config = core.getInput("config");
     const failBuild = core.getInput("fail-build") || "true";
     const outputFormat = core.getInput("output-format") || "sarif";
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
@@ -94,6 +95,7 @@ async function run() {
     const vex = core.getInput("vex") || "";
     const out = await runScan({
       source,
+      config,
       failBuild,
       severityCutoff,
       onlyFixed,
@@ -112,6 +114,7 @@ async function run() {
 
 async function runScan({
   source,
+  config,
   failBuild,
   severityCutoff,
   onlyFixed,
@@ -155,6 +158,10 @@ async function runScan({
 
   cmdArgs.push("-o", outputFormat);
 
+  if (config) {
+    cmdArgs.push("--config", config);
+  }
+
   if (
     !SEVERITY_LIST.some(
       (item) =>
@@ -182,6 +189,7 @@ async function runScan({
   await installGrype(grypeVersion);
 
   core.debug("Source: " + source);
+  core.debug("Config: " + config);
   core.debug("Fail Build: " + failBuild);
   core.debug("Severity Cutoff: " + severityCutoff);
   core.debug("Only Fixed: " + onlyFixed);
