@@ -16,6 +16,7 @@ const cache = __nccwpck_require__(7784);
 const core = __nccwpck_require__(2186);
 const exec = __nccwpck_require__(1514);
 const fs = __nccwpck_require__(7147);
+const path = __nccwpck_require__(1017);
 const stream = __nccwpck_require__(2781);
 const { GRYPE_VERSION } = __nccwpck_require__(6244);
 
