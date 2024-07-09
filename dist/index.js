@@ -23,10 +23,27 @@ const exeSuffix = process.platform == "win32" ? ".exe" : "";
 const grypeBinary = "grype" + exeSuffix;
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
+async function downloadGrypeWindowsWorkaround(version) {
+  const versionNoV = version.replace(/^v/, "");
+  // example URL: https://github.com/anchore/grype/releases/download/v0.79.2/grype_0.79.2_windows_amd64.zip
+  const url = `https://github.com/anchore/grype/releases/download/${version}/grype_${versionNoV}_windows_amd64.zip`;
+  core.info(`Downloading grype from ${url}`);
+  const zipPath = await cache.downloadTool(url);
+  const toolDir = await cache.extractZip(zipPath);
+  return path.join(toolDir, grypeBinary);
+}
+
+function isWindows() {
+  return process.platform == "win32";
+}
+
 async function downloadGrype(version) {
   let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
 
   core.debug(`Installing ${version}`);
+  if (isWindows()) {
+    return downloadGrypeWindowsWorkaround(version);
+  }
 
   // TODO: when grype starts supporting unreleased versions, support it here
   // Download the installer, and run
