@@ -30,7 +30,10 @@ async function downloadGrypeWindowsWorkaround(version) {
   const url = `https://github.com/anchore/grype/releases/download/${version}/grype_${versionNoV}_windows_amd64.zip`;
   core.info(`Downloading grype from ${url}`);
   const zipPath = await cache.downloadTool(url);
+  core.debug(`Zip saved to ${zipPath}`);
   const toolDir = await cache.extractZip(zipPath);
+  core.debug(`Zip extracted to ${toolDir}`);
+  core.debug(`Grype path is ${path.join(toolDir, grypeBinary)}`);
   return path.join(toolDir, grypeBinary);
 }
 
