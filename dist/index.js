@@ -16,6 +16,7 @@ const cache = __nccwpck_require__(7784);
 const core = __nccwpck_require__(2186);
 const exec = __nccwpck_require__(1514);
 const fs = __nccwpck_require__(7147);
+const path = __nccwpck_require__(1017);
 const stream = __nccwpck_require__(2781);
 const { GRYPE_VERSION } = __nccwpck_require__(6244);
 
@@ -23,10 +24,33 @@ const exeSuffix = process.platform == "win32" ? ".exe" : "";
 const grypeBinary = "grype" + exeSuffix;
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 
+async function downloadGrypeWindowsWorkaround(version) {
+  const versionNoV = version.replace(/^v/, "");
+  // example URL: https://github.com/anchore/grype/releases/download/v0.79.2/grype_0.79.2_windows_amd64.zip
+  const url = `https://github.com/anchore/grype/releases/download/${version}/grype_${versionNoV}_windows_amd64.zip`;
+  core.info(`Downloading grype from ${url}`);
+  const zipPath = await cache.downloadTool(url);
+  core.debug(`Zip saved to ${zipPath}`);
+  const toolDir = await cache.extractZip(zipPath);
+  core.debug(`Zip extracted to ${toolDir}`);
+  core.debug(`Grype path is ${path.join(toolDir, grypeBinary)}`);
+  return path.join(toolDir, grypeBinary);
+}
+
+function isWindows() {
+  return process.platform == "win32";
+}
+
 async function downloadGrype(version) {
   let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
 
   core.debug(`Installing ${version}`);
+  if (isWindows()) {
+    // caller expects directory to add to path and join with executable name
+    const exeFilePath = await downloadGrypeWindowsWorkaround(version);
+    core.debug(`Grype saved to ${exeFilePath}`);
+    return path.dirname(exeFilePath);
+  }
 
   // TODO: when grype starts supporting unreleased versions, support it here
   // Download the installer, and run
