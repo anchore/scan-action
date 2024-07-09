@@ -32,7 +32,10 @@ async function downloadGrype(version) {
 
   core.debug(`Installing ${version}`);
   if (isWindows()) {
-    return downloadGrypeWindowsWorkaround(version);
+    // caller expects directory to add to path and join with executable name
+    const exeFilePath = await downloadGrypeWindowsWorkaround(version);
+    core.debug(`Grype saved to ${exeFilePath}`);
+    return path.dirname(exeFilePath);
   }
 
   // TODO: when grype starts supporting unreleased versions, support it here
