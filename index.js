@@ -2,6 +2,7 @@ const cache = require("@actions/tool-cache");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const stream = require("stream");
 const { GRYPE_VERSION } = require("./GrypeVersion");
@@ -116,11 +117,13 @@ async function run() {
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
     const vex = core.getInput("vex") || "";
+    const outputFile = core.getInput("output-file") || "";
     const out = await runScan({
       source,
       failBuild,
       severityCutoff,
       onlyFixed,
+      outputFile,
       outputFormat,
       addCpesIfNone,
       byCve,
@@ -139,6 +142,7 @@ async function runScan({
   failBuild,
   severityCutoff,
   onlyFixed,
+  outputFile,
   outputFormat,
   addCpesIfNone,
   byCve,
@@ -178,6 +182,15 @@ async function runScan({
   byCve = byCve.toLowerCase() === "true";
 
   cmdArgs.push("-o", outputFormat);
+
+  // always output to a file, this is read later to print table output
+  if (!outputFile) {
+    outputFile = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), "grype-")),
+      "output",
+    );
+  }
+  cmdArgs.push("--file", outputFile);
 
   if (
     !SEVERITY_LIST.some(
@@ -272,21 +285,14 @@ async function runScan({
     core.debug(cmdOutput);
   }
 
-  switch (outputFormat) {
-    case "sarif": {
-      const SARIF_FILE = "./results.sarif";
-      fs.writeFileSync(SARIF_FILE, cmdOutput);
-      out.sarif = SARIF_FILE;
-      break;
+  out[outputFormat] = outputFile;
+  if (outputFormat === "table") {
+    try {
+      const report = fs.readFileSync(outputFile);
+      core.info(report.toString());
+    } catch (e) {
+      core.warning(`error writing table output contents: ${e}`);
     }
-    case "json": {
-      const REPORT_FILE = "./results.json";
-      fs.writeFileSync(REPORT_FILE, cmdOutput);
-      out.json = REPORT_FILE;
-      break;
-    }
-    default: // e.g. table
-      core.info(cmdOutput);
   }
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths

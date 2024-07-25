@@ -1,6 +1,9 @@
 const { run } = require("../index");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
+const path = require("path");
+const fs = require("fs");
+const os = require("os");
 
 jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
@@ -13,7 +16,7 @@ describe("Github action args", () => {
       "output-format": "json",
       "severity-cutoff": "medium",
       "add-cpes-if-none": "true",
-      "vex": "test.vex",
+      vex: "test.vex",
     };
     const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
       try {
@@ -37,7 +40,7 @@ describe("Github action args", () => {
     });
 
     expect(outputs["sarif"]).toBeFalsy();
-    expect(outputs["json"]).toBe("./results.json");
+    expect(outputs["json"]).toBeDefined();
 
     spyInput.mockRestore();
     spyOutput.mockRestore();
@@ -73,7 +76,8 @@ describe("Github action args", () => {
       expect(inputs[name]).toBe(true);
     });
 
-    expect(outputs["sarif"]).toBe("./results.sarif");
+    expect(outputs["json"]).toBeFalsy();
+    expect(outputs["sarif"]).toBeDefined();
 
     spyInput.mockRestore();
     spyOutput.mockRestore();
@@ -117,10 +121,56 @@ describe("Github action args", () => {
 
     expect(outputs["sarif"]).toBeFalsy();
     expect(outputs["json"]).toBeFalsy();
+    expect(outputs["table"]).toBeDefined();
 
     spyInput.mockRestore();
     spyOutput.mockRestore();
     spyStdout.mockRestore();
+  });
+
+  it("runs with output-file", async () => {
+    const reportFile = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), "my-dir-")),
+      "my-grype-report.json",
+    );
+    const inputs = {
+      image: "localhost:5000/match-coverage/debian:latest",
+      "fail-build": "true",
+      "output-file": reportFile,
+      "output-format": "json",
+      "severity-cutoff": "medium",
+      "add-cpes-if-none": "true",
+    };
+    const spyInput = jest.spyOn(core, "getInput").mockImplementation((name) => {
+      try {
+        return inputs[name];
+      } finally {
+        inputs[name] = true;
+      }
+    });
+
+    const outputs = {};
+    const spyOutput = jest
+      .spyOn(core, "setOutput")
+      .mockImplementation((name, value) => {
+        outputs[name] = value;
+      });
+
+    await run();
+
+    Object.keys(inputs).map((name) => {
+      expect(inputs[name]).toBe(true);
+    });
+
+    expect(outputs["sarif"]).toBeFalsy();
+    expect(outputs["json"]).toBe(reportFile);
+    expect(outputs["table"]).toBeFalsy();
+
+    const report = JSON.parse(fs.readFileSync(reportFile).toString());
+    expect(report).toBeDefined();
+
+    spyInput.mockRestore();
+    spyOutput.mockRestore();
   });
 
   it("runs with environment variables", async () => {
