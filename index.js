@@ -207,14 +207,14 @@ async function checkUpdateDbCache(grypeCommand) {
     throw new Error("cache not available");
   }
 
-  const cachePrefix = `grype-db-${grypeVersion}-`;
-  const cacheKey = cachePrefix + Date.now();
-
   const cacheDir = await getDbDir(grypeCommand);
 
-  // match based on the cachePrefix but set values with a unique key to avoid conflicts when running in matrix builds
+  // we want the cache to be shared by as many compatible branches as possible, so do not use a
+  // unique key across matrix builds. even when there is a timing conflict, there is a database
+  // available as expected
   // see: https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
-  await cache.restoreCache([cacheDir], cacheKey, [cachePrefix], {}, true);
+  const cacheKey = `grype-db-${grypeVersion}`;
+  await cache.restoreCache([cacheDir], cacheKey, [], {}, true);
 
   const maxCachedDbMinutes =
     parseInt(core.getInput("db-cache-max-age")) || 60 * 24;
@@ -230,7 +230,7 @@ async function checkUpdateDbCache(grypeCommand) {
   // updateDb will throw an exception on error
   await updateDb(grypeCommand);
 
-  core.debug(`Caching grype db`);
+  core.debug(`Caching grype db with key ${cacheKey}`);
 
   // when saving cache, we want a completely unique cache key,
   // restore above will match based on the prefix if no exact match is found
