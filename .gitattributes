@@ -1,0 +1,4 @@
+# force unix line endings for consistent ncc output
+*.js text eol=lf
+package.json text eol=lf
+package-lock.json text eol=lf

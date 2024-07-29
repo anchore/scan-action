@@ -1,89 +1,130 @@
 const githubActionsExec = require("@actions/exec");
 const githubActionsToolCache = require("@actions/tool-cache");
-const core = require("@actions/core");
+const { mock, cleanup, mockIO } = require("./mocks");
 
 jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
 
-jest.spyOn(githubActionsToolCache, "find").mockImplementation(() => {
-  return "grype";
-});
-
-const spyExec = jest.spyOn(githubActionsExec, "exec").mockImplementation(() => {
-  return Promise.resolve(0);
-});
-
-const mockExec = async (args) => {
-  try {
-    const { runScan } = require("../index");
-    await runScan(args);
-  } catch (e) {
-    // ignore: this happens trying to parse command output, which we don't care about
-  }
-  const [cmd, params] = spyExec.mock.calls[spyExec.mock.calls.length - 1];
-  return `${cmd} ${params.join(" ")}`;
-};
-
-describe("Grype command", () => {
-  const cmdPrefix = core.isDebug() ? "grype -vv" : "grype";
+describe("Grype command args", () => {
+  afterEach(cleanup);
 
   it("is invoked with dir", async () => {
-    let cmd = await mockExec({
+    const args = await mockRun({
       source: "dir:.",
-      failBuild: "false",
-      outputFormat: "sarif",
-      severityCutoff: "high",
+      "fail-build": "false",
+      "output-format": "sarif",
+      "severity-cutoff": "high",
       version: "0.6.0",
-      onlyFixed: "false",
-      addCpesIfNone: "false",
-      byCve: "false",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
     });
-    expect(cmd).toBe(`${cmdPrefix} -o sarif --fail-on high dir:.`);
+    expect(args).toEqual(["-o", "sarif", "--fail-on", "high", "dir:."]);
   });
 
   it("is invoked with values", async () => {
-    let cmd = await mockExec({
-      source: "asdf",
-      failBuild: "false",
-      outputFormat: "json",
-      severityCutoff: "low",
+    const args = await mockRun({
+      image: "asdf",
+      "fail-build": "false",
+      "output-format": "json",
+      "severity-cutoff": "low",
       version: "0.6.0",
-      onlyFixed: "false",
-      addCpesIfNone: "false",
-      byCve: "false",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
     });
-    expect(cmd).toBe(`${cmdPrefix} -o json --fail-on low asdf`);
+    expect(args).toEqual(["-o", "json", "--fail-on", "low", "asdf"]);
   });
 
   it("adds missing CPEs if requested", async () => {
-    let cmd = await mockExec({
-      source: "asdf",
-      failBuild: "false",
-      outputFormat: "json",
-      severityCutoff: "low",
+    const args = await mockRun({
+      image: "asdf",
+      "fail-build": "false",
+      "output-format": "json",
+      "severity-cutoff": "low",
       version: "0.6.0",
-      onlyFixed: "false",
-      addCpesIfNone: "true",
-      byCve: "false",
+      "only-fixed": "false",
+      "add-cpes-if-none": "true",
+      "by-cve": "false",
     });
-    expect(cmd).toBe(
-      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none asdf`
-    );
+    expect(args).toEqual([
+      "-o",
+      "json",
+      "--fail-on",
+      "low",
+      "--add-cpes-if-none",
+      "asdf",
+    ]);
   });
 
   it("adds VEX processing if requested", async () => {
-    let cmd = await mockExec({
-      source: "asdf",
-      failBuild: "false",
-      outputFormat: "json",
-      severityCutoff: "low",
+    const args = await mockRun({
+      image: "asdf",
+      "fail-build": "false",
+      "output-format": "json",
+      "severity-cutoff": "low",
       version: "0.6.0",
-      onlyFixed: "false",
-      addCpesIfNone: "true",
-      byCve: "false",
+      "only-fixed": "false",
+      "add-cpes-if-none": "true",
+      "by-cve": "false",
       vex: "test.vex",
     });
-    expect(cmd).toBe(
-      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none --vex test.vex asdf`
-    );
+    expect(args).toEqual([
+      "-o",
+      "json",
+      "--fail-on",
+      "low",
+      "--add-cpes-if-none",
+      "--vex",
+      "test.vex",
+      "asdf",
+    ]);
+  });
+
+  it("with path by cve", async () => {
+    const args = await mockRun({
+      path: "asdf",
+      "fail-build": "false",
+      "output-format": "table",
+      "severity-cutoff": "low",
+      "by-cve": "true",
+    });
+    expect(args).toEqual([
+      "-o",
+      "table",
+      "--fail-on",
+      "low",
+      "--by-cve",
+      "dir:asdf",
+    ]);
   });
 });
+
+async function mockRun(inputs) {
+  // don't bother downloading grype
+  mock(githubActionsToolCache, {
+    find() {
+      return "grype";
+    },
+  });
+
+  // track last exec calls args, pretend any call succeeds
+  let callArgs;
+  mock(githubActionsExec, {
+    async exec(cmd, args) {
+      callArgs = args;
+      return 0;
+    },
+  });
+
+  mockIO(inputs);
+
+  try {
+    const { run } = require("../index");
+    await run();
+  } catch (e) {
+    e; // ignore: this happens trying to parse command output, which we don't care about
+  }
+
+  // get last invocation args, ignoring the grype binary part and -vv
+  return (callArgs || []).filter((a) => a !== "-vv");
+}
