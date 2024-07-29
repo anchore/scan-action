@@ -1,65 +1,82 @@
-const cache = require("@actions/tool-cache");
+const tools = require("@actions/tool-cache");
 const core = require("@actions/core");
+const cache = require("@actions/cache");
 const exec = require("@actions/exec");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
+const process = require("process");
 const stream = require("stream");
 const { GRYPE_VERSION } = require("./GrypeVersion");
 
-const exeSuffix = process.platform == "win32" ? ".exe" : "";
-const grypeBinary = "grype" + exeSuffix;
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
+const grypeExecutableName = isWindows() ? "grype.exe" : "grype";
 
 async function downloadGrypeWindowsWorkaround(version) {
   const versionNoV = version.replace(/^v/, "");
   // example URL: https://github.com/anchore/grype/releases/download/v0.79.2/grype_0.79.2_windows_amd64.zip
   const url = `https://github.com/anchore/grype/releases/download/${version}/grype_${versionNoV}_windows_amd64.zip`;
   core.info(`Downloading grype from ${url}`);
-  const zipPath = await cache.downloadTool(url);
+  const zipPath = await tools.downloadTool(url);
   core.debug(`Zip saved to ${zipPath}`);
-  const toolDir = await cache.extractZip(zipPath);
+  const toolDir = await tools.extractZip(zipPath);
   core.debug(`Zip extracted to ${toolDir}`);
-  core.debug(`Grype path is ${path.join(toolDir, grypeBinary)}`);
-  return path.join(toolDir, grypeBinary);
+  const binaryPath = path.join(toolDir, grypeExecutableName);
+  core.debug(`Grype path is ${binaryPath}`);
+  return binaryPath;
 }
 
 function isWindows() {
-  return process.platform == "win32";
+  return process.platform === "win32";
 }
 
+/* download grype and return a path to the executable */
 async function downloadGrype(version) {
-  let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
-
-  core.debug(`Installing ${version}`);
   if (isWindows()) {
-    // caller expects directory to add to path and join with executable name
-    const exeFilePath = await downloadGrypeWindowsWorkaround(version);
-    core.debug(`Grype saved to ${exeFilePath}`);
-    return path.dirname(exeFilePath);
+    return await downloadGrypeWindowsWorkaround(version);
   }
+
+  const installScriptUrl = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
+  core.info(`Downloading grype ${version} via ${installScriptUrl}`);
 
   // TODO: when grype starts supporting unreleased versions, support it here
   // Download the installer, and run
-  const installPath = await cache.downloadTool(url);
+  const installScriptPath = await tools.downloadTool(installScriptUrl);
+  const installToDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), "grype-download-"),
+  );
 
-  let cmd = `sh ${installPath} -d -b ${installPath}_grype ${version}`;
-  await exec.exec(cmd);
-  let grypePath = `${installPath}_grype/${grypeBinary}`;
-
-  // Cache the downloaded file
-  return cache.cacheFile(grypePath, grypeBinary, grypeBinary, version);
+  const { stdout, exitCode } = await runCommand("sh", [
+    installScriptPath,
+    "-d",
+    "-b",
+    installToDir,
+    version,
+  ]);
+  if (exitCode !== 0) {
+    core.error("Error installing grype:");
+    core.error(stdout);
+    throw new Error("error installing grype");
+  }
+  return path.join(installToDir, isWindows() ? "grype.exe" : "grype");
 }
 
 async function installGrype(version) {
-  let grypePath = cache.find(grypeBinary, version);
+  core.info(`Installing grype ${version}`);
+
+  let grypePath = tools.find(grypeExecutableName, version);
   if (!grypePath) {
     // Not found, install it
     grypePath = await downloadGrype(version);
+    // Cache the downloaded file, get path to directory
+    grypePath = await tools.cacheFile(
+      grypePath,
+      grypeExecutableName,
+      grypeExecutableName,
+      version,
+    );
   }
-
-  // Add tool to path for this and future actions to use
-  core.addPath(grypePath);
-  return `${grypePath}/${grypeBinary}`;
+  return path.join(grypePath, grypeExecutableName);
 }
 
 // Determines if multiple arguments are defined
@@ -77,9 +94,9 @@ function multipleDefined(...args) {
 }
 
 function sourceInput() {
-  var image = core.getInput("image");
-  var path = core.getInput("path");
-  var sbom = core.getInput("sbom");
+  const image = core.getInput("image");
+  const path = core.getInput("path");
+  const sbom = core.getInput("sbom");
 
   if (multipleDefined(image, path, sbom)) {
     throw new Error(
@@ -97,7 +114,7 @@ function sourceInput() {
 
   if (!path) {
     // Default to the CWD
-    path = ".";
+    return "dir:.";
   }
 
   return "dir:" + path;
@@ -132,6 +149,128 @@ async function run() {
   } catch (error) {
     core.setFailed(error.message);
   }
+}
+
+async function getDbDir(grypeCommand) {
+  const { stdout } = await runCommand(
+    grypeCommand,
+    ["config", "--load"],
+    process.env,
+  );
+  for (let line of stdout.split("\n")) {
+    line = line.trim();
+    if (line.startsWith("cache-dir:")) {
+      line = line.replace("cache-dir:", "");
+      line = line.replace("'~", os.homedir());
+      line = line.replaceAll("'", "");
+      line = line.trim();
+      return line;
+    }
+  }
+  throw new Error("unable to get grype db cache directory");
+}
+
+async function dbTime(grypeCommand) {
+  const { stdout, exitCode } = await runCommand(
+    grypeCommand,
+    ["db", "status", "-vv"],
+    process.env,
+  );
+  if (exitCode !== 0) {
+    return;
+  }
+  for (let line of stdout.split("\n")) {
+    line = line.trim();
+    if (line.startsWith("Built:")) {
+      line = line.replace("Built:", "");
+      // 2024-07-25 01:30:47 +0000 UTC
+      return new Date(line.trim());
+    }
+  }
+}
+
+async function updateDb(grypeCommand) {
+  const { stdout, exitCode } = await runCommand(
+    grypeCommand,
+    ["db", "update", "-vv"],
+    process.env,
+  );
+  if (exitCode !== 0) {
+    throw new Error("unable to update db: " + stdout);
+  }
+}
+
+// attempts to get an up-to-date database and from cache or update it,
+// throws an exception if unable to get a database or use the cache
+async function checkUpdateDbCache(grypeCommand) {
+  if (!cache.isFeatureAvailable()) {
+    throw new Error("cache not available");
+  }
+
+  const cachePrefix = `grype-db-${grypeVersion}-`;
+  const cacheKey = cachePrefix + Date.now();
+
+  const cacheDir = await getDbDir(grypeCommand);
+
+  // match based on the cachePrefix but set values with a unique key to avoid conflicts when running in matrix builds
+  // see: https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
+  await cache.restoreCache([cacheDir], cacheKey, [cachePrefix], {}, true);
+
+  const maxCachedDbMinutes =
+    parseInt(core.getInput("db-cache-max-age")) || 60 * 24;
+  const minAge = new Date();
+  minAge.setMinutes(minAge.getMinutes() - maxCachedDbMinutes);
+
+  const time = await dbTime(grypeCommand);
+  if (time && time > minAge) {
+    core.info(`Restored grype db from cache with age ${time}`);
+    return; // do not need an update
+  }
+
+  // updateDb will throw an exception on error
+  await updateDb(grypeCommand);
+
+  core.debug(`Caching grype db`);
+
+  // when saving cache, we want a completely unique cache key,
+  // restore above will match based on the prefix if no exact match is found
+  await cache.saveCache([cacheDir], cacheKey, {}, true);
+}
+
+async function runCommand(cmd, cmdArgs, env) {
+  let stdout = "";
+
+  // This /dev/null writable stream is required so the entire Grype output
+  // is not written to the GitHub action log. the listener below
+  // will actually capture the output
+  const outStream = new stream.Writable({
+    write(buffer, encoding, next) {
+      next();
+    },
+  });
+
+  const exitCode = await core.group(`${cmd} ${cmdArgs.join(" ")}`, () => {
+    return exec.exec(cmd, cmdArgs, {
+      env,
+      ignoreReturnCode: true,
+      outStream,
+      listeners: {
+        stdout(buffer) {
+          stdout += buffer.toString();
+        },
+        stderr(buffer) {
+          core.info(buffer.toString());
+        },
+        debug(message) {
+          core.debug(message);
+        },
+      },
+    });
+  });
+
+  core.debug(stdout);
+
+  return { stdout, exitCode };
 }
 
 async function runScan({
@@ -203,7 +342,26 @@ async function runScan({
   }
 
   core.debug(`Installing grype version ${grypeVersion}`);
-  await installGrype(grypeVersion);
+  const grypeCommand = await installGrype(grypeVersion);
+
+  let skipUpdate =
+    `${process.env.GRYPE_DB_AUTO_UPDATE}`.toLowerCase() === "false";
+
+  if (!skipUpdate) {
+    try {
+      await checkUpdateDbCache(grypeCommand);
+      skipUpdate = true;
+    } catch (e) {
+      core.debug(
+        `error from checkUpdateDbCache, falling back to db auto-update: ${e}`,
+      );
+      skipUpdate = false;
+    }
+  }
+
+  if (skipUpdate) {
+    env.GRYPE_DB_AUTO_UPDATE = "false";
+  }
 
   core.debug("Source: " + source);
   core.debug("Fail Build: " + failBuild);
@@ -216,8 +374,6 @@ async function runScan({
   core.debug("Creating options for GRYPE analyzer");
 
   // Run the grype analyzer
-  let cmdOutput = "";
-  let cmd = `${grypeBinary}`;
   if (severityCutoff !== "") {
     cmdArgs.push("--fail-on");
     cmdArgs.push(severityCutoff.toLowerCase());
@@ -237,56 +393,23 @@ async function runScan({
   }
   cmdArgs.push(source);
 
-  // This /dev/null writable stream is required so the entire Grype output
-  // is not written to the GitHub action log. the listener below
-  // will actually capture the output
-  const outStream = new stream.Writable({
-    write(buffer, encoding, next) {
-      next();
-    },
-  });
-
-  const exitCode = await core.group(`${cmd} output...`, async () => {
-    core.info(`Executing: ${cmd} ` + cmdArgs.join(" "));
-
-    return exec.exec(cmd, cmdArgs, {
-      env,
-      ignoreReturnCode: true,
-      outStream,
-      listeners: {
-        stdout(buffer) {
-          cmdOutput += buffer.toString();
-        },
-        stderr(buffer) {
-          core.info(buffer.toString());
-        },
-        debug(message) {
-          core.debug(message);
-        },
-      },
-    });
-  });
-
-  if (core.isDebug()) {
-    core.debug("Grype output:");
-    core.debug(cmdOutput);
-  }
+  const { stdout, exitCode } = await runCommand(grypeCommand, cmdArgs, env);
 
   switch (outputFormat) {
     case "sarif": {
       const SARIF_FILE = "./results.sarif";
-      fs.writeFileSync(SARIF_FILE, cmdOutput);
+      fs.writeFileSync(SARIF_FILE, stdout);
       out.sarif = SARIF_FILE;
       break;
     }
     case "json": {
       const REPORT_FILE = "./results.json";
-      fs.writeFileSync(REPORT_FILE, cmdOutput);
+      fs.writeFileSync(REPORT_FILE, stdout);
       out.json = REPORT_FILE;
       break;
     }
     default: // e.g. table
-      core.info(cmdOutput);
+      core.info(stdout);
   }
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
