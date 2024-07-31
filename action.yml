@@ -13,6 +13,9 @@ inputs:
   sbom:
     description: 'The SBOM file to scan. This option is mutually exclusive with "path" and "image".'
     required: false
+  config:
+    description: 'The path to the Grype configuration file.'
+    required: false
   fail-build:
     description: "Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)"
     required: false
