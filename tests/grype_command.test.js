@@ -30,6 +30,7 @@ describe("Grype command", () => {
     let cmd = await mockExec({
       source: "dir:.",
       failBuild: "false",
+      outputFile: "the-output-file",
       outputFormat: "sarif",
       severityCutoff: "high",
       version: "0.6.0",
@@ -37,13 +38,16 @@ describe("Grype command", () => {
       addCpesIfNone: "false",
       byCve: "false",
     });
-    expect(cmd).toBe(`${cmdPrefix} -o sarif --fail-on high dir:.`);
+    expect(cmd).toBe(
+      `${cmdPrefix} -o sarif --file the-output-file --fail-on high dir:.`,
+    );
   });
 
   it("is invoked with values", async () => {
     let cmd = await mockExec({
       source: "asdf",
       failBuild: "false",
+      outputFile: "the-output-file",
       outputFormat: "json",
       severityCutoff: "low",
       version: "0.6.0",
@@ -51,13 +55,16 @@ describe("Grype command", () => {
       addCpesIfNone: "false",
       byCve: "false",
     });
-    expect(cmd).toBe(`${cmdPrefix} -o json --fail-on low asdf`);
+    expect(cmd).toBe(
+      `${cmdPrefix} -o json --file the-output-file --fail-on low asdf`,
+    );
   });
 
   it("adds missing CPEs if requested", async () => {
     let cmd = await mockExec({
       source: "asdf",
       failBuild: "false",
+      outputFile: "the-output-file",
       outputFormat: "json",
       severityCutoff: "low",
       version: "0.6.0",
@@ -66,7 +73,7 @@ describe("Grype command", () => {
       byCve: "false",
     });
     expect(cmd).toBe(
-      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none asdf`
+      `${cmdPrefix} -o json --file the-output-file --fail-on low --add-cpes-if-none asdf`,
     );
   });
 
@@ -74,6 +81,7 @@ describe("Grype command", () => {
     let cmd = await mockExec({
       source: "asdf",
       failBuild: "false",
+      outputFile: "the-output-file",
       outputFormat: "json",
       severityCutoff: "low",
       version: "0.6.0",
@@ -83,7 +91,7 @@ describe("Grype command", () => {
       vex: "test.vex",
     });
     expect(cmd).toBe(
-      `${cmdPrefix} -o json --fail-on low --add-cpes-if-none --vex test.vex asdf`
+      `${cmdPrefix} -o json --file the-output-file --fail-on low --add-cpes-if-none --vex test.vex asdf`,
     );
   });
 });
