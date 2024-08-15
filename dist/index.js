@@ -4,7 +4,7 @@
 /***/ 6244:
 /***/ ((__unused_webpack_module, exports) => {
 
-exports.GRYPE_VERSION = "v0.73.4";
+exports.GRYPE_VERSION = "v0.79.6";
 
 
 /***/ }),
@@ -16,29 +16,52 @@ const cache = __nccwpck_require__(7784);
 const core = __nccwpck_require__(2186);
 const exec = __nccwpck_require__(1514);
 const fs = __nccwpck_require__(7147);
+const path = __nccwpck_require__(1017);
 const stream = __nccwpck_require__(2781);
 const { GRYPE_VERSION } = __nccwpck_require__(6244);
 
-const grypeBinary = "grype";
+const exeSuffix = process.platform == "win32" ? ".exe" : "";
+const grypeBinary = "grype" + exeSuffix;
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
+
+async function downloadGrypeWindowsWorkaround(version) {
+  const versionNoV = version.replace(/^v/, "");
+  // example URL: https://github.com/anchore/grype/releases/download/v0.79.2/grype_0.79.2_windows_amd64.zip
+  const url = `https://github.com/anchore/grype/releases/download/${version}/grype_${versionNoV}_windows_amd64.zip`;
+  core.info(`Downloading grype from ${url}`);
+  const zipPath = await cache.downloadTool(url);
+  core.debug(`Zip saved to ${zipPath}`);
+  const toolDir = await cache.extractZip(zipPath);
+  core.debug(`Zip extracted to ${toolDir}`);
+  core.debug(`Grype path is ${path.join(toolDir, grypeBinary)}`);
+  return path.join(toolDir, grypeBinary);
+}
+
+function isWindows() {
+  return process.platform == "win32";
+}
 
 async function downloadGrype(version) {
   let url = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
 
   core.debug(`Installing ${version}`);
+  if (isWindows()) {
+    // caller expects directory to add to path and join with executable name
+    const exeFilePath = await downloadGrypeWindowsWorkaround(version);
+    core.debug(`Grype saved to ${exeFilePath}`);
+    return path.dirname(exeFilePath);
+  }
 
   // TODO: when grype starts supporting unreleased versions, support it here
   // Download the installer, and run
   const installPath = await cache.downloadTool(url);
-  // Make sure the tool's executable bit is set
-  await exec.exec(`chmod +x ${installPath}`);
 
-  let cmd = `${installPath} -b ${installPath}_grype ${version}`;
+  let cmd = `sh ${installPath} -d -b ${installPath}_grype ${version}`;
   await exec.exec(cmd);
-  let grypePath = `${installPath}_grype/grype`;
+  let grypePath = `${installPath}_grype/${grypeBinary}`;
 
   // Cache the downloaded file
-  return cache.cacheFile(grypePath, `grype`, `grype`, version);
+  return cache.cacheFile(grypePath, grypeBinary, grypeBinary, version);
 }
 
 async function installGrype(version) {
@@ -74,7 +97,7 @@ function sourceInput() {
 
   if (multipleDefined(image, path, sbom)) {
     throw new Error(
-      "The following options are mutually exclusive: image, path, sbom"
+      "The following options are mutually exclusive: image, path, sbom",
     );
   }
 
@@ -150,7 +173,7 @@ async function runScan({
     env.GRYPE_REGISTRY_AUTH_PASSWORD = registryPass;
     if (!registryUser || !registryPass) {
       core.warning(
-        "WARNING: registry-username and registry-password must be specified together"
+        "WARNING: registry-username and registry-password must be specified together",
       );
     }
   }
@@ -174,22 +197,22 @@ async function runScan({
     !SEVERITY_LIST.some(
       (item) =>
         typeof severityCutoff.toLowerCase() === "string" &&
-        item === severityCutoff.toLowerCase()
+        item === severityCutoff.toLowerCase(),
     )
   ) {
     throw new Error(
-      `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`
+      `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`,
     );
   }
   if (
     !FORMAT_LIST.some(
       (item) =>
         typeof outputFormat.toLowerCase() === "string" &&
-        item === outputFormat.toLowerCase()
+        item === outputFormat.toLowerCase(),
     )
   ) {
     throw new Error(
-      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`
+      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`,
     );
   }
 
@@ -288,14 +311,14 @@ async function runScan({
       core.warning("grype had a non-zero exit status when running");
     } else if (failBuild === true) {
       core.setFailed(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`
+        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
       );
     } else {
       // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
       // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
       // Actions UI
       core.warning(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`
+        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
       );
     }
   }
@@ -885,7 +908,7 @@ class OidcClient {
                 .catch(error => {
                 throw new Error(`Failed to get ID Token. \n 
         Error Code : ${error.statusCode}\n 
-        Error Message: ${error.result.message}`);
+        Error Message: ${error.message}`);
             });
             const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
             if (!id_token) {
