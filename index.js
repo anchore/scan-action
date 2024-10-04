@@ -133,6 +133,7 @@ async function run() {
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
     const vex = core.getInput("vex") || "";
+    const cacheDb = core.getInput("cache-db") || "false";
     const out = await runScan({
       source,
       failBuild,
@@ -142,6 +143,7 @@ async function run() {
       addCpesIfNone,
       byCve,
       vex,
+      cacheDb,
     });
     Object.keys(out).map((key) => {
       core.setOutput(key, out[key]);
@@ -170,7 +172,7 @@ async function getDbDir(grypeCommand) {
   throw new Error("unable to get grype db cache directory");
 }
 
-async function dbTime(grypeCommand) {
+async function getDbBuildTime(grypeCommand) {
   const { stdout, exitCode } = await runCommand(
     grypeCommand,
     ["db", "status", "-vv"],
@@ -202,7 +204,7 @@ async function updateDb(grypeCommand) {
 
 // attempts to get an up-to-date database and from cache or update it,
 // throws an exception if unable to get a database or use the cache
-async function checkUpdateDbCache(grypeCommand) {
+async function updateDbWithCache(grypeCommand) {
   if (!cache.isFeatureAvailable()) {
     throw new Error("cache not available");
   }
@@ -216,24 +218,29 @@ async function checkUpdateDbCache(grypeCommand) {
   const cacheKey = `grype-db-${grypeVersion}`;
   await cache.restoreCache([cacheDir], cacheKey, [], {}, true);
 
-  const maxCachedDbMinutes =
-    parseInt(core.getInput("db-cache-max-age")) || 60 * 24;
-  const minAge = new Date();
-  minAge.setMinutes(minAge.getMinutes() - maxCachedDbMinutes);
-
-  const time = await dbTime(grypeCommand);
-  if (time && time > minAge) {
-    core.info(`Restored grype db from cache with age ${time}`);
-    return; // do not need an update
+  const cachedDbBuildTime = await getDbBuildTime(grypeCommand);
+  if (cachedDbBuildTime) {
+    core.info(
+      `Restored grype db from cache with db build time ${cachedDbBuildTime}`,
+    );
   }
 
-  // updateDb will throw an exception on error
+  // updateDb will throw an exception on error and potentially skip downloading
+  // a database if no update exists
   await updateDb(grypeCommand);
+
+  // if the database was not updated, don't re-cache it
+  const currentDbBuildTime = await getDbBuildTime(grypeCommand);
+  if (`${cachedDbBuildTime}` === `${currentDbBuildTime}`) {
+    core.debug(
+      `Skipping caching grype db, with build time ${cachedDbBuildTime}`,
+    );
+    return;
+  }
 
   core.debug(`Caching grype db with key ${cacheKey}`);
 
-  // when saving cache, we want a completely unique cache key,
-  // restore above will match based on the prefix if no exact match is found
+  // this needs to be able to be found by restoreCache, above
   await cache.saveCache([cacheDir], cacheKey, {}, true);
 }
 
@@ -282,6 +289,7 @@ async function runScan({
   addCpesIfNone,
   byCve,
   vex,
+  cacheDb,
 }) {
   const out = {};
 
@@ -315,6 +323,7 @@ async function runScan({
   onlyFixed = onlyFixed.toLowerCase() === "true";
   addCpesIfNone = addCpesIfNone.toLowerCase() === "true";
   byCve = byCve.toLowerCase() === "true";
+  cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
 
   cmdArgs.push("-o", outputFormat);
 
@@ -326,7 +335,7 @@ async function runScan({
     )
   ) {
     throw new Error(
-      `Invalid severity-cutoff value is set to ${severityCutoff} - please ensure you are choosing either negligible, low, medium, high, or critical`,
+      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`,
     );
   }
   if (
@@ -337,29 +346,16 @@ async function runScan({
     )
   ) {
     throw new Error(
-      `Invalid output-format value is set to ${outputFormat} - please ensure you are choosing either json or sarif`,
+      `Invalid output-format value is set to ${outputFormat} - must be one of: ${FORMAT_LIST.join(", ")}`,
     );
   }
 
   core.debug(`Installing grype version ${grypeVersion}`);
   const grypeCommand = await installGrype(grypeVersion);
 
-  let skipUpdate =
-    `${process.env.GRYPE_DB_AUTO_UPDATE}`.toLowerCase() === "false";
-
-  if (!skipUpdate) {
-    try {
-      await checkUpdateDbCache(grypeCommand);
-      skipUpdate = true;
-    } catch (e) {
-      core.debug(
-        `error from checkUpdateDbCache, falling back to db auto-update: ${e}`,
-      );
-      skipUpdate = false;
-    }
-  }
-
-  if (skipUpdate) {
+  if (cacheDb) {
+    await updateDbWithCache(grypeCommand);
+    // since the db was updated and cached separately, skip when running grype
     env.GRYPE_DB_AUTO_UPDATE = "false";
   }
 
@@ -445,9 +441,17 @@ if (require.main === module) {
   const entrypoint = core.getInput("run");
   switch (entrypoint) {
     case "download-grype": {
-      installGrype(grypeVersion).then((path) => {
+      installGrype(grypeVersion).then(async (path) => {
         core.info(`Downloaded Grype to: ${path}`);
         core.setOutput("cmd", path);
+
+        // optionally restore, update and cache the db
+        if (
+          cache.isFeatureAvailable() &&
+          (core.getInput("cache-db") || "").toLowerCase() === "true"
+        ) {
+          await updateDbWithCache(path);
+        }
       });
       break;
     }

@@ -174,6 +174,7 @@ describe("Github action", () => {
       "output-format": "json",
       "severity-cutoff": "medium",
       "add-cpes-if-none": "true",
+      "cache-db": "true",
     });
 
     let restoreCacheDir;
@@ -210,7 +211,6 @@ describe("Github action", () => {
     listings.push(listing(new Date(), serverUrl + "/db.tar.gz", dbChecksum));
 
     setEnv({
-      GRYPE_DB_AUTO_UPDATE: "true",
       GRYPE_DB_CACHE_DIR: dbCacheRoot,
       GRYPE_DB_UPDATE_URL: listingUrl,
     });

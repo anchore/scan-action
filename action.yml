@@ -43,6 +43,9 @@ inputs:
   vex:
     description: "Specify a list of VEX documents to consider when producing scanning results."
     required: false
+  cache-db:
+    description: "Cache the Grype DB in GitHub action cache and restore before checking for updates"
+    required: false
 outputs:
   sarif:
     description: "Path to a SARIF report file for the image"

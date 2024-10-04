@@ -120,7 +120,7 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan; all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
 
 | Input Name          | Description                                                                                                                                                                                                                                                      | Default Value |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | `image`             | The image to scan                                                                                                                                                                                                                                                | N/A           |
 | `path`              | The file path to scan                                                                                                                                                                                                                                            | N/A           |
 | `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                 | N/A           |
@@ -133,6 +133,7 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `add-cpes-if-none`  | Specify whether to autogenerate missing CPEs.                                                                                                                                                                                                                    | `false`       |
 | `by-cve`            | Specify whether to orient results by CVE rather than GHSA.                                                                                                                                                                                                       | `false`       |
 | `vex`               | Specify a list of VEX documents to consider when producing scanning results.                                                                                                                                                                                     | `false`       |
+| `cache-db`          | Cache the Grype DB in GitHub action cache and restore before checking for updates                                                                                                                                                                                | `false`       |
 | `grype-version`     | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js).                                                                                                                                                     |               |
 
 ### Action Outputs
@@ -201,13 +202,14 @@ such as [ignoring certain matches](https://github.com/anchore/grype#specifying-m
 
 ## anchore/scan-action/download-grype
 
-A sub-action to [download Grype](download-grype/action.yml).
+A sub-action to [download Grype](download-grype/action.yml) and optionally cache the Grype DB.
 
 Input parameters:
 
 | Parameter       | Description                                                                                                  | Default |
-| --------------- | ------------------------------------------------------------------------------------------------------------ | ------- |
+|-----------------|--------------------------------------------------------------------------------------------------------------|---------|
 | `grype-version` | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js). |         |
+| `cache-db`      | Cache the Grype DB in GitHub action cache and restore before checking for updates                            | `false` |
 
 Output parameters:
 
