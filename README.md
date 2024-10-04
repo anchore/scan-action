@@ -1,11 +1,12 @@
 # GitHub Action for Vulnerability Scanning
 
+**:zap: _Find threats in files or containers at lightning speed_ :zap:**
+
 [![Test Status][test-img]][test]
 [![GitHub release](https://img.shields.io/github/release/anchore/scan-action.svg)](https://github.com/anchore/scan-action/releases/latest)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/anchore/scan-action/blob/main/LICENSE)
-[![Slack Invite](https://img.shields.io/badge/Slack-Join-blue?logo=slack)](https://anchore.com/slack)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/anchore/scan-action/blob/main/LICENSE)
+[![Join our Discourse](https://img.shields.io/badge/Discourse-Join-blue?logo=discourse)](https://anchore.com/discourse)
 
-:zap: _Find threats in files or containers at lightning speed_ :zap:
 
 This is a GitHub Action for invoking the [Grype](https://github.com/anchore/grype) scanner and returning the vulnerabilities found,
 and optionally fail if a vulnerability is found with a configurable severity level.
@@ -133,6 +134,8 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `add-cpes-if-none`  | Specify whether to autogenerate missing CPEs.                                                                                                                                                                                                                    | `false`       |
 | `by-cve`            | Specify whether to orient results by CVE rather than GHSA.                                                                                                                                                                                                       | `false`       |
 | `vex`               | Specify a list of VEX documents to consider when producing scanning results.                                                                                                                                                                                     | `false`       |
+| `cache-db`          | Cache the Grype DB in GitHub action cache and restore before checking for updates                                                                                                                                                                                | `false`       |
+| `grype-version`     | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js).                                                                                                                                                     |               |
 
 ### Action Outputs
 
@@ -200,13 +203,14 @@ such as [ignoring certain matches](https://github.com/anchore/grype#specifying-m
 
 ## anchore/scan-action/download-grype
 
-A sub-action to [download Grype](download-grype/action.yml).
+A sub-action to [download Grype](download-grype/action.yml) and optionally cache the Grype DB.
 
 Input parameters:
 
 | Parameter       | Description                                                                                                  | Default |
-| --------------- | ------------------------------------------------------------------------------------------------------------ | ------- |
+|-----------------|--------------------------------------------------------------------------------------------------------------|---------|
 | `grype-version` | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js). |         |
+| `cache-db`      | Cache the Grype DB in GitHub action cache and restore before checking for updates                            | `false` |
 
 Output parameters:
 
@@ -235,7 +239,7 @@ For contributing, see [Contributing](CONTRIBUTING.md).
 
 For documentation on Grype itself, including other output capabilities, see the [grype project](https://github.com/anchore/grype)
 
-Connect with the community directly on [slack](https://anchore.com/slack).
+Connect with the community directly on [Discourse](https://anchore.com/discourse).
 
 [test]: https://github.com/anchore/scan-action
 [test-img]: https://github.com/anchore/scan-action/workflows/Tests/badge.svg
