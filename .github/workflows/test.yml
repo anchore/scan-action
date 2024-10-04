@@ -11,11 +11,10 @@ jobs:
   build: # make sure build/ci work properly and there is no faked build ncc built scripts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - run: node --version
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
         with:
-          node-version: 20
+          node-version-file: package.json
       - run: npm ci
       - run: npm run audit
       - run: npm run build
@@ -31,7 +30,7 @@ jobs:
         ports:
           - 5000:5000
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
       - name: Build images
         run: |
           for distro in alpine centos debian; do
@@ -52,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
         with:
           path: ./
 
@@ -86,7 +85,7 @@ jobs:
         output-format: [sarif, json, table]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
       - uses: ./
         id: scan
         with:
