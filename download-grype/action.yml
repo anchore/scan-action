@@ -12,6 +12,9 @@ inputs:
     description: "Flag to indicate which sub-action to run"
     required: false
     default: "download-grype"
+  cache-db:
+    description: "Cache the Grype DB in GitHub action cache and restore before checking for updates"
+    required: false
 outputs:
   cmd:
     description: "An absolute path to the Grype executable"
