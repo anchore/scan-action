@@ -28,7 +28,7 @@ module.exports = {
   },
 
   sha256(contents) {
-    return createHash("sha256").update(contents).digest("hex"); // .digest('base64');
+    return createHash("sha256").update(contents).digest("hex");
   },
 
   dbServer(listings, tarGzDb) {
