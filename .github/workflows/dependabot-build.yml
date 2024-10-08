@@ -40,7 +40,6 @@ jobs:
         if: ${{ steps.dependabot-metadata.outputs.package-ecosystem == 'npm_and_yarn' }}
         run: |
           npm run build
-          npm run package
       - name: Commit changes
         if: ${{ steps.dependabot-metadata.outputs.package-ecosystem == 'npm_and_yarn' }}
         id: commit
