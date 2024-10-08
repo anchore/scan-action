@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   build:
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    # if: ${{ github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Dependabot metadata
@@ -40,7 +40,6 @@ jobs:
         if: ${{ steps.dependabot-metadata.outputs.package-ecosystem == 'npm_and_yarn' }}
         run: |
           npm run build
-          npm run package
       - name: Commit changes
         if: ${{ steps.dependabot-metadata.outputs.package-ecosystem == 'npm_and_yarn' }}
         id: commit
