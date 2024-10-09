@@ -22,6 +22,10 @@ version-resolver:
     labels:
       - "patch"
   default: patch
+
+exclude-labels:
+  - 'changelog-ignore'
+
 template: |
   ## New in scan-action v$RESOLVED_VERSION
 
