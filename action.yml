@@ -18,7 +18,7 @@ inputs:
     required: false
     default: "true"
   output-format:
-    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", and "table".'
+    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", "cyclonedx", "cyclonedx-json" and "table".'
     required: false
     default: "sarif"
   severity-cutoff:

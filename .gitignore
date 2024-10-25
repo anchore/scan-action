@@ -122,3 +122,5 @@ typings/
 results.sarif
 vulnerabilities.json
 results.json
+results.bom
+results.bom.json

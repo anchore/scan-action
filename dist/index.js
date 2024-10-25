@@ -326,7 +326,7 @@ async function runScan({
   }
 
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
-  const FORMAT_LIST = ["sarif", "json", "table"];
+  const FORMAT_LIST = ["sarif", "json", "table", "cyclonedx", "cyclonedx-json"];
   let cmdArgs = [];
 
   if (core.isDebug()) {
@@ -416,6 +416,18 @@ async function runScan({
       const REPORT_FILE = "./results.json";
       fs.writeFileSync(REPORT_FILE, stdout);
       out.json = REPORT_FILE;
+      break;
+    }
+    case "cyclonedx": {
+      const CYCLONEDX_FILE = "./results.bom";
+      fs.writeFileSync(CYCLONEDX_FILE, stdout);
+      out.cyclonedx = CYCLONEDX_FILE;
+      break;
+    }
+    case "cyclonedx-json": {
+      const CYCLONEDX_JSON_FILE = "./results.bom.json";
+      fs.writeFileSync(CYCLONEDX_JSON_FILE, stdout);
+      out["cyclonedx-json"] = CYCLONEDX_JSON_FILE;
       break;
     }
     default: // e.g. table

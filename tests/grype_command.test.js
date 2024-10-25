@@ -21,6 +21,40 @@ describe("Grype command args", () => {
     expect(args).toEqual(["-o", "sarif", "--fail-on", "high", "dir:."]);
   });
 
+  it("is invoked with cyclonedx output", async () => {
+    const args = await mockRun({
+      source: "dir:.",
+      "fail-build": "false",
+      "output-format": "cyclonedx",
+      "severity-cutoff": "high",
+      version: "0.6.0",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
+    });
+    expect(args).toEqual(["-o", "cyclonedx", "--fail-on", "high", "dir:."]);
+  });
+
+  it("is invoked with cyclonedx-json output", async () => {
+    const args = await mockRun({
+      source: "dir:.",
+      "fail-build": "false",
+      "output-format": "cyclonedx-json",
+      "severity-cutoff": "high",
+      version: "0.6.0",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
+    });
+    expect(args).toEqual([
+      "-o",
+      "cyclonedx-json",
+      "--fail-on",
+      "high",
+      "dir:.",
+    ]);
+  });
+
   it("is invoked with values", async () => {
     const args = await mockRun({
       image: "asdf",

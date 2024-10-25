@@ -127,7 +127,7 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                         |               |
 | `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                         |               |
 | `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `medium` and can be set with `severity-cutoff`.                                                                                                                     | `true`        |
-| `output-format`     | Set the output parameter after successful action execution. Valid choices are `json`, `sarif`, and `table`, where `table` output will print to the console instead of generating a file.                                                                         | `sarif`       |
+| `output-format`     | Set the output parameter after successful action execution. Valid choices are `json`, `sarif`, `cyclonedx`, `cyclonedx-json` and `table`, where `table` output will print to the console instead of generating a file.                                                                         | `sarif`       |
 | `severity-cutoff`   | Optionally specify the minimum vulnerability severity to trigger a failure. Valid choices are "negligible", "low", "medium", "high" and "critical". Any vulnerability with a severity less than this value will lead to a "warning" result. Default is "medium". | `medium`      |
 | `only-fixed`        | Specify whether to only report vulnerabilities that have a fix available.                                                                                                                                                                                        | `false`       |
 | `add-cpes-if-none`  | Specify whether to autogenerate missing CPEs.                                                                                                                                                                                                                    | `false`       |
@@ -142,6 +142,8 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | ----------- | ------------------------------------------------------------ | ------ |
 | `sarif`     | Path to the SARIF report file, if `output-format` is `sarif` | string |
 | `json`      | Path to the report file , if `output-format` is `json`       | string |
+| `cyclonedx` | Path to the CycloneDX report file, if `output-format` is `cyclonedx` | string |
+| `cyclonedx-json` | Path to the CycloneDX JSON report file, if `output-format` is `cyclonedx-json` | string |
 
 ### Example Workflows
 
