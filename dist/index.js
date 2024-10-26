@@ -419,13 +419,13 @@ async function runScan({
       break;
     }
     case "cyclonedx": {
-      const CYCLONEDX_FILE = "./results.bom";
+      const CYCLONEDX_FILE = "./results.cdx";
       fs.writeFileSync(CYCLONEDX_FILE, stdout);
       out.cyclonedx = CYCLONEDX_FILE;
       break;
     }
     case "cyclonedx-json": {
-      const CYCLONEDX_JSON_FILE = "./results.bom.json";
+      const CYCLONEDX_JSON_FILE = "./results.cdx.json";
       fs.writeFileSync(CYCLONEDX_JSON_FILE, stdout);
       out["cyclonedx-json"] = CYCLONEDX_JSON_FILE;
       break;

@@ -100,7 +100,7 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["cyclonedx"]).toBe("./results.bom");
+    expect(outputs["cyclonedx"]).toBe("./results.cdx");
   });
 
   it("runs with cyclonedx-json output", async () => {
@@ -115,7 +115,7 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["cyclonedx-json"]).toBe("./results.bom.json");
+    expect(outputs["cyclonedx-json"]).toBe("./results.cdx.json");
   });
 
   it("runs with environment variables", async () => {
