@@ -51,6 +51,10 @@ outputs:
     description: "Path to a SARIF report file for the image"
   json:
     description: "Path to a JSON report file for the image"
+  cyclonedx:
+    description: "Path to a CycloneDX report file for the image"
+  cyclonedx-json:
+    description: "Path to a JSON CycloneDX report file for the image"
 runs:
   using: "node20"
   main: "dist/index.js"
