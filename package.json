@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/cache": "^3.2.4",
+    "@actions/cache": "^3.3.0",
     "@actions/core": "^1.11.0",
     "@actions/exec": "^1.1.1",
     "@actions/tool-cache": "^2.0.1",
