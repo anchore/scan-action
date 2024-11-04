@@ -50,7 +50,7 @@
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "tar": "^7.4.3",
-    "tslib": "^2.8.0"
+    "tslib": "^2.8.1"
   },
   "lint-staged": {
     "*.js": "prettier --write"
