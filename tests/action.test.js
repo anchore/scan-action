@@ -88,6 +88,36 @@ describe("Github action", () => {
     expect(outputs["json"]).toBeFalsy();
   });
 
+  it("runs with cyclonedx output", async () => {
+    const outputs = mockIO({
+      image: "",
+      path: "tests/fixtures/npm-project",
+      "fail-build": "true",
+      "output-format": "cyclonedx",
+      "severity-cutoff": "medium",
+      "add-cpes-if-none": "true",
+    });
+
+    await run();
+
+    expect(outputs["cyclonedx"]).toBe("./results.cdx");
+  });
+
+  it("runs with cyclonedx-json output", async () => {
+    const outputs = mockIO({
+      image: "",
+      path: "tests/fixtures/npm-project",
+      "fail-build": "true",
+      "output-format": "cyclonedx-json",
+      "severity-cutoff": "medium",
+      "add-cpes-if-none": "true",
+    });
+
+    await run();
+
+    expect(outputs["cyclonedx-json"]).toBe("./results.cdx.json");
+  });
+
   it("runs with environment variables", async () => {
     mockIO({
       path: "tests/fixtures/npm-project",
