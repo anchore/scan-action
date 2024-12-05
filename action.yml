@@ -21,6 +21,9 @@ inputs:
     description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", and "table".'
     required: false
     default: "sarif"
+  output-file:
+    description: 'The file to output the grype scan results to'
+    required: false
   severity-cutoff:
     description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
     required: false
