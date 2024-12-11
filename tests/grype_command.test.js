@@ -11,6 +11,7 @@ describe("Grype command args", () => {
     const args = await mockRun({
       source: "dir:.",
       "fail-build": "false",
+      "output-file": "the-output-file",
       "output-format": "sarif",
       "severity-cutoff": "high",
       version: "0.6.0",
@@ -18,7 +19,15 @@ describe("Grype command args", () => {
       "add-cpes-if-none": "false",
       "by-cve": "false",
     });
-    expect(args).toEqual(["-o", "sarif", "--fail-on", "high", "dir:."]);
+    expect(args).toEqual([
+      "-o",
+      "sarif",
+      "--file",
+      "the-output-file",
+      "--fail-on",
+      "high",
+      "dir:.",
+    ]);
   });
 
   it("is invoked with cyclonedx output", async () => {
@@ -59,6 +68,7 @@ describe("Grype command args", () => {
     const args = await mockRun({
       image: "asdf",
       "fail-build": "false",
+      "output-file": "the-output-file",
       "output-format": "json",
       "severity-cutoff": "low",
       version: "0.6.0",
@@ -66,13 +76,22 @@ describe("Grype command args", () => {
       "add-cpes-if-none": "false",
       "by-cve": "false",
     });
-    expect(args).toEqual(["-o", "json", "--fail-on", "low", "asdf"]);
+    expect(args).toEqual([
+      "-o",
+      "json",
+      "--file",
+      "the-output-file",
+      "--fail-on",
+      "low",
+      "asdf",
+    ]);
   });
 
   it("adds missing CPEs if requested", async () => {
     const args = await mockRun({
       image: "asdf",
       "fail-build": "false",
+      "output-file": "the-output-file",
       "output-format": "json",
       "severity-cutoff": "low",
       version: "0.6.0",
@@ -83,6 +102,8 @@ describe("Grype command args", () => {
     expect(args).toEqual([
       "-o",
       "json",
+      "--file",
+      "the-output-file",
       "--fail-on",
       "low",
       "--add-cpes-if-none",
@@ -94,6 +115,7 @@ describe("Grype command args", () => {
     const args = await mockRun({
       image: "asdf",
       "fail-build": "false",
+      "output-file": "the-output-file",
       "output-format": "json",
       "severity-cutoff": "low",
       version: "0.6.0",
@@ -105,6 +127,8 @@ describe("Grype command args", () => {
     expect(args).toEqual([
       "-o",
       "json",
+      "--file",
+      "the-output-file",
       "--fail-on",
       "low",
       "--add-cpes-if-none",
@@ -118,6 +142,7 @@ describe("Grype command args", () => {
     const args = await mockRun({
       path: "asdf",
       "fail-build": "false",
+      "output-file": "the-output-file",
       "output-format": "table",
       "severity-cutoff": "low",
       "by-cve": "true",
@@ -125,6 +150,8 @@ describe("Grype command args", () => {
     expect(args).toEqual([
       "-o",
       "table",
+      "--file",
+      "the-output-file",
       "--fail-on",
       "low",
       "--by-cve",

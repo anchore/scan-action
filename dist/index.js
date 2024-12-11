@@ -4,7 +4,7 @@
 /***/ 4739:
 /***/ ((__unused_webpack_module, exports) => {
 
-exports.GRYPE_VERSION = "v0.82.2";
+exports.GRYPE_VERSION = "v0.86.0";
 
 
 /***/ }),
@@ -148,11 +148,13 @@ async function run() {
     const byCve = core.getInput("by-cve") || "false";
     const vex = core.getInput("vex") || "";
     const cacheDb = core.getInput("cache-db") || "false";
+    const outputFile = core.getInput("output-file") || "";
     const out = await runScan({
       source,
       failBuild,
       severityCutoff,
       onlyFixed,
+      outputFile,
       outputFormat,
       addCpesIfNone,
       byCve,
@@ -299,6 +301,7 @@ async function runScan({
   failBuild,
   severityCutoff,
   onlyFixed,
+  outputFile,
   outputFormat,
   addCpesIfNone,
   byCve,
@@ -340,6 +343,15 @@ async function runScan({
   cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
 
   cmdArgs.push("-o", outputFormat);
+
+  // always output to a file, this is read later to print table output
+  if (!outputFile) {
+    outputFile = path.join(
+      fs.mkdtempSync(path.join(os.tmpdir(), "grype-")),
+      "output",
+    );
+  }
+  cmdArgs.push("--file", outputFile);
 
   if (
     !SEVERITY_LIST.some(
@@ -403,35 +415,16 @@ async function runScan({
   }
   cmdArgs.push(source);
 
-  const { stdout, exitCode } = await runCommand(grypeCommand, cmdArgs, env);
+  const { exitCode } = await runCommand(grypeCommand, cmdArgs, env);
 
-  switch (outputFormat) {
-    case "sarif": {
-      const SARIF_FILE = "./results.sarif";
-      fs.writeFileSync(SARIF_FILE, stdout);
-      out.sarif = SARIF_FILE;
-      break;
+  out[outputFormat] = outputFile;
+  if (outputFormat === "table") {
+    try {
+      const report = fs.readFileSync(outputFile);
+      core.info(report.toString());
+    } catch (e) {
+      core.warning(`error writing table output contents: ${e}`);
     }
-    case "json": {
-      const REPORT_FILE = "./results.json";
-      fs.writeFileSync(REPORT_FILE, stdout);
-      out.json = REPORT_FILE;
-      break;
-    }
-    case "cyclonedx": {
-      const CYCLONEDX_FILE = "./results.cdx";
-      fs.writeFileSync(CYCLONEDX_FILE, stdout);
-      out.cyclonedx = CYCLONEDX_FILE;
-      break;
-    }
-    case "cyclonedx-json": {
-      const CYCLONEDX_JSON_FILE = "./results.cdx.json";
-      fs.writeFileSync(CYCLONEDX_JSON_FILE, stdout);
-      out["cyclonedx-json"] = CYCLONEDX_JSON_FILE;
-      break;
-    }
-    default: // e.g. table
-      core.info(stdout);
   }
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
