@@ -26,6 +26,11 @@ version-resolver:
 exclude-labels:
   - 'changelog-ignore'
 
+autolabeler:
+  - label: 'changelog-ignore'
+    title:
+      - '/chore[(]\s*deps-dev\s*[)]\s*[:].*/i'
+
 template: |
   ## New in scan-action v$RESOLVED_VERSION
 
