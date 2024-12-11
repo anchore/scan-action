@@ -329,7 +329,13 @@ async function runScan({
   }
 
   const SEVERITY_LIST = ["negligible", "low", "medium", "high", "critical"];
-  const FORMAT_LIST = ["sarif", "json", "table"];
+  const FORMAT_LIST = [
+    "sarif",
+    "json",
+    "table",
+    "cyclonedx-xml",
+    "cyclonedx-json",
+  ];
   let cmdArgs = [];
 
   if (core.isDebug()) {

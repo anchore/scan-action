@@ -119,6 +119,4 @@ typings/
 /grype-db
 
 # Action temporary files
-results.sarif
-vulnerabilities.json
-results.json
+/results.*

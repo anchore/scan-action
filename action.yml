@@ -18,7 +18,7 @@ inputs:
     required: false
     default: "true"
   output-format:
-    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", and "table".'
+    description: 'Set the output parameter after successful action execution. Valid choices are "json", "sarif", "cyclonedx", "cyclonedx-json" and "table".'
     required: false
     default: "sarif"
   output-file:
@@ -51,9 +51,13 @@ inputs:
     required: false
 outputs:
   sarif:
-    description: "Path to a SARIF report file for the image"
+    description: "Path to a SARIF report file for the scan"
   json:
-    description: "Path to a JSON report file for the image"
+    description: "Path to a JSON report file for the scan"
+  cyclonedx-xml:
+    description: "Path to a CycloneDX XML report file for the scan"
+  cyclonedx-json:
+    description: "Path to a CycloneDX JSON report file for the scan"
 runs:
   using: "node20"
   main: "dist/index.js"
