@@ -139,11 +139,11 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 
 ### Action Outputs
 
-| Output Name      | Description                                                  | Type   |
-|------------------| ------------------------------------------------------------ | ------ |
-| `sarif`          | Path to the SARIF report file, if `output-format` is `sarif` | string |
-| `json`           | Path to the report file , if `output-format` is `json`       | string |
-| `cyclonedx-xml`  | Path to the CycloneDX report file, if `output-format` is `cyclonedx` | string |
+| Output Name      | Description                                                                    | Type   |
+|------------------|--------------------------------------------------------------------------------|--------|
+| `sarif`          | Path to the SARIF report file, if `output-format` is `sarif`                   | string |
+| `json`           | Path to the report file , if `output-format` is `json`                         | string |
+| `cyclonedx-xml`  | Path to the CycloneDX report file, if `output-format` is `cyclonedx`           | string |
 | `cyclonedx-json` | Path to the CycloneDX JSON report file, if `output-format` is `cyclonedx-json` | string |
 
 ### Example Workflows

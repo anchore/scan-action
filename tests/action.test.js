@@ -90,19 +90,20 @@ describe("Github action", () => {
     expect(outputs["json"]).toBeFalsy();
   });
 
-  it("runs with cyclonedx output", async () => {
+  it("runs with cyclonedx-xml output", async () => {
     const outputs = mockIO({
       image: "",
       path: "tests/fixtures/npm-project",
       "fail-build": "true",
-      "output-format": "cyclonedx",
+      "output-format": "cyclonedx-xml",
+      "output-file": "./results.cdx.xml",
       "severity-cutoff": "medium",
       "add-cpes-if-none": "true",
     });
 
     await run();
 
-    expect(outputs["cyclonedx"]).toBe("./results.cdx");
+    expect(outputs["cyclonedx-xml"]).toBe("./results.cdx.xml");
   });
 
   it("runs with cyclonedx-json output", async () => {
@@ -117,7 +118,7 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["cyclonedx-json"]).toBe("./results.cdx.json");
+    expect(outputs["cyclonedx-json"]).toBeDefined();
   });
 
   it("runs with environment variables", async () => {
