@@ -1,4 +1,4 @@
-const core = require("@actions/core");
+const githubActionsCore = require("@actions/core");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
@@ -28,13 +28,15 @@ module.exports = {
 
   mockIO(inputs) {
     const outputs = {};
-    module.exports.mock(core, {
+    module.exports.mock(githubActionsCore, {
       getInput(name) {
         return inputs[name];
       },
       setOutput(name, value) {
         outputs[name] = value;
       },
+      // ignore setFailed calls that set process.exitCode due to https://github.com/jestjs/jest/issues/14501
+      setFailed() {},
     });
     return outputs;
   },
@@ -62,7 +64,7 @@ module.exports = {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "scan-action-test-"));
     module.exports.onCleanup(() => {
       if (fs.existsSync(dir)) {
-        fs.rmdirSync(dir, { recursive: true });
+        fs.rmSync(dir, { recursive: true });
       }
     });
     return dir;
@@ -88,7 +90,7 @@ module.exports = {
       GRYPE_DB_CACHE_DIR: path.join(path.dirname(__dirname), "grype-db"),
     });
 
-    module.exports.mock(core, {
+    module.exports.mock(githubActionsCore, {
       error: append,
       info: append,
       debug: append,
