@@ -33,6 +33,8 @@ describe("Github action", () => {
         requestedInputs[name] = true;
         return expectedInputs[name];
       },
+      // ignore setFailed calls that set process.exitCode due to https://github.com/jestjs/jest/issues/14501
+      setFailed() {},
     });
 
     await run();

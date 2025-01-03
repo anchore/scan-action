@@ -175,12 +175,17 @@ async function getDbDir(grypeCommand) {
 }
 
 async function getDbBuildTime(grypeCommand) {
-  const { stdout, exitCode } = await runCommand(
+  const { stdout, stderr, exitCode } = await runCommand(
     grypeCommand,
     ["db", "status", "-vv"],
     process.env,
   );
   if (exitCode !== 0) {
+    core.debug("nonzero exit from grype db status; exitCode: " + exitCode);
+    core.debug("stdout:");
+    core.debug(stdout);
+    core.debug("stderr:");
+    core.debug(stderr);
     return;
   }
   for (let line of stdout.split("\n")) {
@@ -248,6 +253,7 @@ async function updateDbWithCache(grypeCommand) {
 
 async function runCommand(cmd, cmdArgs, env) {
   let stdout = "";
+  let stderr = "";
 
   // This /dev/null writable stream is required so the entire Grype output
   // is not written to the GitHub action log. the listener below
@@ -268,7 +274,7 @@ async function runCommand(cmd, cmdArgs, env) {
           stdout += buffer.toString();
         },
         stderr(buffer) {
-          core.info(buffer.toString());
+          stderr += buffer.toString();
         },
         debug(message) {
           core.debug(message);
@@ -279,7 +285,7 @@ async function runCommand(cmd, cmdArgs, env) {
 
   core.debug(stdout);
 
-  return { stdout, exitCode };
+  return { stdout, stderr, exitCode };
 }
 
 async function runScan({

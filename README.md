@@ -55,7 +55,7 @@ The simplest workflow for scanning a `localbuild/testimage` container:
     load: true
 
 - name: Scan image
-  uses: anchore/scan-action@v3
+  uses: anchore/scan-action@v6
   with:
     image: "localbuild/testimage:latest"
 ```
@@ -66,7 +66,7 @@ To scan a directory, add the following step:
 
 ```yaml
 - name: Scan current project
-  uses: anchore/scan-action@v3
+  uses: anchore/scan-action@v6
   with:
     path: "."
 ```
@@ -85,7 +85,7 @@ Use the `sbom` key to scan an SBOM file:
     output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
 
 - name: Scan SBOM
-  uses: anchore/scan-action@v3
+  uses: anchore/scan-action@v6
   with:
     sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
 ```
@@ -98,7 +98,7 @@ With a different severity level:
 
 ```yaml
 - name: Scan image
-  uses: anchore/scan-action@v3
+  uses: anchore/scan-action@v6
   with:
     image: "localbuild/testimage:latest"
     fail-build: true
@@ -109,7 +109,7 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ```yaml
 - name: Scan image
-  uses: anchore/scan-action@v3
+  uses: anchore/scan-action@v6
   with:
     image: "localbuild/testimage:latest"
     fail-build: false
@@ -160,7 +160,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Build the container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-      - uses: anchore/scan-action@v3
+      - uses: anchore/scan-action@v6
         with:
           image: "localbuild/testimage:latest"
           fail-build: true
@@ -180,7 +180,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Build the Container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-      - uses: anchore/scan-action@v3
+      - uses: anchore/scan-action@v6
         id: scan
         with:
           image: "localbuild/testimage:latest"
