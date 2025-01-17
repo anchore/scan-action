@@ -373,6 +373,7 @@ async function runScan({
       core.setFailed(
         `Config file path ${configFilePath} does not exist or is not accessible`,
       );
+      return;
     }
     cmdArgs.push("--config", configFilePath);
   }
