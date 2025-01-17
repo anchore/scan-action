@@ -343,10 +343,6 @@ async function runScan({
   byCve = byCve.toLowerCase() === "true";
   cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
 
-  if (configFilePath !== "") {
-    cmdArgs.push("-c", configFilePath);
-  }
-
   cmdArgs.push("-o", outputFormat);
 
   // always output to a file, this is read later to print table output
@@ -357,6 +353,10 @@ async function runScan({
     );
   }
   cmdArgs.push("--file", outputFile);
+
+  if (configFilePath !== "") {
+    cmdArgs.push("--config", configFilePath);
+  }
 
   if (
     !SEVERITY_LIST.some(
