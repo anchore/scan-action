@@ -343,7 +343,7 @@ async function runScan({
   byCve = byCve.toLowerCase() === "true";
   cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
 
-  if (configFilePath) {
+  if (configFilePath !== "") {
     cmdArgs.push("-c", configFilePath);
   }
 
