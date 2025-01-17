@@ -356,7 +356,9 @@ async function runScan({
 
   if (configFilePath !== "") {
     if (!fs.existsSync(configFilePath)) {
-      throw new Error(`Config file path does not exist: ${configFilePath}`);
+      core.setFailed(
+        `Config file path ${configFilePath} does not exist or is not accessible`,
+      );
     }
     cmdArgs.push("--config", configFilePath);
   }
