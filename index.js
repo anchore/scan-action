@@ -128,6 +128,7 @@ async function run() {
     const source = sourceInput();
     const failBuild = core.getInput("fail-build") || "true";
     const outputFormat = core.getInput("output-format") || "sarif";
+    const configFilePath = core.getInput("config-file-path") || "";
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const onlyFixed = core.getInput("only-fixed") || "false";
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
@@ -142,6 +143,7 @@ async function run() {
       onlyFixed,
       outputFile,
       outputFormat,
+      configFilePath,
       addCpesIfNone,
       byCve,
       vex,
@@ -295,6 +297,7 @@ async function runScan({
   onlyFixed,
   outputFile,
   outputFormat,
+  configFilePath,
   addCpesIfNone,
   byCve,
   vex,
@@ -341,6 +344,7 @@ async function runScan({
   cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
 
   cmdArgs.push("-o", outputFormat);
+  cmdArgs.push("-c", configFilePath);
 
   // always output to a file, this is read later to print table output
   if (!outputFile) {
