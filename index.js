@@ -343,8 +343,11 @@ async function runScan({
   byCve = byCve.toLowerCase() === "true";
   cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
 
+  if (configFilePath) {
+    cmdArgs.push("-c", configFilePath);
+  }
+
   cmdArgs.push("-o", outputFormat);
-  cmdArgs.push("-c", configFilePath);
 
   // always output to a file, this is read later to print table output
   if (!outputFile) {
