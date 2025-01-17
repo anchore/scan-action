@@ -10,7 +10,7 @@ inputs:
   path:
     description: 'The path to scan. This option is mutually exclusive with "image" and "sbom".'
     required: false
-  config-file:
+  config-file-path:
     description: "The path to the Grype configuration file."
     required: false
   sbom:
