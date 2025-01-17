@@ -369,6 +369,9 @@ async function runScan({
   cmdArgs.push("--file", outputFile);
 
   if (configFilePath !== "") {
+    if (!fs.existsSync(configFilePath)) {
+      throw new Error(`Config file path does not exist: ${configFilePath}`);
+    }
     cmdArgs.push("--config", configFilePath);
   }
 
