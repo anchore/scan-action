@@ -397,6 +397,7 @@ async function runScan({
   core.debug("Add Missing CPEs: " + addCpesIfNone);
   core.debug("Orient by CVE: " + byCve);
   core.debug("Output Format: " + outputFormat);
+  core.debug("Config File Path: " + (configFilePath || "none"));
 
   core.debug("Creating options for GRYPE analyzer");
 
