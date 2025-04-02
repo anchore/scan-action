@@ -413,7 +413,11 @@ async function runScan({
   }
   cmdArgs.push(source);
 
-  const { exitCode } = await runCommand(grypeCommand, cmdArgs, env);
+  const { stdout, stderr, exitCode } = await runCommand(
+    grypeCommand,
+    cmdArgs,
+    env,
+  );
 
   out[outputFormat] = outputFile;
   if (outputFormat === "table") {
@@ -427,25 +431,53 @@ async function runScan({
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
   if (exitCode > 0) {
-    if (!severityCutoff) {
-      // There was a non-zero exit status but it wasn't because of failing severity, this must be
-      // a grype problem
-      core.warning("grype had a non-zero exit status when running");
-    } else if (failBuild === true) {
-      core.setFailed(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
-      );
-    } else {
-      // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
-      // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
-      // Actions UI
-      core.warning(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
-      );
-    }
+    handleGrypeError(stdout, stderr, exitCode);
   }
 
   return out;
+}
+
+function handleGrypeError(stdout, stderr, exitCode) {
+  // There was a non-zero exit status but it wasn't because of failing severity, this must be
+  // a grype problem
+  if (!severityCutoff) {
+    core.error("Error running grype:");
+    core.error(stdout);
+    core.error(stderr);
+    core.setFailed(
+      `grype had a non-zero exit status (${exitCode}) when running`,
+    );
+    return;
+  }
+
+  // There is a non-zero exit status code with severity cut off and we know it is for a failing
+  // severity thanks to Grype returning exit code 2 starting with v0.92.0.
+  if (failBuild === true && exitCode === 2) {
+    core.setFailed(
+      `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
+    );
+    return;
+  }
+
+  // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
+  // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
+  // Actions UI
+  core.warning(stdout);
+  core.warning(stderr);
+  core.warning(
+    `grype had a non-zero exit status (${exitCode}) when running with severity cut off enabled but unable to confirm if a vulnerability was found`,
+  );
+
+  if (failBuild === true) {
+    core.setFailed(
+      `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
+    );
+    return;
+  }
+
+  core.warning(
+    `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
+  );
 }
 
 module.exports = {
