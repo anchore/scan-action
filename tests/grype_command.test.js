@@ -99,6 +99,32 @@ describe("Grype command args", () => {
     ]);
   });
 
+  it("is invoked with config file", async () => {
+    const args = await mockRun({
+      image: "asdf",
+      "fail-build": "false",
+      "output-file": "the-output-file",
+      "output-format": "json",
+      "severity-cutoff": "low",
+      version: "0.6.0",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
+      "config-file-path": "path/to/config",
+    });
+    expect(args).toEqual([
+      "-o",
+      "json",
+      "--file",
+      "the-output-file",
+      "--config",
+      "path/to/config",
+      "--fail-on",
+      "low",
+      "asdf",
+    ]);
+  });
+
   it("adds missing CPEs if requested", async () => {
     const args = await mockRun({
       image: "asdf",
