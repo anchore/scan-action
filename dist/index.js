@@ -4,7 +4,7 @@
 /***/ 4739:
 /***/ ((__unused_webpack_module, exports) => {
 
-exports.GRYPE_VERSION = "v0.87.0";
+exports.GRYPE_VERSION = "v0.91.0";
 
 
 /***/ }),
