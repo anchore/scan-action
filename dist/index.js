@@ -4,7 +4,7 @@
 /***/ 4739:
 /***/ ((__unused_webpack_module, exports) => {
 
-exports.GRYPE_VERSION = "v0.91.0";
+exports.GRYPE_VERSION = "v0.91.1";
 
 
 /***/ }),
@@ -298,6 +298,7 @@ async function runCommand(cmd, cmdArgs, env) {
   });
 
   core.debug(stdout);
+  core.debug(stderr);
 
   return { stdout, stderr, exitCode };
 }
@@ -404,6 +405,7 @@ async function runScan({
   core.debug("Add Missing CPEs: " + addCpesIfNone);
   core.debug("Orient by CVE: " + byCve);
   core.debug("Output Format: " + outputFormat);
+  core.debug("Cache DB: " + cacheDb);
 
   core.debug("Creating options for GRYPE analyzer");
 
@@ -458,7 +460,6 @@ async function runScan({
       );
     }
   }
-
   return out;
 }
 

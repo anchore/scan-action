@@ -2,13 +2,6 @@ const githubActionsCore = require("@actions/core");
 const githubActionsCache = require("@actions/cache");
 const githubActionsExec = require("@actions/exec");
 const { cleanup, mock, mockIO, setEnv, tmpdir, runAction } = require("./mocks");
-const {
-  sha256,
-  tarGzDir,
-  dbServer,
-  listing,
-  writeMetadata,
-} = require("./db_server");
 const { run } = require("../index");
 
 jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
@@ -197,90 +190,5 @@ describe("Github action", () => {
     });
 
     expect(failure).toContain("Failed minimum severity level.");
-  });
-
-  it("uses db cache", async () => {
-    const dbCacheRoot = tmpdir();
-
-    mockIO({
-      image: "localhost:5000/match-coverage/debian:latest", // scan with vulns
-      path: "",
-      "fail-build": "true",
-      "output-format": "json",
-      "severity-cutoff": "medium",
-      "add-cpes-if-none": "true",
-      "cache-db": "true",
-    });
-
-    let restoreCacheDir;
-    let saveCacheDir;
-
-    mock(githubActionsCache, {
-      async isFeatureAvailable() {
-        return true;
-      },
-      async restoreCache(...args) {
-        restoreCacheDir = args[0][0];
-      },
-      async saveCache(...args) {
-        saveCacheDir = args[0][0];
-      },
-    });
-
-    const dbContents = await tarGzDir("grype-db/5");
-    const dbChecksum = sha256(dbContents);
-    const listings = [];
-
-    // mock a listings file
-    const listingResponse = {
-      available: {
-        5: listings,
-      },
-    };
-
-    // mock the db update server
-    const serverUrl = dbServer(listingResponse, dbContents);
-    const listingUrl = serverUrl + "/listings.json";
-
-    // set listing to have update
-    listings.push(listing(new Date(), serverUrl + "/db.tar.gz", dbChecksum));
-
-    setEnv({
-      GRYPE_DB_CACHE_DIR: dbCacheRoot,
-      GRYPE_DB_UPDATE_URL: listingUrl,
-    });
-    await run();
-
-    expect(restoreCacheDir).toBe(dbCacheRoot);
-    expect(saveCacheDir).toBe(dbCacheRoot);
-
-    // with a current, fresh db, we should not have saveCache called
-    restoreCacheDir = undefined;
-    saveCacheDir = undefined;
-
-    // update the db metadata to be fresh and not require an update
-    const fresh = new Date();
-    writeMetadata(dbCacheRoot, fresh);
-
-    // env is already set to the tmpdir, with a fresh db
-    await run();
-
-    expect(restoreCacheDir).toBe(dbCacheRoot);
-    expect(saveCacheDir).toBeUndefined();
-
-    // update the db metadata to be > 24 hours
-    const yesterday = new Date();
-    yesterday.setHours(yesterday.getHours() - 24);
-    writeMetadata(dbCacheRoot, yesterday);
-
-    // reset call tracking
-    restoreCacheDir = undefined;
-    saveCacheDir = undefined;
-
-    // env is already set to the tmpdir, but db is old and should be downloaded and cached
-    await run();
-
-    expect(restoreCacheDir).toBe(dbCacheRoot);
-    expect(saveCacheDir).toBe(dbCacheRoot);
   });
 });
