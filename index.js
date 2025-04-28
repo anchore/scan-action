@@ -128,6 +128,7 @@ async function run() {
     const source = sourceInput();
     const failBuild = core.getInput("fail-build") || "true";
     const outputFormat = core.getInput("output-format") || "sarif";
+    const configFilePath = core.getInput("config-file-path") || "";
     const severityCutoff = core.getInput("severity-cutoff") || "medium";
     const onlyFixed = core.getInput("only-fixed") || "false";
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
@@ -142,6 +143,7 @@ async function run() {
       onlyFixed,
       outputFile,
       outputFormat,
+      configFilePath,
       addCpesIfNone,
       byCve,
       vex,
@@ -295,6 +297,7 @@ async function runScan({
   onlyFixed,
   outputFile,
   outputFormat,
+  configFilePath,
   addCpesIfNone,
   byCve,
   vex,
@@ -351,6 +354,15 @@ async function runScan({
   }
   cmdArgs.push("--file", outputFile);
 
+  if (configFilePath !== "") {
+    if (!fs.existsSync(configFilePath)) {
+      throw new Error(
+        `Config file ${configFilePath} does not exist or is not accessible`,
+      );
+    }
+    cmdArgs.push("--config", configFilePath);
+  }
+
   if (
     !SEVERITY_LIST.some(
       (item) =>
@@ -390,6 +402,7 @@ async function runScan({
   core.debug("Add Missing CPEs: " + addCpesIfNone);
   core.debug("Orient by CVE: " + byCve);
   core.debug("Output Format: " + outputFormat);
+  core.debug("Config File Path: " + (configFilePath || "none"));
 
   core.debug("Creating options for GRYPE analyzer");
 
