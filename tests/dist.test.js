@@ -40,7 +40,6 @@ function runDistBuild(inputs) {
     RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
     GRYPE_DB_AUTO_UPDATE: "false",
     GRYPE_DB_VALIDATE_AGE: "false",
-    GRYPE_DB_CACHE_DIR: path.join(repoRootDir, "grype/db"),
   };
   // this is brittle and may need to be updated, but is currently how input are passed to the process:
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';

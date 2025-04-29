@@ -5,7 +5,7 @@ const { installGrype } = require("../index");
   try {
     const pinnedDB =
       "https://grype.anchore.io/databases/v6/vulnerability-db_v6.0.2_2025-04-01T01:31:39Z_1743480497.tar.zst";
-    const path = await installGrype(process.argv[2] || "latest");
+    const path = await installGrype(process.argv[2] || "v0.91.1");
     console.log("Installed to:", path);
 
     execFile(path, ["db", "import", pinnedDB], (error, stdout, stderr) => {
