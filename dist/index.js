@@ -298,7 +298,6 @@ async function runCommand(cmd, cmdArgs, env) {
   });
 
   core.debug(stdout);
-  core.debug(stderr);
 
   return { stdout, stderr, exitCode };
 }
