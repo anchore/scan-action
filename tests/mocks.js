@@ -87,7 +87,7 @@ module.exports = {
     module.exports.setEnv({
       GRYPE_DB_AUTO_UPDATE: "false",
       GRYPE_DB_VALIDATE_AGE: "false",
-      GRYPE_DB_CACHE_DIR: path.join(path.dirname(__dirname), "grype-db"),
+      GRYPE_DB_CACHE_DIR: path.join(path.dirname(__dirname), "grype/db"),
     });
 
     module.exports.mock(githubActionsCore, {

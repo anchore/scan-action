@@ -117,6 +117,7 @@ typings/
 
 # grype db for tests
 /grype-db
+/grype
 
 # Action temporary files
 /results.*

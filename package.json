@@ -8,11 +8,11 @@
     "test": "tests"
   },
   "scripts": {
+		"install-and-update-grype": "RUNNER_TOOL_CACHE='grype' RUNNER_TEMP='grype' node ./scripts/install-and-update-grype.js",
     "audit": "better-npm-audit audit --production",
     "lint": "eslint index.js",
-    "test": "eslint index.js && npm run download-pinned-grype-db && npm run build && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
-    "test:update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
-    "download-pinned-grype-db": "if [ -d \"grype-db/6\" ] && [ -f \"grype-db/6/vulnerability.db\" ]; then echo \"Directory exists and vulnerability.db is present.\"; else mkdir -p grype-db/6 && curl -sL https://grype.anchore.io/databases/v6/vulnerability-db_v6.0.2_2025-04-01T01:31:39Z_1743480497.tar.zst | zstd -d -o grype-db/6/vulnerability.db; fi",
+    "test": "eslint index.js && npm run install-and-update-grype && npm run build && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
+    "test:update-snapshots": "eslint index.js && npm run install-and-update-grype && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
     "build": "ncc build ./index.js && node dos2unix.js dist/index.js",
     "precommit": "npm run prettier && npm run build && git add dist/",
     "prepare": "husky install",
