@@ -8,11 +8,14 @@
     "test": "tests"
   },
   "scripts": {
+		"install-and-update-grype": "RUNNER_TOOL_CACHE='grype' RUNNER_TEMP='grype' node ./scripts/install-and-update-grype.js",
     "audit": "better-npm-audit audit --production",
     "lint": "eslint index.js",
-    "test": "eslint index.js && npm run download-pinned-grype-db && npm run build && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
-    "test:update-snapshots": "eslint index.js && npm run download-pinned-grype-db && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_CACHE_DIR=./grype-db GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
-    "download-pinned-grype-db": "mkdir -p grype-db/5 && curl -sL https://toolbox-data.anchore.io/grype/databases/vulnerability-db_v5_2022-10-17T08:14:57Z_b50a86ce07d268101316.tar.gz | tar zxf - -C grype-db/5",
+		"test": "npm run lint && npm run start-registry && npm run install-and-update-grype && npm run build && npm run run-tests",
+    "test-ci": "npm run lint && npm run install-and-update-grype && npm run build && npm run run-tests",
+		"start-registry": "sh ./scripts/start_registry_and_push_images.sh",
+    "run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
+    "test:update-snapshots": "eslint index.js && npm run install-and-update-grype && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
     "build": "ncc build ./index.js && node dos2unix.js dist/index.js",
     "precommit": "npm run prettier && npm run build && git add dist/",
     "prepare": "husky install",

@@ -45,7 +45,7 @@ jobs:
           done
       - run: npm ci
       - run: npm run audit
-      - run: npm test
+      - run: npm run test-ci
 
   test-download-action:
     runs-on: ubuntu-latest

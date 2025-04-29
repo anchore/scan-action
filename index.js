@@ -390,6 +390,7 @@ async function runScan({
   core.debug("Add Missing CPEs: " + addCpesIfNone);
   core.debug("Orient by CVE: " + byCve);
   core.debug("Output Format: " + outputFormat);
+  core.debug("Cache DB: " + cacheDb);
 
   core.debug("Creating options for GRYPE analyzer");
 
@@ -444,7 +445,6 @@ async function runScan({
       );
     }
   }
-
   return out;
 }
 
