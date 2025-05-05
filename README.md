@@ -176,6 +176,10 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Permissions key is required for CodeQL SARIF Upload, per the docs:
+    # https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/uploading-a-sarif-file-to-github
+    permissions:
+      security-events: write
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Build the Container image
