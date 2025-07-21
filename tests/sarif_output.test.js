@@ -60,18 +60,21 @@ const testSource = async (source, vulnerabilities) => {
 describe("SARIF", () => {
   it("alpine", async () => {
     const sarif = await testSource(
-      "localhost:5000/match-coverage/alpine:latest",
-      ["CVE-2014-6051-libvncserver"],
+      "anchore/test_images:alpine-package-cpe-vuln-match-bd0aaef@sha256:0825acea611c7c5cc792bc7cc20de44d7413fd287dc5afc4aab9c1891d037b4f",
+      ["CVE-2022-37434-zlib", "CVE-2021-29921-python3"],
     );
     expect(sarif).toBeValidSarifLog();
   });
   it("centos", async () => {
-    await testSource("localhost:5000/match-coverage/centos:latest", []);
+    await testSource(
+      "anchore/test_images:vulnerabilities-centos-stream9-ebc653b@sha256:3fa6909fa6f9a8ca8b7f9ba783af8cf84773c14084154073f1f331058ab646cb",
+      ["CVE-2023-4911-glibc", "CVE-2024-28182-libnghttp2"],
+    );
   });
   it("debian", async () => {
     const sarif = await testSource(
-      "localhost:5000/match-coverage/debian:latest",
-      ["GHSA-fp4w-jxhp-m23p-bundler", "GHSA-9w8r-397f-prfh-pygments"],
+      "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
+      ["CVE-2022-37434-zlib1g", "CVE-2023-50387-libsystemd0"],
     );
     expect(sarif).toBeValidSarifLog();
   });

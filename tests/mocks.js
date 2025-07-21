@@ -93,6 +93,7 @@ module.exports = {
       error: append,
       info: append,
       debug: append,
+      warning: append,
       setFailed: (...args) => {
         append(...args);
         failure = args.join(" ");

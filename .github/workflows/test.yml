@@ -30,20 +30,8 @@ jobs:
           - 5000:5000
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Build images
-        run: |
-          for distro in alpine centos debian; do
-            docker build -t localhost:5000/match-coverage/$distro ./tests/fixtures/image-$distro-match-coverage
-            docker push localhost:5000/match-coverage/$distro:latest
-          done
-      - name: Inspect
-        run: |
-          docker images -a
-          for distro in alpine centos debian; do
-            docker buildx imagetools inspect localhost:5000/match-coverage/$distro:latest
-          done
       - run: npm ci
-      - run: npm run test-ci
+      - run: npm run test
 
   test-download-action:
     runs-on: ubuntu-latest

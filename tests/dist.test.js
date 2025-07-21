@@ -15,7 +15,8 @@ describe("scan-action dist build", () => {
 
   it("fails due to vulnerabilities found", () => {
     const { stdout } = runDistBuild({
-      image: "localhost:5000/match-coverage/debian:latest",
+      image:
+        "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
     });
     expect(stdout).toContain("Failed minimum severity level.");
   });
