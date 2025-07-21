@@ -23,7 +23,7 @@ describe("scan-action dist build", () => {
 
   it("runs with sbom", () => {
     const { stdout } = runDistBuild({
-      sbom: "fixtures/test_sbom.spdx.json",
+      sbom: "tests/fixtures/test_sbom.spdx.json",
     });
     expect(stdout).toContain("Failed minimum severity level.");
   });
@@ -41,6 +41,9 @@ function runDistBuild(inputs) {
     RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
     GRYPE_DB_AUTO_UPDATE: "false",
     GRYPE_DB_VALIDATE_AGE: "false",
+    GRYPE_DB_VALIDATE_BY_HASH_ON_START: "false",
+    GRYPE_DB_REQUIRE_UPDATE_CHECK: "false",
+    GRYPE_DB_MAX_ALLOWED_BUILT_AGE: "8760h", // 1 year
   };
   // this is brittle and may need to be updated, but is currently how input are passed to the process:
   // reverse core.js: const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
