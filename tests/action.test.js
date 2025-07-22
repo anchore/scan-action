@@ -1,7 +1,6 @@
 const githubActionsCore = require("@actions/core");
-const githubActionsCache = require("@actions/cache");
 const githubActionsExec = require("@actions/exec");
-const { cleanup, mock, mockIO, setEnv, tmpdir, runAction } = require("./mocks");
+const { cleanup, mock, mockIO, setEnv, runAction } = require("./mocks");
 const { run } = require("../index");
 
 jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
@@ -72,7 +71,8 @@ describe("Github action", () => {
 
   it("runs with table output", async () => {
     const { stdout, outputs } = await runAction({
-      image: "localhost:5000/match-coverage/debian:latest",
+      image:
+        "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
       "fail-build": "true",
       "output-format": "table",
       "severity-cutoff": "medium",
@@ -178,7 +178,8 @@ describe("Github action", () => {
 
   it("fails due to vulnerabilities found", async () => {
     const { failure } = await runAction({
-      image: "localhost:5000/match-coverage/debian:latest",
+      image:
+        "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
     });
 
     expect(failure).toContain("Failed minimum severity level.");
@@ -186,9 +187,18 @@ describe("Github action", () => {
 
   it("runs with sbom", async () => {
     const { failure } = await runAction({
-      sbom: "fixtures/test_sbom.spdx.json",
+      sbom: "tests/fixtures/test_sbom.spdx.json",
     });
 
     expect(failure).toContain("Failed minimum severity level.");
+  });
+
+  it("outputs errors", async () => {
+    const { stdout } = await runAction({
+      sbom: "tests/fixtures/test_sbom.spdx.json",
+      vex: "missing-file",
+    });
+
+    expect(stdout).toContain("no such file or directory");
   });
 });

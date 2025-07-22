@@ -20,6 +20,7 @@ describe("Grype command args", () => {
       "by-cve": "false",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "sarif",
       "--file",
@@ -43,6 +44,7 @@ describe("Grype command args", () => {
       "by-cve": "false",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "cyclonedx-xml",
       "--file",
@@ -66,6 +68,7 @@ describe("Grype command args", () => {
       "by-cve": "false",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "cyclonedx-json",
       "--file",
@@ -89,6 +92,7 @@ describe("Grype command args", () => {
       "by-cve": "false",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "json",
       "--file",
@@ -112,6 +116,7 @@ describe("Grype command args", () => {
       "by-cve": "false",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "json",
       "--file",
@@ -137,6 +142,7 @@ describe("Grype command args", () => {
       vex: "test.vex",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "json",
       "--file",
@@ -160,6 +166,7 @@ describe("Grype command args", () => {
       "by-cve": "true",
     });
     expect(args).toEqual([
+      "-v",
       "-o",
       "table",
       "--file",

@@ -189,7 +189,7 @@ async function getDbDir(grypeCommand) {
 }
 
 async function getDbBuildTime(grypeCommand) {
-  const { stdout, stderr, exitCode } = await runCommand(
+  const { stdout, exitCode } = await runCommand(
     grypeCommand,
     ["db", "status", "-vv"],
     process.env,
@@ -198,8 +198,6 @@ async function getDbBuildTime(grypeCommand) {
     core.debug("nonzero exit from grype db status; exitCode: " + exitCode);
     core.debug("stdout:");
     core.debug(stdout);
-    core.debug("stderr:");
-    core.debug(stderr);
     return;
   }
   for (let line of stdout.split("\n")) {
@@ -267,7 +265,6 @@ async function updateDbWithCache(grypeCommand) {
 
 async function runCommand(cmd, cmdArgs, env) {
   let stdout = "";
-  let stderr = "";
 
   // This /dev/null writable stream is required so the entire Grype output
   // is not written to the GitHub action log. the listener below
@@ -288,7 +285,7 @@ async function runCommand(cmd, cmdArgs, env) {
           stdout += buffer.toString();
         },
         stderr(buffer) {
-          stderr += buffer.toString();
+          core.info(buffer.toString());
         },
         debug(message) {
           core.debug(message);
@@ -299,7 +296,7 @@ async function runCommand(cmd, cmdArgs, env) {
 
   core.debug(stdout);
 
-  return { stdout, stderr, exitCode };
+  return { stdout, exitCode };
 }
 
 async function runScan({
@@ -346,6 +343,8 @@ async function runScan({
 
   if (core.isDebug()) {
     cmdArgs.push(`-vv`);
+  } else {
+    cmdArgs.push(`-v`);
   }
 
   failBuild = failBuild.toLowerCase() === "true";
@@ -442,21 +441,14 @@ async function runScan({
 
   // If there is a non-zero exit status code there are a couple of potential reporting paths
   if (exitCode > 0) {
-    if (!severityCutoff) {
-      // There was a non-zero exit status but it wasn't because of failing severity, this must be
-      // a grype problem
-      core.warning("grype had a non-zero exit status when running");
-    } else if (failBuild === true) {
-      core.setFailed(
+    if (exitCode === 2) {
+      (failBuild ? core.setFailed : core.warning)(
         `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
       );
     } else {
-      // There is a non-zero exit status code with severity cut off, although there is still a chance this is grype
-      // that is broken, it will most probably be a failed severity. Using warning here will make it bubble up in the
-      // Actions UI
-      core.warning(
-        `Failed minimum severity level. Found vulnerabilities with level '${severityCutoff}' or higher`,
-      );
+      // There was a non-zero exit status but it wasn't because of failing severity, this must be
+      // a grype problem
+      core.setFailed("grype had a non-zero exit status when running");
     }
   }
   return out;
