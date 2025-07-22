@@ -36,7 +36,9 @@ function runDistBuild(inputs) {
 
   // Set up the environment variables
   const env = {
+    HOME: process.env.HOME,
     PATH: process.env.PATH,
+    // RUNNER_DEBUG: "1", // uncomment for debug logging
     RUNNER_TEMP: process.env.RUNNER_TEMP,
     RUNNER_TOOL_CACHE: process.env.RUNNER_TOOL_CACHE,
     GRYPE_DB_AUTO_UPDATE: "false",
