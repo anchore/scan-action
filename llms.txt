@@ -1,0 +1,27 @@
+# Anchore Scan Action
+
+GitHub Action for vulnerability scanning using Grype scanner. Scans containers, directories, and SBOM files for security vulnerabilities.
+
+## Key Features
+- Local scanning without sending data outbound
+- Supports containers, file paths, and SBOM files
+- Configurable severity thresholds and failure conditions
+- Multiple output formats (SARIF, JSON, CycloneDX)
+- Integration with GitHub Security tab via SARIF reports
+
+## Main Components
+- `index.js` - Main action entry point
+- `GrypeVersion.js` - Grype version management
+- `download-grype/` - Sub-action for downloading Grype
+- Test workflows and examples in `.github/workflows/`
+
+## Usage
+The action accepts `image`, `path`, or `sbom` as input sources. Default severity cutoff is "medium" with `fail-build: true`.
+
+## Development
+- Built with Node.js 20+
+- Uses @actions/core, @actions/exec, @actions/tool-cache
+- Test with `npm test`, build with `npm run build`
+- Pre-commit hooks format code with prettier
+
+See README.md for complete usage examples and configuration options.
