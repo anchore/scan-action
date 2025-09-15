@@ -199,6 +199,6 @@ describe("Github action", () => {
       vex: "missing-file",
     });
 
-    expect(stdout).toContain("no such file or directory");
+    expect(stdout).toContain('VEX document "missing-file" not found');
   });
 });
