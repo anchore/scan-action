@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@microsoft/jest-sarif": "^1.0.0-beta.0",
-    "@vercel/ncc": "^0.38.3",
+    "@vercel/ncc": "^0.38.4",
     "better-npm-audit": "^3.11.0",
     "eslint": "^9.36.0",
     "husky": "^9.1.7",
