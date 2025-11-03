@@ -45,7 +45,7 @@
     "@microsoft/jest-sarif": "^1.0.0-beta.0",
     "@vercel/ncc": "^0.38.4",
     "better-npm-audit": "^3.11.0",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.0",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
     "lint-staged": "^16.2.6",
