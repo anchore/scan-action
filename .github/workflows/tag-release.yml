@@ -4,6 +4,8 @@ on:
   release:
     types: [published, edited]
 
+permissions: {}
+
 jobs:
   actions-tagger:
     runs-on: ubuntu-latest

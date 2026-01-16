@@ -7,11 +7,15 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   build: # make sure build/ci work properly and there is no faked build ncc built scripts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: package.json
@@ -30,6 +34,8 @@ jobs:
           - 5000:5000
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - run: npm ci
       - run: npm run test
 
@@ -40,6 +46,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           path: ./
+          persist-credentials: false
 
       - name: "Donwload Grype v0.54.0"
         id: grype
@@ -48,7 +55,9 @@ jobs:
           grype-version: v0.54.0
 
       - name: "Check Grype version before scan-action"
-        run: ${{ steps.grype.outputs.cmd }} version | egrep "^Version:.*0.54.0$"
+        env:
+          GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
+        run: $GRYPE_CMD version | egrep "^Version:.*0.54.0$"
 
       - name: "Scan test image"
         uses: ./
@@ -57,7 +66,9 @@ jobs:
           fail-build: false # to prevent fail due to vuln:s on test image
 
       - name: "Check Grype version after scan-action"
-        run: ${{ steps.grype.outputs.cmd }} version | egrep "^Version:.*0.54.0$"
+        env:
+          GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
+        run: $GRYPE_CMD version | egrep "^Version:.*0.54.0$"
 
   test-all:
     strategy:
@@ -72,6 +83,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - uses: ./
         id: scan
         with:
@@ -83,4 +96,6 @@ jobs:
 
       - name: Validate file exists
         if: ${{ matrix.output-format != 'table' }}
-        run: test -f '${{ steps.scan.outputs[matrix.output-format] }}'
+        env:
+          OUTPUT_FILE: ${{ steps.scan.outputs[matrix.output-format] }}
+        run: test -f "$OUTPUT_FILE"

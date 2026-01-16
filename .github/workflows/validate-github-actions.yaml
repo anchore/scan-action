@@ -1,0 +1,35 @@
+name: "Validate GitHub Actions"
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: "Run zizmor"
+        uses: zizmorcore/zizmor-action@e639db99335bc9038abc0e066dfcd72e23d26fb4 # v0.3.0
+        with:
+          config: .github/zizmor.yml
+          # Disable SARIF upload so the step is a simple pass/fail gate
+          advanced-security: false
+          inputs: .github
