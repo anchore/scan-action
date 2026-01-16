@@ -96,6 +96,7 @@ jobs:
 
       - name: Validate file exists
         if: ${{ matrix.output-format != 'table' }}
+        shell: bash
         env:
           OUTPUT_FILE: ${{ steps.scan.outputs[matrix.output-format] }}
         run: test -f "$OUTPUT_FILE"
