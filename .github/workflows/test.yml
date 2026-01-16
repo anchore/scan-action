@@ -57,7 +57,8 @@ jobs:
       - name: "Check Grype version before scan-action"
         env:
           GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
-        run: $GRYPE_CMD version | egrep "^Version:.*0.54.0$"
+        run: |
+          "$GRYPE_CMD" version | egrep "^Version:.*0.54.0$"
 
       - name: "Scan test image"
         uses: ./
@@ -68,7 +69,8 @@ jobs:
       - name: "Check Grype version after scan-action"
         env:
           GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
-        run: $GRYPE_CMD version | egrep "^Version:.*0.54.0$"
+        run: |
+          "$GRYPE_CMD" version | egrep "^Version:.*0.54.0$"
 
   test-all:
     strategy:
