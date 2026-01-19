@@ -45,17 +45,17 @@ The simplest workflow for scanning a `localbuild/testimage` container:
 
 ```yaml
 - name: Set up Docker Buildx
-  uses: docker/setup-buildx-action@v2
+  uses: docker/setup-buildx-action@v3
 
 - name: build local container
-  uses: docker/build-push-action@v4
+  uses: docker/build-push-action@v6
   with:
     tags: localbuild/testimage:latest
     push: false
     load: true
 
 - name: Scan image
-  uses: anchore/scan-action@v6
+  uses: anchore/scan-action@v7
   with:
     image: "localbuild/testimage:latest"
 ```
@@ -66,7 +66,7 @@ To scan a directory, add the following step:
 
 ```yaml
 - name: Scan current project
-  uses: anchore/scan-action@v6
+  uses: anchore/scan-action@v7
   with:
     path: "."
 ```
@@ -85,7 +85,7 @@ Use the `sbom` key to scan an SBOM file:
     output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
 
 - name: Scan SBOM
-  uses: anchore/scan-action@v6
+  uses: anchore/scan-action@v7
   with:
     sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
 ```
@@ -98,7 +98,7 @@ With a different severity level:
 
 ```yaml
 - name: Scan image
-  uses: anchore/scan-action@v6
+  uses: anchore/scan-action@v7
   with:
     image: "localbuild/testimage:latest"
     fail-build: true
@@ -109,7 +109,7 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
 
 ```yaml
 - name: Scan image
-  uses: anchore/scan-action@v6
+  uses: anchore/scan-action@v7
   with:
     image: "localbuild/testimage:latest"
     fail-build: false
@@ -157,10 +157,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - name: Build the container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-      - uses: anchore/scan-action@v6
+      - uses: anchore/scan-action@v7
         with:
           image: "localbuild/testimage:latest"
           fail-build: true
@@ -181,15 +183,18 @@ jobs:
     permissions:
       security-events: write
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
       - name: Build the Container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-      - uses: anchore/scan-action@v6
+      - uses: anchore/scan-action@v7
         id: scan
         with:
           image: "localbuild/testimage:latest"
       - name: upload Anchore scan SARIF report
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
 ```
