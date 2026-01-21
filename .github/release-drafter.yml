@@ -10,6 +10,9 @@ categories:
       - "fix"
       - "bugfix"
       - "bug"
+  - title: "⬆️ Dependencies"
+    labels:
+      - "dependencies"
 change-template: "- $TITLE (#$NUMBER) [[$AUTHOR](https://github.com/$AUTHOR)]"
 version-resolver:
   major:
@@ -25,6 +28,7 @@ version-resolver:
 
 exclude-labels:
   - 'changelog-ignore'
+  - 'github_actions'
 
 autolabeler:
   - label: 'changelog-ignore'
