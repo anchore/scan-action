@@ -13,7 +13,7 @@ categories:
   - title: "⬆️ Dependencies"
     labels:
       - "dependencies"
-change-template: "- $TITLE (#$NUMBER) [[$AUTHOR](https://github.com/$AUTHOR)]"
+change-template: "- $TITLE (#$NUMBER) [@$AUTHOR]"
 version-resolver:
   major:
     labels:

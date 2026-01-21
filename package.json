@@ -1,62 +1,62 @@
 {
-  "name": "anchore-scan-action",
-  "version": "2.0.2",
-  "description": "Anchore image scan github action",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "scripts": {
+	"name": "anchore-scan-action",
+	"version": "2.0.2",
+	"description": "Anchore image scan github action",
+	"main": "index.js",
+	"directories": {
+		"lib": "lib",
+		"test": "tests"
+	},
+	"scripts": {
 		"install-and-update-grype": "RUNNER_TOOL_CACHE='grype' RUNNER_TEMP='grype' node ./scripts/install-and-update-grype.js",
-    "audit": "better-npm-audit audit --production",
-    "lint": "eslint index.js",
+		"audit": "better-npm-audit audit --production",
+		"lint": "eslint index.js",
 		"test": "npm run lint && npm run install-and-update-grype && npm run build && npm run run-tests",
-    "run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
-    "test:update-snapshots": "eslint index.js && npm run install-and-update-grype && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
-    "build": "ncc build ./index.js && node dos2unix.js dist/index.js",
-    "precommit": "npm run prettier && npm run build && git add dist/",
-    "prepare": "husky install",
-    "prettier": "prettier -w *.js && prettier -w tests/*.js",
-    "update-deps": "ncu -u && npm i && npm audit fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anchore/anchore-scan-action.git"
-  },
-  "keywords": [
-    "image",
-    "scanning"
-  ],
-  "author": "Anchore Inc.",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/anchore/anchore-scan-action/issues"
-  },
-  "homepage": "https://github.com/anchore/anchore-scan-action#readme",
-  "dependencies": {
-    "@actions/cache": "^5.0.3",
-    "@actions/core": "^2.0.2",
-    "@actions/exec": "^2.0.0",
-    "@actions/tool-cache": "^3.0.0",
-    "lodash": "^4.17.21"
-  },
-  "devDependencies": {
-    "@microsoft/jest-sarif": "^1.0.0-beta.0",
-    "@vercel/ncc": "^0.38.4",
-    "better-npm-audit": "^3.11.0",
-    "eslint": "^9.39.2",
-    "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.8.0",
-    "tar": "^7.5.6",
-    "tslib": "^2.8.1"
-  },
-  "lint-staged": {
-    "*.js": "prettier --write"
-  },
-  "engines": {
-    "node": ">=v20.11.0"
-  }
+		"run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
+		"test:update-snapshots": "eslint index.js && npm run install-and-update-grype && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
+		"build": "ncc build ./index.js && node dos2unix.js dist/index.js",
+		"precommit": "npm run prettier && npm run build && git add dist/",
+		"prepare": "husky",
+		"prettier": "prettier -w *.js && prettier -w tests/*.js",
+		"update-deps": "ncu -u && npm i && npm audit fix"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anchore/anchore-scan-action.git"
+	},
+	"keywords": [
+		"image",
+		"scanning"
+	],
+	"author": "Anchore Inc.",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/anchore/anchore-scan-action/issues"
+	},
+	"homepage": "https://github.com/anchore/anchore-scan-action#readme",
+	"dependencies": {
+		"@actions/cache": "^5.0.3",
+		"@actions/core": "^2.0.2",
+		"@actions/exec": "^2.0.0",
+		"@actions/tool-cache": "^3.0.0",
+		"lodash": "^4.17.21"
+	},
+	"devDependencies": {
+		"@microsoft/jest-sarif": "^1.0.0-beta.0",
+		"@vercel/ncc": "^0.38.4",
+		"better-npm-audit": "^3.11.0",
+		"eslint": "^9.39.2",
+		"husky": "^9.1.7",
+		"jest": "^30.2.0",
+		"lint-staged": "^16.2.7",
+		"prettier": "^3.8.0",
+		"tar": "^7.5.6",
+		"tslib": "^2.8.1"
+	},
+	"lint-staged": {
+		"*.js": "prettier --write"
+	},
+	"engines": {
+		"node": ">=v20.11.0"
+	}
 }
