@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/anchore/anchore-scan-action#readme",
   "dependencies": {
-    "@actions/cache": "^5.0.2",
+    "@actions/cache": "^5.0.3",
     "@actions/core": "^2.0.2",
     "@actions/exec": "^2.0.0",
     "@actions/tool-cache": "^3.0.0",
@@ -49,8 +49,8 @@
     "husky": "^9.1.7",
     "jest": "^30.2.0",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4",
-    "tar": "^7.5.3",
+    "prettier": "^3.8.0",
+    "tar": "^7.5.6",
     "tslib": "^2.8.1"
   },
   "lint-staged": {
