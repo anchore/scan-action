@@ -1,34 +1,28 @@
 name-template: "v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
+
 categories:
   - title: "🚀 Features"
-    labels:
-      - "feature"
-      - "enhancement"
+    labels: [feature, enhancement]
   - title: "🐛 Bug Fixes"
-    labels:
-      - "fix"
-      - "bugfix"
-      - "bug"
+    labels: [fix, bugfix, bug]
   - title: "⬆️ Dependencies"
-    labels:
-      - "dependencies"
-change-template: "- $TITLE (#$NUMBER) [[$AUTHOR](https://github.com/$AUTHOR)]"
+    labels: [dependencies]
+
+change-template: "- $TITLE (#$NUMBER) [@$AUTHOR]"
+
 version-resolver:
   major:
-    labels:
-      - "major"
+    labels: []
   minor:
-    labels:
-      - "minor"
+    labels: [major,minor]
   patch:
-    labels:
-      - "patch"
+    labels: [patch]
   default: patch
 
 exclude-labels:
-  - 'changelog-ignore'
-  - 'github_actions'
+  - "changelog-ignore"
+  - "github_actions"
 
 autolabeler:
   - label: 'changelog-ignore'
@@ -36,6 +30,6 @@ autolabeler:
       - '/chore[(]\s*deps-dev\s*[)]\s*[:].*/i'
 
 template: |
-  ## New in scan-action v$RESOLVED_VERSION
+  ## v$RESOLVED_VERSION
 
   $CHANGES
