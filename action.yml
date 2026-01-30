@@ -46,6 +46,9 @@ inputs:
   vex:
     description: "Specify a list of VEX documents to consider when producing scanning results."
     required: false
+  config-file:
+    description: "Specify one or more Grype configuration files (newline-separated). Setting this will disable auto-detection of configuration files (e.g. .grype.yaml) - only the specified files will be loaded."
+    required: false
   cache-db:
     description: "Cache the Grype DB in GitHub action cache and restore before checking for updates"
     required: false

@@ -177,6 +177,60 @@ describe("Grype command args", () => {
       "dir:asdf",
     ]);
   });
+
+  it("adds single config file if specified", async () => {
+    const args = await mockRun({
+      image: "asdf",
+      "fail-build": "false",
+      "output-file": "the-output-file",
+      "output-format": "json",
+      "severity-cutoff": "low",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
+      "config-file": ".grype-custom.yaml",
+    });
+    expect(args).toEqual([
+      "-v",
+      "-o",
+      "json",
+      "--file",
+      "the-output-file",
+      "--fail-on",
+      "low",
+      "-c",
+      ".grype-custom.yaml",
+      "asdf",
+    ]);
+  });
+
+  it("adds multiple config files if specified", async () => {
+    const args = await mockRun({
+      image: "asdf",
+      "fail-build": "false",
+      "output-file": "the-output-file",
+      "output-format": "json",
+      "severity-cutoff": "low",
+      "only-fixed": "false",
+      "add-cpes-if-none": "false",
+      "by-cve": "false",
+      "config-file": "base.yaml\noverrides.yaml",
+    });
+    expect(args).toEqual([
+      "-v",
+      "-o",
+      "json",
+      "--file",
+      "the-output-file",
+      "--fail-on",
+      "low",
+      "-c",
+      "base.yaml",
+      "-c",
+      "overrides.yaml",
+      "asdf",
+    ]);
+  });
 });
 
 async function mockRun(inputs) {
