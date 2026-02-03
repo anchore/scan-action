@@ -188,7 +188,7 @@ describe("Grype command args", () => {
       "only-fixed": "false",
       "add-cpes-if-none": "false",
       "by-cve": "false",
-      "config-file": ".grype-custom.yaml",
+      config: ".grype-custom.yaml",
     });
     expect(args).toEqual([
       "-v",
@@ -214,7 +214,7 @@ describe("Grype command args", () => {
       "only-fixed": "false",
       "add-cpes-if-none": "false",
       "by-cve": "false",
-      "config-file": "base.yaml\noverrides.yaml",
+      config: "base.yaml\noverrides.yaml",
     });
     expect(args).toEqual([
       "-v",

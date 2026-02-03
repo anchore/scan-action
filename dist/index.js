@@ -147,7 +147,7 @@ async function run() {
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
     const vex = core.getInput("vex") || "";
-    const configFile = core.getInput("config-file") || "";
+    const configFile = core.getInput("config") || "";
     const cacheDb = core.getInput("cache-db") || "false";
     const outputFile = core.getInput("output-file") || "";
     const out = await runScan({
