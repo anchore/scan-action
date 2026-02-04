@@ -136,6 +136,7 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `vex`               | Specify a list of VEX documents to consider when producing scanning results.                                                                                                                                                                                     | `false`       |
 | `cache-db`          | Cache the Grype DB in GitHub action cache and restore before checking for updates                                                                                                                                                                                | `false`       |
 | `grype-version`     | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js).                                                                                                                                                     |               |
+| `config`            | Optional Grype configuration files (newline-separated). Setting this will disable auto-detection of configuration files (e.g. .grype.yaml) - only the specified files will be loaded..                                                                           |               |
 
 ### Action Outputs
 

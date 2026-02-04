@@ -147,6 +147,7 @@ async function run() {
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
     const vex = core.getInput("vex") || "";
+    const configFile = core.getInput("config") || "";
     const cacheDb = core.getInput("cache-db") || "false";
     const outputFile = core.getInput("output-file") || "";
     const out = await runScan({
@@ -159,6 +160,7 @@ async function run() {
       addCpesIfNone,
       byCve,
       vex,
+      configFile,
       cacheDb,
     });
     Object.keys(out).map((key) => {
@@ -309,6 +311,7 @@ async function runScan({
   addCpesIfNone,
   byCve,
   vex,
+  configFile,
   cacheDb,
 }) {
   const out = {};
@@ -424,6 +427,16 @@ async function runScan({
   if (vex) {
     cmdArgs.push("--vex");
     cmdArgs.push(vex);
+  }
+  if (configFile) {
+    const configFiles = configFile
+      .split("\n")
+      .map((f) => f.trim())
+      .filter((f) => f);
+    for (const cf of configFiles) {
+      cmdArgs.push("-c");
+      cmdArgs.push(cf);
+    }
   }
   cmdArgs.push(source);
 
