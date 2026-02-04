@@ -39,6 +39,9 @@ Supported packages and libraries:
 - Java JAR/EAR/WAR, Jenkins plugins JPI/HPI
 - Go modules
 
+> [!TIP]
+> **Security best practice**: For production workflows, pin actions to a full commit SHA rather than a version tag. You can find the latest SHA for each release on the action's [releases page](https://github.com/anchore/scan-action/releases).
+
 ## Container scanning
 
 The simplest workflow for scanning a `localbuild/testimage` container:
