@@ -121,3 +121,4 @@ typings/
 
 # Action temporary files
 /results.*
+.DS_Store
