@@ -9,6 +9,8 @@ permissions: {}
 jobs:
   actions-tagger:
     runs-on: ubuntu-latest
+    permissions: # actions-tagger needs content read and write to create tags
+      contents: write
     steps:
       - uses: Actions-R-Us/actions-tagger@330ddfac760021349fef7ff62b372f2f691c20fb # v2.0.3
         with:
