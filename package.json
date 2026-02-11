@@ -14,7 +14,7 @@
 		"test": "npm run lint && npm run install-and-update-grype && npm run build && npm run run-tests",
 		"run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
 		"test:update-snapshots": "eslint index.js && npm run install-and-update-grype && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
-		"build": "ncc build ./index.js && node dos2unix.js dist/index.js",
+		"build": "esbuild ./index.js --bundle --platform=node --target=node20 --format=cjs --conditions=import --outfile=dist/index.js && node dos2unix.js dist/index.js",
 		"precommit": "npm run prettier && npm run build && git add dist/",
 		"prepare": "husky",
 		"prettier": "prettier -w *.js && prettier -w tests/*.js",
@@ -35,7 +35,7 @@
 	},
 	"homepage": "https://github.com/anchore/anchore-scan-action#readme",
 	"dependencies": {
-		"@actions/cache": "^5.0.5",
+		"@actions/cache": "^6.0.0",
 		"@actions/core": "^2.0.2",
 		"@actions/exec": "^2.0.0",
 		"@actions/tool-cache": "^3.0.1",
@@ -43,8 +43,8 @@
 	},
 	"devDependencies": {
 		"@microsoft/jest-sarif": "^1.0.0-beta.0",
-		"@vercel/ncc": "^0.38.4",
 		"better-npm-audit": "^3.11.0",
+		"esbuild": "^0.27.3",
 		"eslint": "^9.39.2",
 		"husky": "^9.1.7",
 		"jest": "^30.2.0",
