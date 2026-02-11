@@ -1,7 +1,14 @@
 const tools = require("@actions/tool-cache");
 const core = require("@actions/core");
-const cache = require("@actions/cache");
 const exec = require("@actions/exec");
+// lazy-require @actions/cache: it is ESM-only and cannot be resolved by
+// require() outside of the esbuild bundle. Deferring the require keeps
+// unbundled entry-points (helper scripts, tests) working.
+let _cache;
+function cache() {
+  if (!_cache) _cache = require("@actions/cache");
+  return _cache;
+}
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -212,7 +219,7 @@ async function updateDb(grypeCommand) {
 // attempts to get an up-to-date database and from cache or update it,
 // throws an exception if unable to get a database or use the cache
 async function updateDbWithCache(grypeCommand) {
-  if (!cache.isFeatureAvailable()) {
+  if (!cache().isFeatureAvailable()) {
     throw new Error("cache not available");
   }
 
@@ -223,7 +230,7 @@ async function updateDbWithCache(grypeCommand) {
   // available as expected
   // see: https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
   const cacheKey = `grype-db-${grypeVersion}`;
-  await cache.restoreCache([cacheDir], cacheKey, [], {}, true);
+  await cache().restoreCache([cacheDir], cacheKey, [], {}, true);
 
   const cachedDbBuildTime = await getDbBuildTime(grypeCommand);
   if (cachedDbBuildTime) {
@@ -248,7 +255,7 @@ async function updateDbWithCache(grypeCommand) {
   core.debug(`Caching grype db with key ${cacheKey}`);
 
   // this needs to be able to be found by restoreCache, above
-  await cache.saveCache([cacheDir], cacheKey, {}, true);
+  await cache().saveCache([cacheDir], cacheKey, {}, true);
 }
 
 async function runCommand(cmd, cmdArgs, env) {
@@ -298,7 +305,7 @@ async function runScan({
   byCve,
   vex,
   configFile,
-  cacheDb,
+  cacheDb = "false",
 }) {
   const out = {};
 
@@ -340,7 +347,7 @@ async function runScan({
   onlyFixed = onlyFixed.toLowerCase() === "true";
   addCpesIfNone = addCpesIfNone.toLowerCase() === "true";
   byCve = byCve.toLowerCase() === "true";
-  cacheDb = cache.isFeatureAvailable() && cacheDb.toLowerCase() === "true";
+  cacheDb = cacheDb.toLowerCase() === "true" && cache().isFeatureAvailable();
 
   cmdArgs.push("-o", outputFormat);
 
@@ -469,7 +476,7 @@ if (require.main === module) {
 
         // optionally restore, update and cache the db
         if (
-          cache.isFeatureAvailable() &&
+          cache().isFeatureAvailable() &&
           (core.getInput("cache-db") || "").toLowerCase() === "true"
         ) {
           await updateDbWithCache(path);
