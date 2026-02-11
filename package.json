@@ -37,7 +37,7 @@
 	"dependencies": {
 		"@actions/cache": "^6.0.0",
 		"@actions/core": "^2.0.2",
-		"@actions/exec": "^2.0.0",
+		"@actions/exec": "^3.0.0",
 		"@actions/tool-cache": "^3.0.1",
 		"lodash": "^4.17.23"
 	},
