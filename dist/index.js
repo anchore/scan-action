@@ -69217,7 +69217,7 @@ var init_cache3 = __esm({
 // GrypeVersion.js
 var require_GrypeVersion = __commonJS({
   "GrypeVersion.js"(exports2) {
-    exports2.GRYPE_VERSION = "v0.108.0";
+    exports2.GRYPE_VERSION = "v0.109.0";
   }
 });
 
