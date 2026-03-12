@@ -1,31 +1,41 @@
-const child_process = require("child_process");
-const path = require("path");
+import { describe, it } from "node:test";
+import assert from "node:assert";
+import { execSync } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import "./mocks.js"; // for runner env vars
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // these are smoke tests that the dist build was created correctly,
 // functional tests should be in action.test.js
 describe("scan-action dist build", () => {
   it("runs download-grype", () => {
-    const { stdout } = runDistBuild({
+    const { exitCode, stdout } = runDistBuild({
       run: "download-grype",
       sbom: "fixtures/test_sbom.spdx.json", // should be ignored
     });
-    expect(stdout).toContain("Downloaded Grype");
-    expect(stdout).not.toContain("Failed minimum severity level.");
+    assert.equal(exitCode, 0);
+    assert.match(stdout, /Downloaded Grype/);
+    assert.doesNotMatch(stdout, /Failed minimum severity level/);
   });
 
   it("fails due to vulnerabilities found", () => {
-    const { stdout } = runDistBuild({
+    const { exitCode, stdout } = runDistBuild({
       image:
         "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
     });
-    expect(stdout).toContain("Failed minimum severity level.");
+    assert.notEqual(exitCode, 0);
+    assert.match(stdout, /Failed minimum severity level./);
   });
 
   it("runs with sbom", () => {
-    const { stdout } = runDistBuild({
+    const { exitCode, stdout } = runDistBuild({
       sbom: "tests/fixtures/test_sbom.spdx.json",
     });
-    expect(stdout).toContain("Failed minimum severity level.");
+    assert.notEqual(exitCode, 0);
+    assert.match(stdout, /Failed minimum severity level./);
   });
 });
 
@@ -59,14 +69,12 @@ function runDistBuild(inputs) {
   let exitCode = 0;
   let stdout;
   try {
-    stdout = child_process
-      .execSync(`node ${distPath}`, {
-        env,
-      })
-      .toString("utf8");
+    stdout = execSync(`node ${distPath}`, {
+      env,
+    }).toString("utf8");
   } catch (error) {
     exitCode = error.status;
-    stdout = error.stdout.toString("utf8");
+    stdout = `STDOUT: ${error.stdout.toString("utf8")}  \nSTDERR: ${error.stderr.toString("utf8")}`;
   }
 
   return {

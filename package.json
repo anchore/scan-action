@@ -2,6 +2,7 @@
 	"name": "anchore-scan-action",
 	"version": "2.0.2",
 	"description": "Anchore image scan github action",
+	"type": "module",
 	"main": "index.js",
 	"directories": {
 		"lib": "lib",
@@ -12,9 +13,8 @@
 		"audit": "better-npm-audit audit --production",
 		"lint": "eslint index.js",
 		"test": "npm run lint && npm run install-and-update-grype && npm run build && npm run run-tests",
-		"run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand",
-		"test:update-snapshots": "eslint index.js && npm run install-and-update-grype && GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false jest --runInBand --updateSnapshot",
-		"build": "esbuild ./index.js --bundle --platform=node --target=node20 --format=cjs --conditions=import --outfile=dist/index.js && node dos2unix.js dist/index.js",
+		"run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false node --test --experimental-test-module-mocks --conditions=import --test-timeout=90000 --test-concurrency=1 'tests/*.test.js'",
+		"build": "esbuild ./index.js --bundle --platform=node --target=node20 --format=esm --conditions=import --banner:js='import { createRequire } from \"module\"; const require = createRequire(import.meta.url);' --outfile=dist/index.js && node dos2unix.js dist/index.js",
 		"precommit": "npm run prettier && npm run build && git add dist/",
 		"prepare": "husky",
 		"prettier": "prettier -w *.js && prettier -w tests/*.js",
@@ -42,15 +42,16 @@
 		"lodash": "^4.17.23"
 	},
 	"devDependencies": {
-		"@microsoft/jest-sarif": "^1.0.0-beta.0",
+		"@eslint/eslintrc": "^3.3.5",
+		"@eslint/js": "^10.0.1",
 		"better-npm-audit": "^3.11.0",
-		"esbuild": "^0.27.3",
-		"eslint": "^10.0.2",
+		"esbuild": "^0.27.4",
+		"eslint": "^10.0.3",
+		"globals": "^17.4.0",
 		"husky": "^9.1.7",
-		"jest": "^30.2.0",
-		"lint-staged": "^16.2.7",
+		"lint-staged": "^16.3.3",
 		"prettier": "^3.8.1",
-		"tar": "^7.5.9",
+		"tar": "^7.5.11",
 		"tslib": "^2.8.1"
 	},
 	"lint-staged": {

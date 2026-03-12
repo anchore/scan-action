@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "node:fs";
 for (const f of process.argv.slice(2)) {
   console.log("dos2unix.js", f);
   let contents = fs.readFileSync(f, { encoding: "utf-8" });
