@@ -9,7 +9,7 @@ import process from "node:process";
 import stream from "node:stream";
 import { GRYPE_VERSION } from "./GrypeVersion.js";
 
-export const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
+const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 const grypeExecutableName = isWindows() ? "grype.exe" : "grype";
 
 async function downloadGrypeWindowsWorkaround(version) {
@@ -211,7 +211,7 @@ async function updateDb(grypeCommand) {
 
 // attempts to get an up-to-date database and from cache or update it,
 // throws an exception if unable to get a database or use the cache
-export async function updateDbWithCache(grypeCommand) {
+async function updateDbWithCache(grypeCommand) {
   if (!cache.isFeatureAvailable()) {
     throw new Error("cache not available");
   }
@@ -453,4 +453,4 @@ async function runScan({
   return out;
 }
 
-export { run, runScan, installGrype };
+export { run, runScan, installGrype, grypeVersion, updateDbWithCache };
