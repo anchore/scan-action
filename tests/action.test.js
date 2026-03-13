@@ -1,13 +1,8 @@
-const githubActionsCore = require("@actions/core");
-const githubActionsExec = require("@actions/exec");
-const { cleanup, mock, mockIO, setEnv, runAction } = require("./mocks");
-const { run } = require("../index");
-
-jest.setTimeout(90000); // 90 seconds; tests were timing out in CI. https://github.com/anchore/scan-action/pull/249
+import { describe, it } from "node:test";
+import assert from "node:assert";
+import { mockIO, setEnv, run, mock, runCapturing } from "./mocks.js";
 
 describe("Github action", () => {
-  afterEach(cleanup);
-
   it("runs with inputs requested", async () => {
     const requestedInputs = {};
     const expectedInputs = {
@@ -20,7 +15,7 @@ describe("Github action", () => {
       vex: "test.vex",
     };
 
-    mock(githubActionsCore, {
+    await mock("@actions/core", {
       getInput(name) {
         requestedInputs[name] = true;
         return expectedInputs[name];
@@ -31,13 +26,16 @@ describe("Github action", () => {
 
     await run();
 
-    Object.keys(expectedInputs).map((name) => {
-      expect(requestedInputs[name]).toBeTruthy();
+    Object.keys(expectedInputs).forEach((name) => {
+      assert.ok(
+        requestedInputs[name],
+        `expected input "${name}" to be requested`,
+      );
     });
   });
 
   it("runs with json report", async () => {
-    const outputs = mockIO({
+    const outputs = await mockIO({
       image: "",
       path: "tests/fixtures/npm-project",
       "fail-build": "true",
@@ -49,12 +47,12 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["sarif"]).toBeFalsy();
-    expect(outputs["json"]).toBe("./results.json");
+    assert.ok(!outputs["sarif"]);
+    assert.equal(outputs["json"], "./results.json");
   });
 
   it("runs with sarif report", async () => {
-    const outputs = mockIO({
+    const outputs = await mockIO({
       image: "",
       path: "tests/fixtures/npm-project",
       "fail-build": "true",
@@ -66,11 +64,11 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["sarif"]).toBe("./results.sarif");
+    assert.equal(outputs["sarif"], "./results.sarif");
   });
 
   it("runs with table output", async () => {
-    const { stdout, outputs } = await runAction({
+    const { stdout, outputs } = await runCapturing({
       image:
         "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
       "fail-build": "true",
@@ -79,14 +77,14 @@ describe("Github action", () => {
       "add-cpes-if-none": "true",
     });
 
-    expect(stdout).toContain("VULNERABILITY");
+    assert.ok(stdout.includes("VULNERABILITY"));
 
-    expect(outputs["sarif"]).toBeFalsy();
-    expect(outputs["json"]).toBeFalsy();
+    assert.ok(!outputs["sarif"]);
+    assert.ok(!outputs["json"]);
   });
 
   it("runs with cyclonedx-xml output", async () => {
-    const outputs = mockIO({
+    const outputs = await mockIO({
       image: "",
       path: "tests/fixtures/npm-project",
       "fail-build": "true",
@@ -98,11 +96,11 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["cyclonedx-xml"]).toBe("./results.cdx.xml");
+    assert.equal(outputs["cyclonedx-xml"], "./results.cdx.xml");
   });
 
   it("runs with cyclonedx-json output", async () => {
-    const outputs = mockIO({
+    const outputs = await mockIO({
       image: "",
       path: "tests/fixtures/npm-project",
       "fail-build": "true",
@@ -113,18 +111,18 @@ describe("Github action", () => {
 
     await run();
 
-    expect(outputs["cyclonedx-json"]).toBeDefined();
+    assert.ok(outputs["cyclonedx-json"]);
   });
 
   it("runs with environment variables", async () => {
-    mockIO({
+    await mockIO({
       path: "tests/fixtures/npm-project",
     });
 
     let call = {}; // commandLine, args, options
 
-    const originalExec = githubActionsExec.exec;
-    mock(githubActionsExec, {
+    const { originalExec } = await import("@actions/exec");
+    await mock("@actions/exec", {
       exec(commandLine, args, options) {
         call = {
           commandLine,
@@ -139,66 +137,69 @@ describe("Github action", () => {
 
     await run();
 
-    expect(call.options).toBeDefined();
-    expect(call.options.env.BOGUS_ENVIRONMENT_VARIABLE).toEqual("bogus");
+    assert.ok(call.options);
+    assert.equal(call.options.env.BOGUS_ENVIRONMENT_VARIABLE, "bogus");
   });
 
   it("errors with image and path", async () => {
-    const { failure } = await runAction({
+    const { failure } = await runCapturing({
       image: "some-image",
       path: "some-path",
     });
 
-    expect(failure).toContain(
-      "The following options are mutually exclusive: image, path, sbom",
+    assert.match(
+      failure,
+      /The following options are mutually exclusive: image, path, sbom/,
     );
   });
 
   it("errors with image and sbom", async () => {
-    const { failure } = await runAction({
+    const { failure } = await runCapturing({
       image: "some-image",
       sbom: "some-sbom",
     });
 
-    expect(failure).toContain(
-      "The following options are mutually exclusive: image, path, sbom",
+    assert.match(
+      failure,
+      /The following options are mutually exclusive: image, path, sbom/,
     );
   });
 
   it("errors with path and sbom", async () => {
-    const { failure } = await runAction({
+    const { failure } = await runCapturing({
       path: "some-path",
       sbom: "some-image",
     });
 
-    expect(failure).toContain(
-      "The following options are mutually exclusive: image, path, sbom",
+    assert.match(
+      failure,
+      /The following options are mutually exclusive: image, path, sbom/,
     );
   });
 
   it("fails due to vulnerabilities found", async () => {
-    const { failure } = await runAction({
+    const { failure } = await runCapturing({
       image:
         "anchore/test_images:vulnerabilities-debian-56d52bc@sha256:7ed765e2d195dc594acc1c48fdda0daf7a44026cfb42372544cae1909de22adb",
     });
 
-    expect(failure).toContain("Failed minimum severity level.");
+    assert.match(failure, /Failed minimum severity level./);
   });
 
   it("runs with sbom", async () => {
-    const { failure } = await runAction({
+    const { failure } = await runCapturing({
       sbom: "tests/fixtures/test_sbom.spdx.json",
     });
 
-    expect(failure).toContain("Failed minimum severity level.");
+    assert.match(failure, /Failed minimum severity level./);
   });
 
   it("outputs errors", async () => {
-    const { stdout } = await runAction({
+    const { stdout } = await runCapturing({
       sbom: "tests/fixtures/test_sbom.spdx.json",
       vex: "missing-file",
     });
 
-    expect(stdout).toContain('VEX document "missing-file" not found');
+    assert.match(stdout, /VEX document "missing-file" not found/);
   });
 });
