@@ -64671,10 +64671,10 @@ import process4 from "node:process";
 import stream3 from "node:stream";
 
 // GrypeVersion.js
-var GRYPE_VERSION = "v0.109.0";
+exports.GRYPE_VERSION = "v0.110.0";
 
 // action.js
-var grypeVersion = getInput("grype-version") || GRYPE_VERSION;
+var grypeVersion = getInput("grype-version") || void 0;
 var grypeExecutableName = isWindows() ? "grype.exe" : "grype";
 async function downloadGrypeWindowsWorkaround(version3) {
   const versionNoV = version3.replace(/^v/, "");
