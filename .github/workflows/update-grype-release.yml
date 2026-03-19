@@ -23,7 +23,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           LATEST_VERSION=$(gh release view --json name -q '.name' -R anchore/grype)
-          echo "exports.GRYPE_VERSION = \"$LATEST_VERSION\";" > GrypeVersion.js
+          echo "export const GRYPE_VERSION = \"$LATEST_VERSION\";" > GrypeVersion.js
           # install husky hooks and dependencies:
           npm install
           npm run build
