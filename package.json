@@ -14,7 +14,7 @@
 		"lint": "eslint index.js",
 		"test": "npm run lint && npm run install-and-update-grype && npm run build && npm run run-tests",
 		"run-tests": "GRYPE_DB_AUTO_UPDATE=false GRYPE_DB_VALIDATE_AGE=false node --test --experimental-test-module-mocks --conditions=import --test-timeout=90000 --test-concurrency=1 'tests/*.test.js'",
-		"build": "esbuild ./index.js --bundle --platform=node --target=node20 --format=esm --conditions=import --banner:js='import { createRequire } from \"module\"; const require = createRequire(import.meta.url);' --outfile=dist/index.js && node dos2unix.js dist/index.js",
+		"build": "esbuild ./index.js --bundle --platform=node --target=node24 --format=esm --conditions=import --banner:js='import { createRequire } from \"module\"; const require = createRequire(import.meta.url);' --outfile=dist/index.js && node dos2unix.js dist/index.js",
 		"precommit": "npm run prettier && npm run build && git add dist/",
 		"prepare": "husky",
 		"prettier": "prettier -w *.js && prettier -w tests/*.js",
@@ -58,6 +58,6 @@
 		"*.js": "prettier --write"
 	},
 	"engines": {
-		"node": ">=v20.11.0"
+		"node": ">=v24"
 	}
 }
