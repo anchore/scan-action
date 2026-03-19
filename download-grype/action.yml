@@ -19,5 +19,5 @@ outputs:
   cmd:
     description: "An absolute path to the Grype executable"
 runs:
-  using: "node20"
+  using: "node24"
   main: "../dist/index.js"

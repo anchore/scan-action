@@ -19,7 +19,7 @@ GitHub Action for vulnerability scanning using Grype scanner. Scans containers, 
 The action accepts `image`, `path`, or `sbom` as input sources. Default severity cutoff is "medium" with `fail-build: true`.
 
 ## Development
-- Built with Node.js 20+
+- Built with Node.js 24+
 - Uses @actions/core, @actions/exec, @actions/tool-cache
 - Test with `npm test`, build with `npm run build`
 - Pre-commit hooks format code with prettier

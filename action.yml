@@ -62,5 +62,5 @@ outputs:
   cyclonedx-json:
     description: "Path to a CycloneDX JSON report file for the scan"
 runs:
-  using: "node20"
+  using: "node24"
   main: "dist/index.js"
