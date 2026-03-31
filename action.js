@@ -46,13 +46,14 @@ async function downloadGrype(version) {
     path.join(os.tmpdir(), "grype-download-"),
   );
 
-  const { stdout, exitCode } = await runCommand("sh", [
-    installScriptPath,
-    "-d",
-    "-b",
-    installToDir,
-    version,
-  ]);
+  const verifySign = core.getInput("verify-sign") || "false";
+  const args = [installScriptPath, "-d", "-b", installToDir];
+  if (verifySign === "true") {
+    args.push("-v");
+  }
+  args.push(version);
+
+  const { stdout, exitCode } = await runCommand("sh", args);
   if (exitCode !== 0) {
     core.error("Error installing grype:");
     core.error(stdout);
