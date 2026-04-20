@@ -64758,7 +64758,7 @@ import process4 from "node:process";
 import stream3 from "node:stream";
 
 // GrypeVersion.js
-var GRYPE_VERSION = "v0.110.0";
+var GRYPE_VERSION = "v0.111.0";
 
 // action.js
 var grypeVersion = getInput("grype-version") || GRYPE_VERSION;
