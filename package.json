@@ -46,7 +46,7 @@
 		"@eslint/js": "^10.0.1",
 		"better-npm-audit": "^3.11.0",
 		"esbuild": "^0.28.0",
-		"eslint": "^10.2.0",
+		"eslint": "^10.2.1",
 		"globals": "^17.5.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
