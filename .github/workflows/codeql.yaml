@@ -1,0 +1,61 @@
+# CodeQL scans for security vulnerabilities and coding errors across all
+# languages in this repo. Results appear in the "Security" tab under
+# "Code scanning alerts" and are enforced by branch protection rules.
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # Weekly scheduled scan catches newly disclosed vulnerabilities in
+  # existing code, not just changes introduced by PRs.
+  schedule:
+    - cron: '38 11 * * 3'
+
+permissions: {}
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      # Required to upload SARIF results to the "Security" tab.
+      security-events: write
+      # Required to fetch internal or private CodeQL packs.
+      packages: read
+      # Only required for workflows in private repositories.
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # GitHub Actions workflow linting - no build needed.
+          - language: actions
+            build-mode: none
+
+          # javascript-typescript uses none build mode.
+          - language: javascript-typescript
+            build-mode: none
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@e46ed2cbd01164d986452f91f178727624ae40d7 # v4.35.3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@e46ed2cbd01164d986452f91f178727624ae40d7 # v4.35.3
+        with:
+          # The category tag lets GitHub associate SARIF results with the
+          # correct language when branch protection checks for required
+          # code scanning results.
+          category: "/language:${{matrix.language}}"
