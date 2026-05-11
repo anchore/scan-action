@@ -1,8 +1,9 @@
 name: Re-tag releases
 
 on:
-  release:
-    types: [published, edited]
+  push:
+    tags:
+      - "v*"
 
 permissions: {}
 
