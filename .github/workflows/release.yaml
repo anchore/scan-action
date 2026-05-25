@@ -1,0 +1,60 @@
+name: "Release"
+
+permissions: {}
+
+# there should never be two releases in progress at the same time
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: tag the latest commit on main with the given version (prefixed with v)
+        required: true
+
+jobs:
+  version-available:
+    uses: anchore/workflows/.github/workflows/check-version-available.yaml@8b2b1caf40e03933c6807e03b99e883e2ceb5ac8 # v0.4.0
+    permissions:
+      contents: read # for getting existing tags
+    with:
+      version: ${{ github.event.inputs.version }}
+
+  check-gate:
+    permissions:
+      checks: read # required for getting the status of specific check names
+    uses: anchore/workflows/.github/workflows/check-gate.yaml@8b2b1caf40e03933c6807e03b99e883e2ceb5ac8 # v0.4.0
+    with:
+      # these are checks that must pass on main before a release can be cut.
+      # changing a name here requires updating the matching job name in validations.yaml.
+      checks: '["Static analysis", "Build", "Unit tests", "Integration tests", "Action matrix"]'
+
+  release:
+    needs: [check-gate, version-available]
+    environment: release # gates release on required reviewers; provides DEPLOY_KEY secret
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read # tag pushes go via deploy key, not GITHUB_TOKEN
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0 # full history is needed for changelog generation
+          persist-credentials: false
+
+      - name: Bootstrap environment
+        uses: ./.github/actions/bootstrap
+
+      - name: Verify dist/ is up-to-date
+        run: |
+          make build
+          git status --porcelain
+          git diff --exit-code
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          RELEASE_VERSION: ${{ github.event.inputs.version }}
+        run: make ci-release
