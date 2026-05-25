@@ -1,0 +1,169 @@
+name: "Validations"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions: {}
+
+jobs:
+
+  Static-Analysis:
+    # Note: changing this job name requires making the same update in the .github/workflows/release.yaml pipeline
+    name: "Static analysis"
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Bootstrap environment
+        uses: ./.github/actions/bootstrap
+
+      - name: Run static analysis
+        run: make static-analysis
+
+  Build:
+    # Note: changing this job name requires making the same update in the .github/workflows/release.yaml pipeline
+    #
+    # ensure dist/ is up-to-date with the sources — protects against forgetting to run the
+    # pre-commit hook that bundles the action.
+    name: "Build"
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Bootstrap environment
+        uses: ./.github/actions/bootstrap
+
+      - name: Build action distributable
+        run: make build
+
+      - name: Verify dist/ is up-to-date
+        run: |
+          git status --porcelain
+          git diff --ws-error-highlight=all | cat -v
+          git diff --exit-code
+
+  Unit-Test:
+    # Note: changing this job name requires making the same update in the .github/workflows/release.yaml pipeline
+    name: "Unit tests"
+    runs-on: ubuntu-24.04
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Bootstrap environment
+        uses: ./.github/actions/bootstrap
+
+      - name: Run unit tests
+        run: make unit
+
+  Integration-Test-Download-Grype:
+    # Note: changing this job name requires making the same update in the .github/workflows/release.yaml pipeline
+    name: "Integration tests"
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: "Download Grype v0.54.0"
+        id: grype
+        uses: ./download-grype
+        with:
+          grype-version: v0.54.0
+
+      - name: "Check Grype version before scan-action"
+        env:
+          GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
+        run: |
+          "$GRYPE_CMD" version | egrep "^Version:.*0.54.0$"
+
+      - name: "Scan test image"
+        uses: ./
+        with:
+          image: "alpine:latest"
+          fail-build: false # to prevent fail due to vuln:s on test image
+
+      - name: "Check Grype version after scan-action"
+        env:
+          GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
+        run: |
+          "$GRYPE_CMD" version | egrep "^Version:.*0.54.0$"
+
+  Action-Matrix:
+    # this job runs many matrix permutations and so produces check names like
+    # "Action matrix run (alpine:latest, ubuntu-latest, sarif)" — those parenthesized
+    # names are not stable for use in release.yaml's check-gate. The Action-Matrix-Gate
+    # job below aggregates these into a single stable check name.
+    name: "Action matrix run"
+    strategy:
+      matrix:
+        config: [
+          {image: 'alpine:latest'},
+          {path: 'tests/fixtures/npm-project'},
+          {sbom: 'tests/fixtures/test_sbom.spdx.json'},
+        ]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        output-format: [sarif, json, table]
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: ./
+        id: scan
+        with:
+          image: ${{ matrix.config.image }}
+          path: ${{ matrix.config.path }}
+          sbom: ${{ matrix.config.sbom }}
+          output-format: ${{ matrix.output-format }}
+          fail-build: false
+
+      - name: Validate file exists
+        if: ${{ matrix.output-format != 'table' }}
+        shell: bash
+        env:
+          OUTPUT_FILE: ${{ steps.scan.outputs[matrix.output-format] }}
+        run: test -f "$OUTPUT_FILE"
+
+  Action-Matrix-Gate:
+    # aggregates the Action-Matrix matrix into a single stable check name so that
+    # release.yaml's check-gate can reference it.
+    # Note: changing this job name requires making the same update in the .github/workflows/release.yaml pipeline
+    name: "Action matrix"
+    needs: Action-Matrix
+    if: always()
+    runs-on: ubuntu-24.04
+    permissions: {}
+    steps:
+      - name: Verify all matrix jobs succeeded
+        env:
+          MATRIX_RESULT: ${{ needs.Action-Matrix.result }}
+        run: |
+          if [ "$MATRIX_RESULT" != "success" ]; then
+            echo "Action matrix did not succeed (result: $MATRIX_RESULT)" >&2
+            exit 1
+          fi
