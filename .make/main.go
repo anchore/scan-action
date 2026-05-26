@@ -41,7 +41,7 @@ func main() {
 		// who can then commit the diff and open a PR by hand. Requires `gh`
 		// to be authenticated (gh auth login).
 		Task{
-			Name:        "update-grype",
+			Name:        "update-grype-release",
 			Description: "bump GrypeVersion.js to the latest grype release and rebuild dist/",
 			Run: func() {
 				version := strings.TrimSpace(Run(`gh release view --json name -q '.name' -R anchore/grype`))
