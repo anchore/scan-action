@@ -10,4 +10,4 @@ make release
 
 ## Updating Grype
 
-`make update-grype` repins `GrypeVersion.js` and rebuilds `dist/` — review the diff and open a PR. Requires `gh` auth.
+`make update-grype-release` repins `GrypeVersion.js` and rebuilds `dist/` — review the diff and open a PR. Requires `gh` auth.
