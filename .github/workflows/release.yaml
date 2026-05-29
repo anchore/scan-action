@@ -25,7 +25,7 @@ jobs:
   check-gate:
     permissions:
       checks: read # required for getting the status of specific check names
-    uses: anchore/workflows/.github/workflows/check-gate.yaml@15122524ced7906bfa9685eeae12e22647773ea6 # v0.6.0
+    uses: anchore/workflows/.github/workflows/check-gate.yaml@b3e328b5ae31ba96297e2ed9a6124e5e6352a4c5 # v0.7.0
     with:
       # these are checks that must pass on main before a release can be cut.
       # changing a name here requires updating the matching job name in validations.yaml.
