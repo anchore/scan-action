@@ -3,4 +3,4 @@ cooldown: 7d
 # other binary versions inherited from .binny.yaml file in the anchore/go-make repo (version pinned in .make).
 # If you need to override a tool version, please do so by adding an entry here and go-make will
 # account for the local definition over the go-make shared definitions.
-tools: 
+tools:
