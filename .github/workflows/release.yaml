@@ -13,6 +13,11 @@ on:
       version:
         description: tag the latest commit on main with the given version (prefixed with v)
         required: true
+      skip-checks:
+        description: skip the check-gate job (release even if required checks are not passing)
+        type: boolean
+        default: false
+        required: false
 
 jobs:
   version-available:
@@ -23,7 +28,9 @@ jobs:
       version: ${{ github.event.inputs.version }}
 
   check-gate:
+    if: ${{ !inputs.skip-checks }}
     permissions:
+      contents: read # required for the reusable workflow to check out the repo
       checks: read # required for getting the status of specific check names
     uses: anchore/workflows/.github/workflows/check-gate.yaml@b3e328b5ae31ba96297e2ed9a6124e5e6352a4c5 # v0.7.0
     with:
@@ -33,10 +40,18 @@ jobs:
 
   release:
     needs: [check-gate, version-available]
-    environment: release # gates release on required reviewers; provides DEPLOY_KEY secret
+    # run even when check-gate is skipped, but never when version-available
+    # failed/was skipped, nor when check-gate failed or was cancelled. note:
+    # always() disables the implicit success() gate on ALL needs, so the
+    # version-available requirement must be re-asserted explicitly here.
+    if: >-
+      ${{ always()
+          && needs.version-available.result == 'success'
+          && !contains(fromJSON('["failure", "cancelled"]'), needs.check-gate.result) }}
+    environment: release # gates release on required reviewers; provides TAG_TOKEN secret
     runs-on: ubuntu-24.04
     permissions:
-      contents: read # tag pushes go via deploy key, not GITHUB_TOKEN
+      contents: read # tag pushes go via TAG_TOKEN, not GITHUB_TOKEN
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
@@ -55,6 +70,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          # for pushing tags (does not inherit workflow permissions)
+          TAG_TOKEN: ${{ secrets.TAG_TOKEN }}
           RELEASE_VERSION: ${{ github.event.inputs.version }}
         run: make ci-release
