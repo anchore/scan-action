@@ -7,7 +7,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/anchore/scan-action/blob/main/LICENSE)
 [![Join our Discourse](https://img.shields.io/badge/Discourse-Join-blue?logo=discourse)](https://anchore.com/discourse)
 
-
 This is a GitHub Action for invoking the [Grype](https://github.com/anchore/grype) scanner and returning the vulnerabilities found,
 and optionally fail if a vulnerability is found with a configurable severity level.
 
@@ -118,12 +117,23 @@ Optionally, change the `fail-build` field to `false` to avoid failing the build 
     fail-build: false
 ```
 
+To post the scan results as a comment on the pull request (a single comment is updated across runs), set `pr-comment: true` and pass a `github-token` with the `pull-requests: write` permission. This requires `output-format: sarif` (the default):
+
+```yaml
+- name: Scan image
+  uses: anchore/scan-action@v7
+  with:
+    image: "localbuild/testimage:latest"
+    pr-comment: true
+    github-token: ${{ github.token }}
+```
+
 ### Action Inputs
 
 The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the source to scan; all the other keys are optional. These are all the available keys to configure this action, along with the defaults:
 
 | Input Name          | Description                                                                                                                                                                                                                                                      | Default Value |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | `image`             | The image to scan                                                                                                                                                                                                                                                | N/A           |
 | `path`              | The file path to scan                                                                                                                                                                                                                                            | N/A           |
 | `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                 | N/A           |
@@ -140,11 +150,13 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 | `cache-db`          | Cache the Grype DB in GitHub action cache and restore before checking for updates                                                                                                                                                                                | `false`       |
 | `grype-version`     | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js).                                                                                                                                                     |               |
 | `config`            | Optional Grype configuration files (newline-separated). Setting this will disable auto-detection of configuration files (e.g. .grype.yaml) - only the specified files will be loaded..                                                                           |               |
+| `pr-comment`        | Post (or update) a comment with the scan results on the pull request that triggered the workflow. Requires `github-token` and a `pull_request` event. A single comment is reused across runs.                                                                    | `false`       |
+| `github-token`      | Token used to create or update the pull request comment when `pr-comment` is `true`. Typically set to `${{ github.token }}`. Requires the `pull-requests: write` permission.                                                                                     |               |
 
 ### Action Outputs
 
 | Output Name      | Description                                                                    | Type   |
-|------------------|--------------------------------------------------------------------------------|--------|
+| ---------------- | ------------------------------------------------------------------------------ | ------ |
 | `sarif`          | Path to the SARIF report file, if `output-format` is `sarif`                   | string |
 | `json`           | Path to the report file , if `output-format` is `json`                         | string |
 | `cyclonedx-xml`  | Path to the CycloneDX report file, if `output-format` is `cyclonedx`           | string |
@@ -218,7 +230,7 @@ A sub-action to [download Grype](download-grype/action.yml) and optionally cache
 Input parameters:
 
 | Parameter       | Description                                                                                                  | Default |
-|-----------------|--------------------------------------------------------------------------------------------------------------|---------|
+| --------------- | ------------------------------------------------------------------------------------------------------------ | ------- |
 | `grype-version` | An optional Grype version to download, defaults to the pinned version in [GrypeVersion.js](GrypeVersion.js). |         |
 | `cache-db`      | Cache the Grype DB in GitHub action cache and restore before checking for updates                            | `false` |
 

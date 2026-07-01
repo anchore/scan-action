@@ -52,6 +52,13 @@ inputs:
   cache-db:
     description: "Cache the Grype DB in GitHub action cache and restore before checking for updates"
     required: false
+  pr-comment:
+    description: "Set to true to post (or update) a comment with the scan results on the pull request that triggered the workflow. Requires 'github-token' and a pull_request event. Default is false."
+    required: false
+    default: "false"
+  github-token:
+    description: "Token used to create or update the pull request comment when 'pr-comment' is true. Typically set to ${{ github.token }}. Requires 'pull-requests: write' permission."
+    required: false
 outputs:
   sarif:
     description: "Path to a SARIF report file for the scan"
