@@ -25,9 +25,8 @@ inputs:
     description: 'The file to output the grype scan results to'
     required: false
   severity-cutoff:
-    description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".'
+    description: 'Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result. Valid choices are "negligible", "low", "medium", "high" and "critical". When unset, the action uses Grype''s configured "fail-on-severity", falling back to "medium".'
     required: false
-    default: "medium"
   only-fixed:
     description: "Specify whether to only report vulnerabilities that have a fix available.  Default is false."
     required: false
