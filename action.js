@@ -109,7 +109,13 @@ function sourceInput() {
   }
 
   if (sbom) {
-    return "sbom:" + sbom;
+    const matches = fs.globSync(sbom);
+    if (matches.length !== 1) {
+      throw new Error(
+        `The "sbom" input "${sbom}" matched ${matches.length} files, but exactly 1 is required`,
+      );
+    }
+    return "sbom:" + matches[0];
   }
 
   if (!path) {
