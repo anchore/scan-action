@@ -45,7 +45,7 @@
 		"@eslint/eslintrc": "^3.3.5",
 		"@eslint/js": "^10.0.1",
 		"better-npm-audit": "^3.11.0",
-		"esbuild": "^0.28.0",
+		"esbuild": "^0.28.1",
 		"eslint": "^10.6.0",
 		"globals": "^17.7.0",
 		"husky": "^9.1.7",
