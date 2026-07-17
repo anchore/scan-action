@@ -230,10 +230,123 @@ describe(
         "asdf",
       ]);
     });
+
+    it("uses fail-on-severity from Grype config when input is omitted", async () => {
+      const execCalls = [];
+      const args = await mockRun(
+        {
+          image: "asdf",
+          "fail-build": "false",
+          "output-file": "the-output-file",
+          "output-format": "json",
+          "only-fixed": "false",
+          "add-cpes-if-none": "false",
+          "by-cve": "false",
+          config: ".grype-custom.yaml",
+        },
+        {
+          configOutput: "fail-on-severity: 'high'\n",
+          execCalls,
+        },
+      );
+
+      assert.deepEqual(execCalls[0], [
+        "config",
+        "--load",
+        "-c",
+        ".grype-custom.yaml",
+      ]);
+      assert.deepEqual(args, [
+        "-v",
+        "-o",
+        "json",
+        "--file",
+        "the-output-file",
+        "--fail-on",
+        "high",
+        "-c",
+        ".grype-custom.yaml",
+        "asdf",
+      ]);
+    });
+
+    it("defaults to medium when input and Grype config are unset", async () => {
+      const args = await mockRun(
+        {
+          image: "asdf",
+          "fail-build": "false",
+          "output-file": "the-output-file",
+          "output-format": "json",
+          "only-fixed": "false",
+          "add-cpes-if-none": "false",
+          "by-cve": "false",
+        },
+        { configOutput: "fail-on-severity: ''\n" },
+      );
+
+      assert.deepEqual(args, [
+        "-v",
+        "-o",
+        "json",
+        "--file",
+        "the-output-file",
+        "--fail-on",
+        "medium",
+        "asdf",
+      ]);
+    });
+
+    it("reads config from Grype versions without the config command", async () => {
+      const execCalls = [];
+      const args = await mockRun(
+        {
+          image: "asdf",
+          "fail-build": "false",
+          "output-file": "the-output-file",
+          "output-format": "json",
+          "only-fixed": "false",
+          "add-cpes-if-none": "false",
+          "by-cve": "false",
+          config: ".grype-custom.yaml",
+        },
+        {
+          configExitCode: 1,
+          legacyConfigOutput: "fail-on-severity: high\n",
+          execCalls,
+        },
+      );
+
+      assert.deepEqual(execCalls[1], [
+        "-vv",
+        "-c",
+        ".grype-custom.yaml",
+        "version",
+      ]);
+      assert.deepEqual(args, [
+        "-v",
+        "-o",
+        "json",
+        "--file",
+        "the-output-file",
+        "--fail-on",
+        "high",
+        "-c",
+        ".grype-custom.yaml",
+        "asdf",
+      ]);
+    });
   },
 );
 
-async function mockRun(inputs) {
+async function mockRun(
+  inputs,
+  {
+    configOutput = "",
+    configExitCode = 0,
+    legacyConfigOutput = "",
+    execCalls = [],
+  } = {},
+) {
   // don't bother downloading grype
   await mock("@actions/tool-cache", {
     find() {
@@ -244,8 +357,16 @@ async function mockRun(inputs) {
   // track last exec call args, pretend any call succeeds
   let callArgs;
   await mock("@actions/exec", {
-    async exec(cmd, args) {
+    async exec(cmd, args, options) {
       callArgs = args;
+      execCalls.push(args);
+      if (args.includes("config") && args.includes("--load")) {
+        options.listeners.stdout(Buffer.from(configOutput));
+        return configExitCode;
+      }
+      if (args.includes("-vv") && args.includes("version")) {
+        options.listeners.stderr(Buffer.from(legacyConfigOutput));
+      }
       return 0;
     },
   });
