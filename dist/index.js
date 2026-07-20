@@ -13329,7 +13329,7 @@ var require_fetch = __commonJS({
     function handleFetchDone(response) {
       finalizeAndReportTiming(response, "fetch");
     }
-    function fetch(input, init = void 0) {
+    function fetch2(input, init = void 0) {
       webidl.argumentLengthCheck(arguments, 1, "globalThis.fetch");
       let p = createDeferredPromise();
       let requestObject;
@@ -14286,7 +14286,7 @@ var require_fetch = __commonJS({
       }
     }
     module.exports = {
-      fetch,
+      fetch: fetch2,
       Fetch,
       fetching,
       finalizeAndReportTiming
@@ -18544,7 +18544,7 @@ var require_undici = __commonJS({
     module.exports.setGlobalDispatcher = setGlobalDispatcher;
     module.exports.getGlobalDispatcher = getGlobalDispatcher;
     var fetchImpl = require_fetch().fetch;
-    module.exports.fetch = async function fetch(init, options = void 0) {
+    module.exports.fetch = async function fetch2(init, options = void 0) {
       try {
         return await fetchImpl(init, options);
       } catch (err) {
@@ -65032,6 +65032,8 @@ async function run() {
     const configFile = getInput("config") || "";
     const cacheDb = getInput("cache-db") || "false";
     const outputFile = getInput("output-file") || "";
+    const prComment = getInput("pr-comment") || "false";
+    const githubToken = getInput("github-token") || "";
     const out = await runScan({
       source,
       failBuild,
@@ -65043,7 +65045,9 @@ async function run() {
       byCve,
       vex,
       configFile,
-      cacheDb
+      cacheDb,
+      prComment,
+      githubToken
     });
     Object.keys(out).map((key) => {
       setOutput(key, out[key]);
@@ -65163,7 +65167,9 @@ async function runScan({
   byCve,
   vex,
   configFile,
-  cacheDb = "false"
+  cacheDb = "false",
+  prComment = "false",
+  githubToken = ""
 }) {
   const out = {};
   const env = {
@@ -65200,6 +65206,7 @@ async function runScan({
   addCpesIfNone = addCpesIfNone.toLowerCase() === "true";
   byCve = byCve.toLowerCase() === "true";
   cacheDb = cacheDb.toLowerCase() === "true" && isFeatureAvailable();
+  prComment = prComment.toLowerCase() === "true";
   cmdArgs.push("-o", outputFormat);
   if (!outputFile) {
     outputFile = path12.join(
@@ -65281,7 +65288,160 @@ async function runScan({
       setFailed("grype had a non-zero exit status when running");
     }
   }
+  if (prComment) {
+    try {
+      if (outputFormat !== "sarif") {
+        warning(
+          "pr-comment requires output-format 'sarif'; skipping comment"
+        );
+      } else {
+        const sarif = JSON.parse(fs9.readFileSync(outputFile, "utf8"));
+        const body2 = buildPrCommentBody(parseSarifForComment(sarif));
+        await postPrComment({ token: githubToken, body: body2 });
+      }
+    } catch (e) {
+      warning(`unable to post pull request comment: ${e.message}`);
+    }
+  }
   return out;
+}
+var PR_COMMENT_MARKER = "<!-- anchore/scan-action pr-comment -->";
+var SEVERITY_ORDER = [
+  "critical",
+  "high",
+  "medium",
+  "low",
+  "negligible",
+  "unknown"
+];
+function parseGrypeHelpText(text) {
+  const fields = {};
+  for (const rawLine of (text || "").split("\n")) {
+    const line = rawLine.trim();
+    const vuln = line.match(/^Vulnerability\s+(.+)$/);
+    if (vuln) {
+      fields.Vulnerability = vuln[1].trim();
+      continue;
+    }
+    const kv = line.match(/^([A-Za-z][A-Za-z ]*):\s*(.*)$/);
+    if (kv) {
+      fields[kv[1].trim()] = kv[2].trim();
+    }
+  }
+  return fields;
+}
+function parseSarifForComment(sarif) {
+  const run2 = sarif && sarif.runs && sarif.runs[0];
+  if (!run2 || !Array.isArray(run2.results)) {
+    return [];
+  }
+  const rules = {};
+  for (const rule of run2.tool && run2.tool.driver && run2.tool.driver.rules || []) {
+    rules[rule.id] = rule;
+  }
+  return run2.results.map((result) => {
+    const rule = rules[result.ruleId] || {};
+    const fields = parseGrypeHelpText(rule.help && rule.help.text);
+    return {
+      id: fields.Vulnerability || result.ruleId || "",
+      severity: (fields.Severity || "unknown").toLowerCase(),
+      package: fields.Package || "",
+      version: fields.Version || "",
+      fix: fields["Fix Version"] || "",
+      link: rule.helpUri || ""
+    };
+  });
+}
+function buildPrCommentBody(vulnerabilities) {
+  if (vulnerabilities.length === 0) {
+    return `${PR_COMMENT_MARKER}
+## Grype scan results
+
+No vulnerabilities found.`;
+  }
+  const counts = {};
+  for (const v of vulnerabilities) {
+    counts[v.severity] = (counts[v.severity] || 0) + 1;
+  }
+  const rank = (s) => {
+    const i = SEVERITY_ORDER.indexOf(s);
+    return i === -1 ? SEVERITY_ORDER.length : i;
+  };
+  const summary2 = SEVERITY_ORDER.filter((s) => counts[s]).map((s) => `${counts[s]} ${s}`).join(", ");
+  const rows = [...vulnerabilities].sort((a, b) => rank(a.severity) - rank(b.severity)).map((v) => {
+    const id = v.link ? `[${v.id}](${v.link})` : v.id;
+    return `| ${v.severity} | ${v.package} | ${v.version} | ${v.fix} | ${id} |`;
+  });
+  return [
+    PR_COMMENT_MARKER,
+    "## Grype scan results",
+    "",
+    `Found ${vulnerabilities.length} vulnerabilities (${summary2}).`,
+    "",
+    "| Severity | Package | Version | Fix | Vulnerability |",
+    "| --- | --- | --- | --- | --- |",
+    ...rows
+  ].join("\n");
+}
+async function githubApiRequest(token, method, apiPath, body2) {
+  const response = await fetch(`https://api.github.com${apiPath}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "anchore-scan-action"
+    },
+    body: body2 ? JSON.stringify(body2) : void 0
+  });
+  if (!response.ok) {
+    throw new Error(
+      `GitHub API ${method} ${apiPath} failed: ${response.status}`
+    );
+  }
+  return response.json();
+}
+async function postPrComment({
+  token,
+  body: body2,
+  env = process4.env,
+  api = githubApiRequest
+}) {
+  const eventName = env.GITHUB_EVENT_NAME;
+  if (eventName !== "pull_request" && eventName !== "pull_request_target") {
+    info(`pr-comment: not a pull request event (${eventName}), skipping`);
+    return;
+  }
+  if (!token) {
+    warning("pr-comment: no github-token provided, skipping");
+    return;
+  }
+  const event = JSON.parse(fs9.readFileSync(env.GITHUB_EVENT_PATH, "utf8"));
+  const prNumber = event.pull_request && event.pull_request.number || event.number;
+  const [owner, repo] = env.GITHUB_REPOSITORY.split("/");
+  const comments = await api(
+    token,
+    "GET",
+    `/repos/${owner}/${repo}/issues/${prNumber}/comments?per_page=100`
+  );
+  const existing = (comments || []).find(
+    (c) => c.body && c.body.includes(PR_COMMENT_MARKER)
+  );
+  if (existing) {
+    await api(
+      token,
+      "PATCH",
+      `/repos/${owner}/${repo}/issues/comments/${existing.id}`,
+      { body: body2 }
+    );
+  } else {
+    await api(
+      token,
+      "POST",
+      `/repos/${owner}/${repo}/issues/${prNumber}/comments`,
+      { body: body2 }
+    );
+  }
 }
 
 // index.js
