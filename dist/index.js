@@ -65011,7 +65011,13 @@ function sourceInput() {
     return image;
   }
   if (sbom) {
-    return "sbom:" + sbom;
+    const matches = fs9.globSync(sbom);
+    if (matches.length !== 1) {
+      throw new Error(
+        `The "sbom" input "${sbom}" matched ${matches.length} files, but exactly 1 is required`
+      );
+    }
+    return "sbom:" + matches[0];
   }
   if (!path13) {
     return "dir:.";
