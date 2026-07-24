@@ -42,7 +42,7 @@
 		"lodash": "^4.18.1"
 	},
 	"devDependencies": {
-		"@eslint/eslintrc": "^3.3.5",
+		"@eslint/eslintrc": "^3.3.6",
 		"@eslint/js": "^10.0.1",
 		"better-npm-audit": "^3.11.0",
 		"esbuild": "^0.28.0",
