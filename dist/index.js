@@ -64933,6 +64933,7 @@ var GRYPE_VERSION = "v0.114.0";
 // action.js
 var grypeVersion = getInput("grype-version") || GRYPE_VERSION;
 var grypeExecutableName = isWindows() ? "grype.exe" : "grype";
+var defaultSeverityCutoff = "medium";
 async function downloadGrypeWindowsWorkaround(version3) {
   const versionNoV = version3.replace(/^v/, "");
   const url2 = `https://github.com/anchore/grype/releases/download/${version3}/grype_${versionNoV}_windows_amd64.zip`;
@@ -65024,7 +65025,7 @@ async function run() {
     const source = sourceInput();
     const failBuild = getInput("fail-build") || "true";
     const outputFormat = getInput("output-format") || "sarif";
-    const severityCutoff = getInput("severity-cutoff") || "medium";
+    const severityCutoff = getInput("severity-cutoff");
     const onlyFixed = getInput("only-fixed") || "false";
     const addCpesIfNone = getInput("add-cpes-if-none") || "false";
     const byCve = getInput("by-cve") || "false";
@@ -65124,8 +65125,9 @@ async function updateDbWithCache(grypeCommand) {
   debug(`Caching grype db with key ${cacheKey}`);
   await saveCache2([cacheDir], cacheKey, {}, true);
 }
-async function runCommand(cmd, cmdArgs, env) {
+async function runCommand(cmd, cmdArgs, env, { logStdout = true, logStderr = true } = {}) {
   let stdout = "";
+  let stderr = "";
   const outStream = new stream3.Writable({
     write(buffer3, encoding, next) {
       next();
@@ -65141,7 +65143,12 @@ async function runCommand(cmd, cmdArgs, env) {
           stdout += buffer3.toString();
         },
         stderr(buffer3) {
-          info(buffer3.toString());
+          const message = buffer3.toString();
+          if (logStderr) {
+            info(message);
+          } else {
+            stderr += message;
+          }
         },
         debug(message) {
           debug(message);
@@ -65149,8 +65156,45 @@ async function runCommand(cmd, cmdArgs, env) {
       }
     });
   });
-  debug(stdout);
-  return { stdout, exitCode };
+  if (logStdout) {
+    debug(stdout);
+  }
+  return { stdout, stderr, exitCode };
+}
+function parseSeverityCutoff(config) {
+  for (const line of config.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("fail-on-severity:")) {
+      return trimmed.slice("fail-on-severity:".length).trim().replace(/^['"]|['"]$/g, "").toLowerCase();
+    }
+  }
+  return "";
+}
+async function resolveSeverityCutoff(grypeCommand, severityCutoff, configFiles, env) {
+  if (severityCutoff) {
+    return severityCutoff.toLowerCase();
+  }
+  const cmdArgs = ["config", "--load"];
+  for (const configFile of configFiles) {
+    cmdArgs.push("-c", configFile);
+  }
+  let result = await runCommand(grypeCommand, cmdArgs, env, {
+    logStdout: false,
+    logStderr: false
+  });
+  if (result.exitCode === 0) {
+    return parseSeverityCutoff(result.stdout) || defaultSeverityCutoff;
+  }
+  const legacyArgs = ["-vv"];
+  for (const configFile of configFiles) {
+    legacyArgs.push("-c", configFile);
+  }
+  legacyArgs.push("version");
+  result = await runCommand(grypeCommand, legacyArgs, env, {
+    logStdout: false,
+    logStderr: false
+  });
+  return parseSeverityCutoff(result.stdout + "\n" + result.stderr) || defaultSeverityCutoff;
 }
 async function runScan({
   source,
@@ -65162,7 +65206,7 @@ async function runScan({
   addCpesIfNone,
   byCve,
   vex,
-  configFile,
+  configFile = "",
   cacheDb = "false"
 }) {
   const out = {};
@@ -65170,6 +65214,7 @@ async function runScan({
     ...process4.env,
     GRYPE_CHECK_FOR_APP_UPDATE: "false"
   };
+  const configFiles = configFile.split("\n").map((file) => file.trim()).filter((file) => file);
   const registryUser = getInput("registry-username");
   const registryPass = getInput("registry-password");
   if (registryUser || registryPass) {
@@ -65208,13 +65253,6 @@ async function runScan({
     );
   }
   cmdArgs.push("--file", outputFile);
-  if (!SEVERITY_LIST.some(
-    (item) => typeof severityCutoff.toLowerCase() === "string" && item === severityCutoff.toLowerCase()
-  )) {
-    throw new Error(
-      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`
-    );
-  }
   if (!FORMAT_LIST.some(
     (item) => typeof outputFormat.toLowerCase() === "string" && item === outputFormat.toLowerCase()
   )) {
@@ -65222,8 +65260,24 @@ async function runScan({
       `Invalid output-format value is set to ${outputFormat} - must be one of: ${FORMAT_LIST.join(", ")}`
     );
   }
+  if (severityCutoff && !SEVERITY_LIST.includes(severityCutoff.toLowerCase())) {
+    throw new Error(
+      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`
+    );
+  }
   debug(`Installing grype version ${grypeVersion}`);
   const grypeCommand = await installGrype(grypeVersion);
+  severityCutoff = await resolveSeverityCutoff(
+    grypeCommand,
+    severityCutoff,
+    configFiles,
+    env
+  );
+  if (!SEVERITY_LIST.includes(severityCutoff)) {
+    throw new Error(
+      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`
+    );
+  }
   if (cacheDb) {
     await updateDbWithCache(grypeCommand);
     env.GRYPE_DB_AUTO_UPDATE = "false";
@@ -65237,10 +65291,8 @@ async function runScan({
   debug("Output Format: " + outputFormat);
   debug("Cache DB: " + cacheDb);
   debug("Creating options for GRYPE analyzer");
-  if (severityCutoff !== "") {
-    cmdArgs.push("--fail-on");
-    cmdArgs.push(severityCutoff.toLowerCase());
-  }
+  cmdArgs.push("--fail-on");
+  cmdArgs.push(severityCutoff);
   if (onlyFixed === true) {
     cmdArgs.push("--only-fixed");
   }
@@ -65254,12 +65306,9 @@ async function runScan({
     cmdArgs.push("--vex");
     cmdArgs.push(vex);
   }
-  if (configFile) {
-    const configFiles = configFile.split("\n").map((f) => f.trim()).filter((f) => f);
-    for (const cf of configFiles) {
-      cmdArgs.push("-c");
-      cmdArgs.push(cf);
-    }
+  for (const configFile2 of configFiles) {
+    cmdArgs.push("-c");
+    cmdArgs.push(configFile2);
   }
   cmdArgs.push(source);
   const { exitCode } = await runCommand(grypeCommand, cmdArgs, env);
