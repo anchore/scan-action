@@ -17,7 +17,15 @@ async function downloadGrypeWindowsWorkaround(version) {
   // example URL: https://github.com/anchore/grype/releases/download/v0.79.2/grype_0.79.2_windows_amd64.zip
   const url = `https://github.com/anchore/grype/releases/download/${version}/grype_${versionNoV}_windows_amd64.zip`;
   core.info(`Downloading grype from ${url}`);
-  const zipPath = await tools.downloadTool(url);
+  let zipPath;
+  try {
+    zipPath = await tools.downloadTool(url);
+  } catch (e) {
+    throw new Error(
+      `Unable to download grype from ${url}: ${describeError(e)}. If this is not a transient network failure, check that '${version}' is a released version of grype: https://github.com/anchore/grype/releases`,
+      { cause: e },
+    );
+  }
   core.debug(`Zip saved to ${zipPath}`);
   const toolDir = await tools.extractZip(zipPath);
   core.debug(`Zip extracted to ${toolDir}`);
@@ -26,33 +34,84 @@ async function downloadGrypeWindowsWorkaround(version) {
   return binaryPath;
 }
 
+// reports whether the given version is a grype release tag. the version is
+// interpolated into the URL of a script that gets executed, so this has to
+// match the whole string: a value such as "v1/../../../someone/else/main"
+// would otherwise resolve to an installer from another repository
+function isReleaseTag(version) {
+  return /^v\d+\.\d+\.\d+([-+][\w.+-]+)?$/.test(version);
+}
+
+// renders a caught value for a message, as only the message of a thrown error
+// is reported to the build; a cause is not
+function describeError(e) {
+  return e instanceof Error ? e.message : String(e);
+}
+
 function isWindows() {
   return process.platform === "win32";
 }
 
 /* download grype and return a path to the executable */
 async function downloadGrype(version) {
+  const isTag = isReleaseTag(version);
+
   if (isWindows()) {
+    // only release assets are downloaded here, so a version that is not a
+    // release tag has nothing to download
+    if (!isTag) {
+      throw new Error(
+        `Grype version '${version}' is not a release tag. Specify a tag such as '${GRYPE_VERSION}': https://github.com/anchore/grype/releases`,
+      );
+    }
     return await downloadGrypeWindowsWorkaround(version);
   }
 
-  const installScriptUrl = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
+  // Pin the installer to the tag of the release being installed, so that the
+  // script we execute is as immutable as the release artifacts it verifies.
+  // A version alias such as "latest" is not a tag, so there is nothing to pin
+  // to; fall back to the installer on the default branch in that case.
+  if (!isTag) {
+    core.warning(
+      `Grype version '${version}' is not a release tag, so the installer cannot be pinned to it. Specify a tag such as '${GRYPE_VERSION}' to install a pinned version of grype.`,
+    );
+  }
+  const ref = isTag ? version : "main";
+  const installScriptUrl = `https://raw.githubusercontent.com/anchore/grype/${ref}/install.sh`;
   core.info(`Downloading grype ${version} via ${installScriptUrl}`);
 
   // TODO: when grype starts supporting unreleased versions, support it here
   // Download the installer, and run
-  const installScriptPath = await tools.downloadTool(installScriptUrl);
+  let installScriptPath;
+  try {
+    installScriptPath = await tools.downloadTool(installScriptUrl);
+  } catch (e) {
+    const hint = isTag
+      ? ` If this is not a transient network failure, check that '${version}' is a released version of grype: https://github.com/anchore/grype/releases`
+      : "";
+    throw new Error(
+      `Unable to download the grype installer from ${installScriptUrl}: ${describeError(e)}.${hint}`,
+      { cause: e },
+    );
+  }
   const installToDir = fs.mkdtempSync(
     path.join(os.tmpdir(), "grype-download-"),
   );
 
-  const { stdout, exitCode } = await runCommand("sh", [
-    installScriptPath,
-    "-d",
-    "-b",
-    installToDir,
-    version,
-  ]);
+  // The installer re-downloads and re-executes the installer belonging to the
+  // release tag unless told otherwise, which would defeat pinning above.
+  // The installer also sets this to false itself when signature verification
+  // (-v) is requested for a release whose own installer predates that flag, so
+  // the value never conflicts with ours. If -v is ever passed here, note that
+  // the pinned installer has to be new enough to support the flag.
+  const { stdout, exitCode } = await runCommand(
+    "sh",
+    [installScriptPath, "-d", "-b", installToDir, version],
+    {
+      ...process.env,
+      DOWNLOAD_TAG_INSTALL_SCRIPT: isTag ? "false" : "true",
+    },
+  );
   if (exitCode !== 0) {
     core.error("Error installing grype:");
     core.error(stdout);
@@ -453,4 +512,11 @@ async function runScan({
   return out;
 }
 
-export { run, runScan, installGrype, grypeVersion, updateDbWithCache };
+export {
+  run,
+  runScan,
+  installGrype,
+  isReleaseTag,
+  grypeVersion,
+  updateDbWithCache,
+};

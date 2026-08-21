@@ -64937,7 +64937,15 @@ async function downloadGrypeWindowsWorkaround(version3) {
   const versionNoV = version3.replace(/^v/, "");
   const url2 = `https://github.com/anchore/grype/releases/download/${version3}/grype_${versionNoV}_windows_amd64.zip`;
   info(`Downloading grype from ${url2}`);
-  const zipPath = await downloadTool(url2);
+  let zipPath;
+  try {
+    zipPath = await downloadTool(url2);
+  } catch (e) {
+    throw new Error(
+      `Unable to download grype from ${url2}: ${describeError(e)}. If this is not a transient network failure, check that '${version3}' is a released version of grype: https://github.com/anchore/grype/releases`,
+      { cause: e }
+    );
+  }
   debug(`Zip saved to ${zipPath}`);
   const toolDir = await extractZip(zipPath);
   debug(`Zip extracted to ${toolDir}`);
@@ -64945,26 +64953,54 @@ async function downloadGrypeWindowsWorkaround(version3) {
   debug(`Grype path is ${binaryPath}`);
   return binaryPath;
 }
+function isReleaseTag(version3) {
+  return /^v\d+\.\d+\.\d+([-+][\w.+-]+)?$/.test(version3);
+}
+function describeError(e) {
+  return e instanceof Error ? e.message : String(e);
+}
 function isWindows() {
   return process4.platform === "win32";
 }
 async function downloadGrype(version3) {
+  const isTag = isReleaseTag(version3);
   if (isWindows()) {
+    if (!isTag) {
+      throw new Error(
+        `Grype version '${version3}' is not a release tag. Specify a tag such as '${GRYPE_VERSION}': https://github.com/anchore/grype/releases`
+      );
+    }
     return await downloadGrypeWindowsWorkaround(version3);
   }
-  const installScriptUrl = `https://raw.githubusercontent.com/anchore/grype/main/install.sh`;
+  if (!isTag) {
+    warning(
+      `Grype version '${version3}' is not a release tag, so the installer cannot be pinned to it. Specify a tag such as '${GRYPE_VERSION}' to install a pinned version of grype.`
+    );
+  }
+  const ref = isTag ? version3 : "main";
+  const installScriptUrl = `https://raw.githubusercontent.com/anchore/grype/${ref}/install.sh`;
   info(`Downloading grype ${version3} via ${installScriptUrl}`);
-  const installScriptPath = await downloadTool(installScriptUrl);
+  let installScriptPath;
+  try {
+    installScriptPath = await downloadTool(installScriptUrl);
+  } catch (e) {
+    const hint = isTag ? ` If this is not a transient network failure, check that '${version3}' is a released version of grype: https://github.com/anchore/grype/releases` : "";
+    throw new Error(
+      `Unable to download the grype installer from ${installScriptUrl}: ${describeError(e)}.${hint}`,
+      { cause: e }
+    );
+  }
   const installToDir = fs9.mkdtempSync(
     path12.join(os9.tmpdir(), "grype-download-")
   );
-  const { stdout, exitCode } = await runCommand("sh", [
-    installScriptPath,
-    "-d",
-    "-b",
-    installToDir,
-    version3
-  ]);
+  const { stdout, exitCode } = await runCommand(
+    "sh",
+    [installScriptPath, "-d", "-b", installToDir, version3],
+    {
+      ...process4.env,
+      DOWNLOAD_TAG_INSTALL_SCRIPT: isTag ? "false" : "true"
+    }
+  );
   if (exitCode !== 0) {
     error("Error installing grype:");
     error(stdout);
