@@ -191,6 +191,7 @@ async function run() {
     const onlyFixed = core.getInput("only-fixed") || "false";
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
+    const showSuppressed = core.getInput("show-suppressed") || "false";
     const vex = core.getInput("vex") || "";
     const configFile = core.getInput("config") || "";
     const cacheDb = core.getInput("cache-db") || "false";
@@ -204,6 +205,7 @@ async function run() {
       outputFormat,
       addCpesIfNone,
       byCve,
+      showSuppressed,
       vex,
       configFile,
       cacheDb,
@@ -355,6 +357,7 @@ async function runScan({
   outputFormat,
   addCpesIfNone,
   byCve,
+  showSuppressed,
   vex,
   configFile,
   cacheDb = "false",
@@ -399,6 +402,7 @@ async function runScan({
   onlyFixed = onlyFixed.toLowerCase() === "true";
   addCpesIfNone = addCpesIfNone.toLowerCase() === "true";
   byCve = byCve.toLowerCase() === "true";
+  showSuppressed = showSuppressed.toLowerCase() === "true";
   cacheDb = cacheDb.toLowerCase() === "true" && cache.isFeatureAvailable();
 
   cmdArgs.push("-o", outputFormat);
@@ -450,6 +454,7 @@ async function runScan({
   core.debug("Only Fixed: " + onlyFixed);
   core.debug("Add Missing CPEs: " + addCpesIfNone);
   core.debug("Orient by CVE: " + byCve);
+  core.debug("Show Suppressed: " + showSuppressed);
   core.debug("Output Format: " + outputFormat);
   core.debug("Cache DB: " + cacheDb);
 
@@ -468,6 +473,9 @@ async function runScan({
   }
   if (byCve === true) {
     cmdArgs.push("--by-cve");
+  }
+  if (showSuppressed === true) {
+    cmdArgs.push("--show-suppressed");
   }
   if (vex) {
     cmdArgs.push("--vex");
