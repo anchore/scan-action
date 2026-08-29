@@ -11,6 +11,7 @@ import { GRYPE_VERSION } from "./GrypeVersion.js";
 
 const grypeVersion = core.getInput("grype-version") || GRYPE_VERSION;
 const grypeExecutableName = isWindows() ? "grype.exe" : "grype";
+const defaultSeverityCutoff = "medium";
 
 async function downloadGrypeWindowsWorkaround(version) {
   const versionNoV = version.replace(/^v/, "");
@@ -187,7 +188,7 @@ async function run() {
     const source = sourceInput();
     const failBuild = core.getInput("fail-build") || "true";
     const outputFormat = core.getInput("output-format") || "sarif";
-    const severityCutoff = core.getInput("severity-cutoff") || "medium";
+    const severityCutoff = core.getInput("severity-cutoff");
     const onlyFixed = core.getInput("only-fixed") || "false";
     const addCpesIfNone = core.getInput("add-cpes-if-none") || "false";
     const byCve = core.getInput("by-cve") || "false";
@@ -310,8 +311,14 @@ async function updateDbWithCache(grypeCommand) {
   await cache.saveCache([cacheDir], cacheKey, {}, true);
 }
 
-async function runCommand(cmd, cmdArgs, env) {
+async function runCommand(
+  cmd,
+  cmdArgs,
+  env,
+  { logStdout = true, logStderr = true } = {},
+) {
   let stdout = "";
+  let stderr = "";
 
   // This /dev/null writable stream is required so the entire Grype output
   // is not written to the GitHub action log. the listener below
@@ -332,7 +339,12 @@ async function runCommand(cmd, cmdArgs, env) {
           stdout += buffer.toString();
         },
         stderr(buffer) {
-          core.info(buffer.toString());
+          const message = buffer.toString();
+          if (logStderr) {
+            core.info(message);
+          } else {
+            stderr += message;
+          }
         },
         debug(message) {
           core.debug(message);
@@ -341,9 +353,66 @@ async function runCommand(cmd, cmdArgs, env) {
     });
   });
 
-  core.debug(stdout);
+  if (logStdout) {
+    core.debug(stdout);
+  }
 
-  return { stdout, exitCode };
+  return { stdout, stderr, exitCode };
+}
+
+function parseSeverityCutoff(config) {
+  for (const line of config.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("fail-on-severity:")) {
+      return trimmed
+        .slice("fail-on-severity:".length)
+        .trim()
+        .replace(/^['"]|['"]$/g, "")
+        .toLowerCase();
+    }
+  }
+
+  return "";
+}
+
+async function resolveSeverityCutoff(
+  grypeCommand,
+  severityCutoff,
+  configFiles,
+  env,
+) {
+  if (severityCutoff) {
+    return severityCutoff.toLowerCase();
+  }
+
+  const cmdArgs = ["config", "--load"];
+  for (const configFile of configFiles) {
+    cmdArgs.push("-c", configFile);
+  }
+
+  let result = await runCommand(grypeCommand, cmdArgs, env, {
+    logStdout: false,
+    logStderr: false,
+  });
+  if (result.exitCode === 0) {
+    return parseSeverityCutoff(result.stdout) || defaultSeverityCutoff;
+  }
+
+  // Older Grype releases expose the loaded config only in verbose version output.
+  const legacyArgs = ["-vv"];
+  for (const configFile of configFiles) {
+    legacyArgs.push("-c", configFile);
+  }
+  legacyArgs.push("version");
+
+  result = await runCommand(grypeCommand, legacyArgs, env, {
+    logStdout: false,
+    logStderr: false,
+  });
+  return (
+    parseSeverityCutoff(result.stdout + "\n" + result.stderr) ||
+    defaultSeverityCutoff
+  );
 }
 
 async function runScan({
@@ -356,7 +425,7 @@ async function runScan({
   addCpesIfNone,
   byCve,
   vex,
-  configFile,
+  configFile = "",
   cacheDb = "false",
 }) {
   const out = {};
@@ -365,6 +434,10 @@ async function runScan({
     ...process.env,
     GRYPE_CHECK_FOR_APP_UPDATE: "false",
   };
+  const configFiles = configFile
+    .split("\n")
+    .map((file) => file.trim())
+    .filter((file) => file);
 
   const registryUser = core.getInput("registry-username");
   const registryPass = core.getInput("registry-password");
@@ -413,17 +486,6 @@ async function runScan({
   cmdArgs.push("--file", outputFile);
 
   if (
-    !SEVERITY_LIST.some(
-      (item) =>
-        typeof severityCutoff.toLowerCase() === "string" &&
-        item === severityCutoff.toLowerCase(),
-    )
-  ) {
-    throw new Error(
-      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`,
-    );
-  }
-  if (
     !FORMAT_LIST.some(
       (item) =>
         typeof outputFormat.toLowerCase() === "string" &&
@@ -434,9 +496,26 @@ async function runScan({
       `Invalid output-format value is set to ${outputFormat} - must be one of: ${FORMAT_LIST.join(", ")}`,
     );
   }
+  if (severityCutoff && !SEVERITY_LIST.includes(severityCutoff.toLowerCase())) {
+    throw new Error(
+      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`,
+    );
+  }
 
   core.debug(`Installing grype version ${grypeVersion}`);
   const grypeCommand = await installGrype(grypeVersion);
+  severityCutoff = await resolveSeverityCutoff(
+    grypeCommand,
+    severityCutoff,
+    configFiles,
+    env,
+  );
+
+  if (!SEVERITY_LIST.includes(severityCutoff)) {
+    throw new Error(
+      `Invalid severity-cutoff value is set to ${severityCutoff} - must be one of ${SEVERITY_LIST.join(", ")}`,
+    );
+  }
 
   if (cacheDb) {
     await updateDbWithCache(grypeCommand);
@@ -456,10 +535,8 @@ async function runScan({
   core.debug("Creating options for GRYPE analyzer");
 
   // Run the grype analyzer
-  if (severityCutoff !== "") {
-    cmdArgs.push("--fail-on");
-    cmdArgs.push(severityCutoff.toLowerCase());
-  }
+  cmdArgs.push("--fail-on");
+  cmdArgs.push(severityCutoff);
   if (onlyFixed === true) {
     cmdArgs.push("--only-fixed");
   }
@@ -473,15 +550,9 @@ async function runScan({
     cmdArgs.push("--vex");
     cmdArgs.push(vex);
   }
-  if (configFile) {
-    const configFiles = configFile
-      .split("\n")
-      .map((f) => f.trim())
-      .filter((f) => f);
-    for (const cf of configFiles) {
-      cmdArgs.push("-c");
-      cmdArgs.push(cf);
-    }
+  for (const configFile of configFiles) {
+    cmdArgs.push("-c");
+    cmdArgs.push(configFile);
   }
   cmdArgs.push(source);
 
