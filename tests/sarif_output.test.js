@@ -42,6 +42,7 @@ const testSource = async (source, vulnerabilities) => {
     onlyFixed: "false",
     addCpesIfNone: "false",
     byCve: "false",
+    showSuppressed: "false",
   });
 
   // expect to get sarif output
