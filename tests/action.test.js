@@ -194,6 +194,30 @@ describe("Github action", () => {
     assert.match(failure, /Failed minimum severity level./);
   });
 
+  it("runs with sbom glob matching one file", async () => {
+    const { failure } = await runCapturing({
+      sbom: "tests/fixtures/test_sbom.*.json",
+    });
+
+    assert.match(failure, /Failed minimum severity level./);
+  });
+
+  it("errors when sbom glob matches no files", async () => {
+    const { failure } = await runCapturing({
+      sbom: "tests/fixtures/does-not-exist-*.json",
+    });
+
+    assert.match(failure, /matched 0 files, but exactly 1 is required/);
+  });
+
+  it("errors when sbom glob matches multiple files", async () => {
+    const { failure } = await runCapturing({
+      sbom: "tests/fixtures/sbom-glob/*.cdx.json",
+    });
+
+    assert.match(failure, /matched 2 files, but exactly 1 is required/);
+  });
+
   it("outputs errors", async () => {
     const { stdout } = await runCapturing({
       sbom: "tests/fixtures/test_sbom.spdx.json",
