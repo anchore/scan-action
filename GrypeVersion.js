@@ -1,1 +1,1 @@
-export const GRYPE_VERSION = "v0.118.0";
+export const GRYPE_VERSION = "v0.119.0";
