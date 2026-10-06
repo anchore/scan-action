@@ -78,7 +78,8 @@ The `path` key allows any valid path for the current project. The root of the pa
 
 ## Scanning an SBOM file
 
-Use the `sbom` key to scan an SBOM file:
+Use the `sbom` key to scan an SBOM file. The value may be a glob pattern (for
+example `sboms/*.spdx.json`), which must match exactly one file:
 
 ```yaml
 - name: Create SBOM
@@ -126,7 +127,7 @@ The inputs `image`, `path`, and `sbom` are mutually exclusive to specify the sou
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | `image`             | The image to scan                                                                                                                                                                                                                                                | N/A           |
 | `path`              | The file path to scan                                                                                                                                                                                                                                            | N/A           |
-| `sbom`              | The SBOM to scan                                                                                                                                                                                                                                                 | N/A           |
+| `sbom`              | The SBOM to scan; may be a glob pattern that matches exactly one file                                                                                                                                                                                            | N/A           |
 | `registry-username` | The registry username to use when authenticating to an external registry                                                                                                                                                                                         |               |
 | `registry-password` | The registry password to use when authenticating to an external registry                                                                                                                                                                                         |               |
 | `fail-build`        | Fail the build if a vulnerability is found with a higher severity. That severity defaults to `medium` and can be set with `severity-cutoff`.                                                                                                                     | `true`        |
