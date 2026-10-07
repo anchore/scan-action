@@ -155,6 +155,31 @@ describe(
       ]);
     });
 
+    it("shows suppressed vulnerabilities if requested", async () => {
+      const args = await mockRun({
+        image: "asdf",
+        "fail-build": "false",
+        "output-file": "the-output-file",
+        "output-format": "json",
+        "severity-cutoff": "low",
+        "only-fixed": "false",
+        "add-cpes-if-none": "false",
+        "by-cve": "false",
+        "show-suppressed": "true",
+      });
+      assert.deepEqual(args, [
+        "-v",
+        "-o",
+        "json",
+        "--file",
+        "the-output-file",
+        "--fail-on",
+        "low",
+        "--show-suppressed",
+        "asdf",
+      ]);
+    });
+
     it("with path by cve", async () => {
       const args = await mockRun({
         path: "asdf",

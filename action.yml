@@ -40,6 +40,10 @@ inputs:
     description: "Specify whether to orient results by CVE rather than GHSA.  Default is false."
     required: false
     default: "false"
+  show-suppressed:
+    description: "Specify whether to include suppressed (ignored) vulnerabilities in the results.  Default is false."
+    required: false
+    default: "false"
   grype-version:
     description: "A specific version of Grype to install"
     required: false
