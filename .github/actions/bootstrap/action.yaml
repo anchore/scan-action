@@ -12,7 +12,7 @@ runs:
   steps:
     # setup go, go-make, binny, and cache go modules (this is also what
     # restricts cache writes to the default branch, per audit guidance)
-    - uses: anchore/go-make/.github/actions/setup@9eb7f3a610b354fe29225a1bc8934a5a7ed4e07c # v0.9.2
+    - uses: anchore/go-make/.github/actions/setup@abf41688f36f2cbec13105747abbe8e60f5c56ca # v0.9.3
       with:
         cache-dependency-path: .make/go.sum
 
