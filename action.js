@@ -280,14 +280,39 @@ async function updateDbWithCache(grypeCommand) {
   // we want the cache to be shared by as many compatible branches as possible, so do not use a
   // unique key across matrix builds. even when there is a timing conflict, there is a database
   // available as expected
+  // the actual saved cache key will ultimately be based upon the build timestamp (in ISO
+  // format) of the database.  we then use restore keys with varying prefixes of date to restore
+  // the most recent cached database.
+  // note that the legacy cache key is still used as the final fallback restore key so that
+  // users upgrading from earlier versions of the action still restore that initially
   // see: https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
-  const cacheKey = `grype-db-${grypeVersion}`;
-  await cache.restoreCache([cacheDir], cacheKey, [], {}, true);
+  const legacyCacheKey = `grype-db-`;
+  const baseCacheKey = `grype-db-${grypeVersion}-`;
+  const now = new Date().toISOString();
+  const restoreByDateKey = baseCacheKey + now.substring(0, now.indexOf("T"));
+  const restoreByMonthKey = restoreByDateKey.substring(
+    0,
+    restoreByDateKey.lastIndexOf("-"),
+  );
+  const restoreByYearKey = restoreByMonthKey.substring(
+    0,
+    restoreByMonthKey.lastIndexOf("-"),
+  );
+  core.info(
+    `Attempting to restore grype db cache from keys: ${restoreByDateKey}, ${restoreByMonthKey}, ${restoreByYearKey}, ${legacyCacheKey}`,
+  );
+  const matchedCacheKey = await cache.restoreCache(
+    [cacheDir],
+    restoreByDateKey,
+    [restoreByDateKey, restoreByMonthKey, restoreByYearKey, legacyCacheKey],
+    {},
+    true,
+  );
 
   const cachedDbBuildTime = await getDbBuildTime(grypeCommand);
   if (cachedDbBuildTime) {
     core.info(
-      `Restored grype db from cache with db build time ${cachedDbBuildTime}`,
+      `Restored grype db from cache key ${matchedCacheKey} with db build time ${cachedDbBuildTime}`,
     );
   }
 
@@ -297,17 +322,24 @@ async function updateDbWithCache(grypeCommand) {
 
   // if the database was not updated, don't re-cache it
   const currentDbBuildTime = await getDbBuildTime(grypeCommand);
-  if (`${cachedDbBuildTime}` === `${currentDbBuildTime}`) {
+  const savedCacheKey = baseCacheKey + currentDbBuildTime.toISOString();
+  if (
+    `${cachedDbBuildTime}` === `${currentDbBuildTime}` ||
+    `${matchedCacheKey}` === `${savedCacheKey}`
+  ) {
     core.debug(
-      `Skipping caching grype db, with build time ${cachedDbBuildTime}`,
+      `Skipping caching grype db with build time ${cachedDbBuildTime}, cache already up to date`,
     );
     return;
   }
 
-  core.debug(`Caching grype db with key ${cacheKey}`);
+  core.info(`Caching updated grype db with key ${savedCacheKey}`);
 
-  // this needs to be able to be found by restoreCache, above
-  await cache.saveCache([cacheDir], cacheKey, {}, true);
+  // We save the DB cache using the database build time (in ISO format) so that
+  // the various date prefix restore keys we use will restore the most recent
+  // database available and old databases will naturally be expired from the
+  // cache due to lack of use
+  await cache.saveCache([cacheDir], savedCacheKey, {}, true);
 }
 
 async function runCommand(cmd, cmdArgs, env) {
