@@ -66708,24 +66708,45 @@ async function updateDbWithCache(grypeCommand) {
     throw new Error("cache not available");
   }
   const cacheDir = await getDbDir(grypeCommand);
-  const cacheKey = `grype-db-${grypeVersion}`;
-  await restoreCache([cacheDir], cacheKey, [], {}, true);
+  const legacyCacheKey = `grype-db-`;
+  const baseCacheKey = `grype-db-${grypeVersion}-`;
+  const now = (/* @__PURE__ */ new Date()).toISOString();
+  const restoreByDateKey = baseCacheKey + now.substring(0, now.indexOf("T"));
+  const restoreByMonthKey = restoreByDateKey.substring(
+    0,
+    restoreByDateKey.lastIndexOf("-")
+  );
+  const restoreByYearKey = restoreByMonthKey.substring(
+    0,
+    restoreByMonthKey.lastIndexOf("-")
+  );
+  info(
+    `Attempting to restore grype db cache from keys: ${restoreByDateKey}, ${restoreByMonthKey}, ${restoreByYearKey}, ${legacyCacheKey}`
+  );
+  const matchedCacheKey = await restoreCache(
+    [cacheDir],
+    restoreByDateKey,
+    [restoreByDateKey, restoreByMonthKey, restoreByYearKey, legacyCacheKey],
+    {},
+    true
+  );
   const cachedDbBuildTime = await getDbBuildTime(grypeCommand);
   if (cachedDbBuildTime) {
     info(
-      `Restored grype db from cache with db build time ${cachedDbBuildTime}`
+      `Restored grype db from cache key ${matchedCacheKey} with db build time ${cachedDbBuildTime}`
     );
   }
   await updateDb(grypeCommand);
   const currentDbBuildTime = await getDbBuildTime(grypeCommand);
-  if (`${cachedDbBuildTime}` === `${currentDbBuildTime}`) {
+  const savedCacheKey = baseCacheKey + currentDbBuildTime.toISOString();
+  if (`${cachedDbBuildTime}` === `${currentDbBuildTime}` || `${matchedCacheKey}` === `${savedCacheKey}`) {
     debug(
-      `Skipping caching grype db, with build time ${cachedDbBuildTime}`
+      `Skipping caching grype db with build time ${cachedDbBuildTime}, cache already up to date`
     );
     return;
   }
-  debug(`Caching grype db with key ${cacheKey}`);
-  await saveCache2([cacheDir], cacheKey, {}, true);
+  info(`Caching updated grype db with key ${savedCacheKey}`);
+  await saveCache2([cacheDir], savedCacheKey, {}, true);
 }
 async function runCommand(cmd, cmdArgs, env) {
   let stdout = "";
