@@ -13,6 +13,12 @@ inputs:
   sbom:
     description: 'The SBOM file to scan. This option is mutually exclusive with "path" and "image".'
     required: false
+  registry-username:
+    description: 'Registry username for authenticating to a container registry. Must be specified together with "registry-password".'
+    required: false
+  registry-password:
+    description: "The registry password to use when authenticating to an external registry"
+    required: false
   fail-build:
     description: "Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)"
     required: false
