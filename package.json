@@ -51,7 +51,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^17.6.0",
 		"prettier": "^3.10.1",
-		"tar": "^7.5.22",
+		"tar": "^7.5.23",
 		"tslib": "^2.9.1"
 	},
 	"lint-staged": {
