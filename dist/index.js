@@ -66707,6 +66707,7 @@ async function run() {
     const onlyFixed = getInput("only-fixed") || "false";
     const addCpesIfNone = getInput("add-cpes-if-none") || "false";
     const byCve = getInput("by-cve") || "false";
+    const showSuppressed = getInput("show-suppressed") || "false";
     const vex = getInput("vex") || "";
     const configFile = getInput("config") || "";
     const cacheDb = getInput("cache-db") || "false";
@@ -66720,6 +66721,7 @@ async function run() {
       outputFormat,
       addCpesIfNone,
       byCve,
+      showSuppressed,
       vex,
       configFile,
       cacheDb
@@ -66840,6 +66842,7 @@ async function runScan({
   outputFormat,
   addCpesIfNone,
   byCve,
+  showSuppressed,
   vex,
   configFile,
   cacheDb = "false"
@@ -66878,6 +66881,7 @@ async function runScan({
   onlyFixed = onlyFixed.toLowerCase() === "true";
   addCpesIfNone = addCpesIfNone.toLowerCase() === "true";
   byCve = byCve.toLowerCase() === "true";
+  showSuppressed = showSuppressed.toLowerCase() === "true";
   cacheDb = cacheDb.toLowerCase() === "true" && isFeatureAvailable();
   cmdArgs.push("-o", outputFormat);
   if (!outputFile) {
@@ -66913,6 +66917,7 @@ async function runScan({
   debug("Only Fixed: " + onlyFixed);
   debug("Add Missing CPEs: " + addCpesIfNone);
   debug("Orient by CVE: " + byCve);
+  debug("Show Suppressed: " + showSuppressed);
   debug("Output Format: " + outputFormat);
   debug("Cache DB: " + cacheDb);
   debug("Creating options for GRYPE analyzer");
@@ -66928,6 +66933,9 @@ async function runScan({
   }
   if (byCve === true) {
     cmdArgs.push("--by-cve");
+  }
+  if (showSuppressed === true) {
+    cmdArgs.push("--show-suppressed");
   }
   if (vex) {
     cmdArgs.push("--vex");
