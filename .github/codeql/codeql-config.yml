@@ -1,0 +1,9 @@
+name: "CodeQL config"
+
+# dist/ is the esbuild bundle of index.js plus all of node_modules. Scanning it
+# reports third-party code (undici, @actions/*, fast-xml-parser, ...) as if it
+# were ours, and every rebuild makes those alerts look "new" on the PR.
+# The sources we own (index.js, scripts/, tests/) are still analyzed.
+paths-ignore:
+  - dist
+  - node_modules

@@ -1,0 +1,28 @@
+name: "Bootstrap"
+
+description: "Bootstrap node + go-make tooling and install npm dependencies"
+
+inputs:
+  install-deps:
+    description: "Run npm ci to install node dependencies"
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    # setup go, go-make, binny, and cache go modules (this is also what
+    # restricts cache writes to the default branch, per audit guidance)
+    - uses: anchore/go-make/.github/actions/setup@cf465259f4c9f0b0b0bcb35164ede11f7dc6d9f6 # v0.9.6
+      with:
+        cache-dependency-path: .make/go.sum
+
+    - name: Setup node
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version-file: package.json
+        cache: npm
+
+    - name: Install npm dependencies
+      if: inputs.install-deps == 'true'
+      shell: bash
+      run: npm ci

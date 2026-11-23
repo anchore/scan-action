@@ -1,0 +1,76 @@
+name: "Release"
+
+permissions: {}
+
+# there should never be two releases in progress at the same time
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: tag the latest commit on main with the given version (prefixed with v)
+        required: true
+      skip-checks:
+        description: skip the check-gate job (release even if required checks are not passing)
+        type: boolean
+        default: false
+        required: false
+
+jobs:
+  version-available:
+    uses: anchore/workflows/.github/workflows/check-version-available.yaml@7212994dc8fc3a53fe9c8e766ab5b4ddd16ea3d4 # v0.8.0
+    permissions:
+      contents: read # for getting existing tags
+    with:
+      version: ${{ github.event.inputs.version }}
+
+  check-gate:
+    if: ${{ !inputs.skip-checks }}
+    permissions:
+      contents: read # required for the reusable workflow to check out the repo
+      checks: read # required for getting the status of specific check names
+    uses: anchore/workflows/.github/workflows/check-gate.yaml@7212994dc8fc3a53fe9c8e766ab5b4ddd16ea3d4 # v0.8.0
+    with:
+      # these are checks that must pass on main before a release can be cut.
+      # changing a name here requires updating the matching job name in validations.yaml.
+      checks: '["Static analysis", "Build", "Unit tests", "Integration tests", "Action matrix"]'
+
+  release:
+    needs: [check-gate, version-available]
+    # run even when check-gate is skipped, but never when version-available
+    # failed/was skipped, nor when check-gate failed or was cancelled. note:
+    # always() disables the implicit success() gate on ALL needs, so the
+    # version-available requirement must be re-asserted explicitly here.
+    if: >-
+      ${{ always()
+          && needs.version-available.result == 'success'
+          && !contains(fromJSON('["failure", "cancelled"]'), needs.check-gate.result) }}
+    environment: release # gates release on required reviewers; provides TAG_TOKEN secret
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # for creating the GitHub release (tag pushes go via TAG_TOKEN)
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history is needed for changelog generation
+          persist-credentials: false
+
+      - name: Bootstrap environment
+        uses: ./.github/actions/bootstrap
+
+      - name: Verify dist/ is up-to-date
+        run: |
+          make build
+          git status --porcelain
+          git diff --exit-code
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          # for pushing tags (does not inherit workflow permissions)
+          TAG_TOKEN: ${{ secrets.TAG_TOKEN }}
+          RELEASE_VERSION: ${{ github.event.inputs.version }}
+        run: make ci-release
