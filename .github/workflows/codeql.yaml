@@ -21,3 +21,4 @@ jobs:
       contents: read
     with:
       languages: 'javascript,actions'
+      config-file: '.github/codeql/codeql-config.yml'
